@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="xposedscope">
+        <item>org.telegram.messenger</item>
+        <item>org.telegram.messenger.web</item>
+        <item>org.telegram.messenger.beta</item>
+        <item>tw.nekomimi.nekogram</item>
+        <item>nekox.messenger</item>
+        <item>com.cool2645.nekolite</item>
+        <item>org.telegram.plus</item>
+        <item>com.iMe.android</item>
+        <item>org.telegram.BifToGram</item>
+        <item>ua.itaysonlab.messenger</item>
+        <item>org.forkclient.messenger.beta</item>
+        <item>org.aka.messenger</item>
+        <item>ellipi.messenger</item>
+        <item>com.exteragram.messenger</item>
+        <item>uz.unnarsx.cherrygram</item>
+    </string-array>
+</resources>
