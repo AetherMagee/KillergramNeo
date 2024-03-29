@@ -6,13 +6,15 @@ An Xposed module aimed to enhance Telegram and it's forks without needing to mod
 ## Features
 * Replace in-app icons with the Solar pack by [@Design480](https://t.me/Design480)
 * Hide stories
-* Remove sponsored messages
-* Allow message forwarding from anywhere
-* Override account limit
-* Force local 'Premium' (for experiments only)
+* Remove sponsored messages*
+* Allow message forwarding from anywhere*
+* Override account limit*
+* Force local 'Premium'* (for experiments only)
+
+\* - *These features are potentially breaking Telegram's [ToS](https://telegram.org/tos), be careful when using them.*
 
 ## Supported cliens
-In theory: Any client that is a fork of original [Telegram](https://github.com/DrKLO/Telegram) app.
+In theory: Any client that is a fork of the official Telegram app.
 
 Has been tested on:
 * **Vanilla Telegram** (org.telegram.messenger)
