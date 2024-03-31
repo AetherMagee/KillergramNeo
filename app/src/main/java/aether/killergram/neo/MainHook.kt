@@ -13,21 +13,26 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage
 class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitPackageResources {
     private var moduleResources: XModuleResources? = null
     private val prefs = PreferencesUtils().getPrefsInstance()
+    private val packageBlocklist = arrayOf(  // Apparently sometimes LSPosed will just hook us into random crap like GMS or ourselves
+            "aether.killergram.neo",         // This is supposed to solve this problem
+            "com.google.android.gms"
+        )
     override fun initZygote(startupParam: StartupParam?) {
         this.moduleResources = XModuleResources.createInstance(startupParam!!.modulePath, null)
     }
     override fun handleLoadPackage(lpparam: XC_LoadPackage.LoadPackageParam?) {
-        if (lpparam == null || lpparam.packageName == "aether.killergram.neo" || lpparam.packageName == "com.google.android.gms") {
+        if (lpparam?.packageName == null || packageBlocklist.contains(lpparam.packageName)) {
             return
         }
 
+        log("Injecting for ${lpparam.packageName}", "INIT")
         val hooks = Hooks()
 
         val userConfigClass = XposedHelpers.findClassIfExists("org.telegram.messenger.UserConfig", lpparam.classLoader)
         val messageControllerClass = XposedHelpers.findClassIfExists("org.telegram.messenger.MessagesController", lpparam.classLoader)
         val chatUIActivityClass = XposedHelpers.findClassIfExists("org.telegram.ui.ChatActivity", lpparam.classLoader)
         val storiesControllerClass = XposedHelpers.findClassIfExists("org.telegram.ui.Stories.StoriesController", lpparam.classLoader)
-        val messageObject = XposedHelpers.findClassIfExists("org.telegram.messenger.MessageObject", lpparam.classLoader)
+        val messageObjectClass = XposedHelpers.findClassIfExists("org.telegram.messenger.MessageObject", lpparam.classLoader)
         val launchActivityClass = XposedHelpers.findClassIfExists("org.telegram.ui.LaunchActivity", lpparam.classLoader)
 
         // Local Premium
@@ -42,7 +47,7 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitP
 
         // Forwarding
         if (prefs.getBoolean("forward", false)) {
-            hooks.forceAllowForwards(messageControllerClass, messageObject)
+            hooks.forceAllowForwards(messageControllerClass, messageObjectClass)
         }
 
         // Account limit
@@ -62,7 +67,7 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitP
     }
 
     override fun handleInitPackageResources(resparam: XC_InitPackageResources.InitPackageResourcesParam?) {
-        if (resparam == null || resparam.packageName == "aether.killergram.neo" || resparam.packageName == "com.google.android.gms") {
+        if (resparam?.packageName == null || packageBlocklist.contains(resparam.packageName)) {
             return
         }
         if (moduleResources == null) {
