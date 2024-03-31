@@ -11,7 +11,7 @@ An Xposed module aimed to enhance Telegram and it's forks without needing to mod
 * Override account limit
 * Force local 'Premium' (for experiments only)
 
-## Supported cliens
+## Supported clients
 In theory: Any client that is a fork of original [Telegram](https://github.com/DrKLO/Telegram) app.
 
 Has been tested on:
