@@ -21,6 +21,7 @@ class PreferencesUtils {
 }
 
 fun log(message: String, level: String = "") {
+    // TODO: Implement toggleable debug logging
     if (level == "") {
         XposedBridge.log("[KG Neo] $message")
     } else {
