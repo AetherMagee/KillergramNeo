@@ -21,7 +21,7 @@ Has been tested on:
 * **Telegram** (org.telegram.messenger)
 * **exteraGram** (com.exteragram.messenger)
 * **Cherrygram** (uz.unnarsx.cherrygram)
-* **Octogram** (it.octogram.androids)
+* **Octogram** (it.octogram.android)
 
 **Note:** The module doesn't and and will NOT work on Telegram X and it's forks.
 
