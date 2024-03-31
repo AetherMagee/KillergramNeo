@@ -1,5 +1,7 @@
 package aether.killergram.neo
 
+import android.view.KeyEvent
+import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XC_MethodReplacement
 import de.robv.android.xposed.XposedBridge
 
@@ -86,7 +88,19 @@ class Hooks {
         XposedBridge.hookAllMethods(
             launchActivityClass,
             "dispatchKeyEvent",
-            XC_MethodReplacement.returnConstant(true)
+            object : XC_MethodHook() {
+                override fun beforeHookedMethod(param: MethodHookParam?) {
+                    param?.args?.get(0)?.let { event ->
+                        if (event is KeyEvent &&
+                            event.action == KeyEvent.ACTION_DOWN &&
+                            (event.keyCode == KeyEvent.KEYCODE_VOLUME_UP || event.keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)) {
+                                log("Nullified volume key press", "DEBUG")
+                                param.result = true
+                        }
+                    }
+                    super.beforeHookedMethod(param)
+                }
+            }
         )
     }
 }
