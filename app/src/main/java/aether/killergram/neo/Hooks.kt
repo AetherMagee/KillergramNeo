@@ -1,6 +1,5 @@
 package aether.killergram.neo
 
-import android.content.res.XResources
 import de.robv.android.xposed.XC_MethodReplacement
 import de.robv.android.xposed.XposedBridge
 
@@ -78,6 +77,16 @@ class Hooks {
             storiesControllerClass,
             "loadHiddenStories",
             XC_MethodReplacement.returnConstant(null)
+        )
+    }
+
+    fun killAutoAudio(launchActivityClass: Class<*>) {
+        log("Disabling auto-enable audio on vol+/-...")
+
+        XposedBridge.hookAllMethods(
+            launchActivityClass,
+            "dispatchKeyEvent",
+            XC_MethodReplacement.returnConstant(true)
         )
     }
 }

@@ -21,7 +21,6 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitP
             return
         }
 
-        log("hLP for ${lpparam.packageName}", "DEBUG")
         val hooks = Hooks()
 
         val userConfigClass = XposedHelpers.findClassIfExists("org.telegram.messenger.UserConfig", lpparam.classLoader)
@@ -29,6 +28,7 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitP
         val chatUIActivityClass = XposedHelpers.findClassIfExists("org.telegram.ui.ChatActivity", lpparam.classLoader)
         val storiesControllerClass = XposedHelpers.findClassIfExists("org.telegram.ui.Stories.StoriesController", lpparam.classLoader)
         val messageObject = XposedHelpers.findClassIfExists("org.telegram.messenger.MessageObject", lpparam.classLoader)
+        val launchActivityClass = XposedHelpers.findClassIfExists("org.telegram.ui.LaunchActivity", lpparam.classLoader)
 
         // Local Premium
         if (prefs.getBoolean("localpremium", false)) {
@@ -54,6 +54,11 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitP
         if (prefs.getBoolean("stories", false)) {
             hooks.killStories(storiesControllerClass)
         }
+
+        // Volume button
+        if (prefs.getBoolean("volume", false)) {
+            hooks.killAutoAudio(launchActivityClass)
+        }
     }
 
     override fun handleInitPackageResources(resparam: XC_InitPackageResources.InitPackageResourcesParam?) {
@@ -64,7 +69,6 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitP
             log("Can't find module resources!", "ERROR")
             return
         }
-        log("hIPR for ${resparam.packageName}", "DEBUG")
 
         if (prefs.getBoolean("solar", false)) {
             log("Injecting Solar icons...")
