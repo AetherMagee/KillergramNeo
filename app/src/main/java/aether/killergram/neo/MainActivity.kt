@@ -39,10 +39,17 @@ class MainActivity : ComponentActivity() {
             KillergramNeoTheme {
                 Column {
                     SwitchScreen(
+                        title = "App settings",
                         switches = listOf(
-                            "Inject Solar icons by @Design480" to "solar",
-                            "Disable audio enabling on volume buttons" to "volume",
+                            "Debug logging" to "debug"
+                        )
+                    )
+                    SwitchScreen(
+                        title = "Hooks",
+                        switches = listOf(
+                            "Inject Solar icons" to "solar",
                             "Hide Stories" to "stories",
+                            "Disable audio enabling on volume buttons" to "volume",
                             "Remove sponsored messages" to "sponsored",
                             "Allow forwarding from anywhere" to "forward",
                             "Override account limit" to "accountlimit",
@@ -79,7 +86,7 @@ fun NotEnabledWarning() {
 
 @SuppressLint("WorldReadableFiles")
 @Composable
-fun SwitchScreen(switches: List<Pair<String, String>>) {
+fun SwitchScreen(title: String, switches: List<Pair<String, String>>) {
     val context = LocalContext.current
     val prefs = try {
         @Suppress("DEPRECATION")
@@ -97,15 +104,28 @@ fun SwitchScreen(switches: List<Pair<String, String>>) {
         .padding(16.dp)
         .background(MaterialTheme.colorScheme.secondaryContainer, shape = RoundedCornerShape(20.dp)),
         ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            switches.zip(switchStates).forEach { (switch, state) ->
-                SwitchComposable(switch = switch, state = state, prefs = prefs)
+            // Payload
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Column {
+                    Text(
+                        text = title,
+                        fontSize = 24.sp,
+                        modifier = Modifier
+                            .padding(8.dp, bottom = 10.dp)
+                            .align(alignment = Alignment.CenterHorizontally),
+                        overflow = TextOverflow.Ellipsis,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+
+                    switches.zip(switchStates).forEach { (switch, state) ->
+                        SwitchComposable(switch = switch, state = state, prefs = prefs)
+                }
             }
         }
     }
