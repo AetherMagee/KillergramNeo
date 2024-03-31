@@ -7,17 +7,23 @@ An Xposed module aimed to enhance Telegram and it's forks without needing to mod
 * Replace in-app icons with the Solar pack by [@Design480](https://t.me/Design480)
 * Hide stories
 * Disable audio autoplay on volume button press
-* Remove sponsored messages
-* Allow message forwarding from anywhere
-* Override account limit
-* Force local 'Premium' (for experiments only)
+* Remove sponsored messages*
+* Allow message forwarding from anywhere*
+* Override account limit*
+* Force local 'Premium'* (for experiments only, doesn't do anything for server-side features)
+
+\* - Potentially breaking Telegram's ToS, be careful! 
 
 ## Supported clients
 In theory: Any client that is a fork of original [Telegram](https://github.com/DrKLO/Telegram) app.
 
 Has been tested on:
-* **Vanilla Telegram** (org.telegram.messenger)
+* **Telegram** (org.telegram.messenger)
 * **exteraGram** (com.exteragram.messenger)
 * **Cherrygram** (uz.unnarsx.cherrygram)
+* **Octogram** (it.octogram.androids)
 
 **Note:** The module doesn't and and will NOT work on Telegram X and it's forks.
+
+## Downloads
+Download latest release [here](https://github.com/AetherMagee/KillergramNeo/releases/latest)
