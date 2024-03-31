@@ -40,12 +40,12 @@ class MainActivity : ComponentActivity() {
                 Column {
                     SwitchScreen(
                         switches = listOf(
+                            "Inject Solar icons by @Design480" to "solar",
+                            "Disable audio enabling on volume buttons" to "volume",
+                            "Hide Stories" to "stories",
                             "Remove sponsored messages" to "sponsored",
                             "Allow forwarding from anywhere" to "forward",
                             "Override account limit" to "accountlimit",
-                            "Hide Stories" to "stories",
-                            "Inject Solar icons by @Design480" to "solar",
-                            "[TESTING] Disable audio enabling on volume buttons" to "volume",
                             "Force local Premium" to "localpremium"
                         )
                     )
