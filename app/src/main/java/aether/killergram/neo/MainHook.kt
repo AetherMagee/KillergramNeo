@@ -22,10 +22,11 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitP
     }
     override fun handleLoadPackage(lpparam: XC_LoadPackage.LoadPackageParam?) {
         if (lpparam?.packageName == null || packageBlocklist.contains(lpparam.packageName)) {
+            log("Aborting load for ${lpparam?.packageName}", "DEBUG")
             return
         }
 
-        log("Injecting for ${lpparam.packageName}", "INIT")
+        log("Injecting for ${lpparam.packageName}", "DEBUG")
         val hooks = Hooks()
 
         val userConfigClass = XposedHelpers.findClassIfExists("org.telegram.messenger.UserConfig", lpparam.classLoader)

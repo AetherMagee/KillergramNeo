@@ -21,10 +21,12 @@ class PreferencesUtils {
 }
 
 fun log(message: String, level: String = "") {
-    // TODO: Implement toggleable debug logging
+    val debugLogging = PreferencesUtils().getPrefsInstance().getBoolean("debug", false)
     if (level == "") {
         XposedBridge.log("[KG Neo] $message")
-    } else {
+    } else if (level == "DEBUG" && debugLogging) {
+        XposedBridge.log("[KG Neo]-[DEBUG] $message")
+    } else if (level != "DEBUG") {
         XposedBridge.log("[KG Neo]-[$level] $message")
     }
 }
