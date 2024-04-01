@@ -35,6 +35,7 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitP
         val storiesControllerClass = XposedHelpers.findClassIfExists("org.telegram.ui.Stories.StoriesController", lpparam.classLoader)
         val messageObjectClass = XposedHelpers.findClassIfExists("org.telegram.messenger.MessageObject", lpparam.classLoader)
         val launchActivityClass = XposedHelpers.findClassIfExists("org.telegram.ui.LaunchActivity", lpparam.classLoader)
+        val photoViewerClass = XposedHelpers.findClassIfExists("org.telegram.ui.PhotoViewer", lpparam.classLoader)
 
         // Local Premium
         if (prefs.getBoolean("localpremium", false)) {
@@ -63,7 +64,7 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitP
 
         // Volume button
         if (prefs.getBoolean("volume", false)) {
-            hooks.killAutoAudio(launchActivityClass)
+            hooks.killAutoAudio(launchActivityClass, photoViewerClass)
         }
     }
 

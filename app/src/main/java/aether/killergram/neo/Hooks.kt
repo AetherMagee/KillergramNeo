@@ -4,6 +4,7 @@ import android.view.KeyEvent
 import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XC_MethodReplacement
 import de.robv.android.xposed.XposedBridge
+import de.robv.android.xposed.XposedHelpers
 
 
 class Hooks {
@@ -82,20 +83,50 @@ class Hooks {
         )
     }
 
-    fun killAutoAudio(launchActivityClass: Class<*>) {
+    fun killAutoAudio(launchActivityClass: Class<*>, photoViewerClass: Class<*>) {
         log("Disabling auto-enable audio on vol+/-...")
 
         XposedBridge.hookAllMethods(
             launchActivityClass,
             "dispatchKeyEvent",
             object : XC_MethodHook() {
-                override fun beforeHookedMethod(param: MethodHookParam?) {
-                    param?.args?.get(0)?.let { event ->
+                override fun beforeHookedMethod(param: MethodHookParam) {
+                    param.args[0]?.let { event ->
                         if (event is KeyEvent &&
                             event.action == KeyEvent.ACTION_DOWN &&
                             (event.keyCode == KeyEvent.KEYCODE_VOLUME_UP || event.keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)) {
-                                log("Nullified volume key press", "DEBUG")
-                                param.result = true
+
+                            // TODO: Move as much of this as possible out of the function
+                            // to avoid doing this on every call
+                            val mainFragmentsStackField = XposedHelpers.findField(param.thisObject.javaClass, "mainFragmentsStack")
+                            val mainFragmentsStack = mainFragmentsStackField.get(param.thisObject) as? List<*>
+                            val hasInstance = XposedHelpers.callStaticMethod(photoViewerClass, "hasInstance") as Boolean
+                            val isVisible = if (hasInstance) {
+                                XposedHelpers.callStaticMethod(photoViewerClass, "getInstance").let { instance ->
+                                    XposedHelpers.callMethod(instance, "isVisible") as Boolean
+                                }
+                            } else false
+                            val repeatCount = event.repeatCount == 0
+
+                            if (!mainFragmentsStack.isNullOrEmpty() && (!hasInstance || !isVisible) && repeatCount) {
+                                val fragment = mainFragmentsStack.lastOrNull()
+                                if (fragment!!::class.java.simpleName == "ChatActivity") {
+                                    log("Nullified volume button press")
+                                    param.result = false
+                                }
+                                // TODO: Figure out if this is even worth it
+//                                if (XposedHelpers.getStaticBooleanField(param.thisObject.javaClass, "AndroidUtilities.isTablet")) {
+//                                    val rightFragmentsStackField = XposedHelpers.findField(param.thisObject.javaClass, "rightFragmentsStack")
+//                                    val rightFragmentsStack = rightFragmentsStackField.get(param.thisObject) as? List<*>
+//                                    if (!rightFragmentsStack.isNullOrEmpty()) {
+//                                        val rightFragment = rightFragmentsStack.lastOrNull()
+//                                        if (rightFragment!!::class.java.simpleName == "ChatActivity") {
+//                                            log("Nullified volume button press")
+//                                            param.result = true
+//                                        }
+//                                    }
+//                                }
+                            }
                         }
                     }
                     super.beforeHookedMethod(param)
