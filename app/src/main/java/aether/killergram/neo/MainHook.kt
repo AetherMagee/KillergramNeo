@@ -31,6 +31,7 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitP
 
         val userConfigClass = XposedHelpers.findClassIfExists("org.telegram.messenger.UserConfig", lpparam.classLoader)
         val messageControllerClass = XposedHelpers.findClassIfExists("org.telegram.messenger.MessagesController", lpparam.classLoader)
+        val messagesStorageClass = XposedHelpers.findClassIfExists("org.telegram.messenger.MessagesStorage", lpparam.classLoader)
         val chatUIActivityClass = XposedHelpers.findClassIfExists("org.telegram.ui.ChatActivity", lpparam.classLoader)
         val storiesControllerClass = XposedHelpers.findClassIfExists("org.telegram.ui.Stories.StoriesController", lpparam.classLoader)
         val messageObjectClass = XposedHelpers.findClassIfExists("org.telegram.messenger.MessageObject", lpparam.classLoader)
@@ -65,6 +66,10 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitP
         // Volume button
         if (prefs.getBoolean("volume", false)) {
             hooks.killAutoAudio(launchActivityClass, photoViewerClass)
+        }
+
+        if (prefs.getBoolean("deleted", false)) {
+            hooks.keepDeletedMessages(messagesStorageClass)
         }
     }
 
