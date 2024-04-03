@@ -112,7 +112,9 @@ fun SwitchScreen(title: String, switches: List<Pair<String, String>>) {
         @Suppress("DEPRECATION")
         context.getSharedPreferences("function_switches", Context.MODE_WORLD_READABLE)
     } catch (e: SecurityException) {
-        NotEnabledWarning()
+        if (title == "Hooks") {
+            NotEnabledWarning()
+        }
         return
     }
 
