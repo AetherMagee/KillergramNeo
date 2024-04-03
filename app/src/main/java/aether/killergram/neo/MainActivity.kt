@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
@@ -38,26 +39,33 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             KillergramNeoTheme {
-                Column {
-                    RestartReminder()
-                    SwitchScreen(
-                        title = "App settings",
-                        switches = listOf(
-                            "Debug logging" to "debug"
+                LazyColumn {
+                    item {
+                        RestartReminder()
+                    }
+                    item {
+                        SwitchScreen(
+                            title = "App settings",
+                            switches = listOf(
+                                "Debug logging" to "debug"
+                            )
                         )
-                    )
-                    SwitchScreen(
-                        title = "Hooks",
-                        switches = listOf(
-                            "Inject Solar icons" to "solar",
-                            "Hide Stories" to "stories",
-                            "Disable audio enabling on volume buttons" to "volume",
-                            "Remove sponsored messages" to "sponsored",
-                            "Allow forwarding from anywhere" to "forward",
-                            "Override account limit" to "accountlimit",
-                            "Force local Premium" to "localpremium"
+                    }
+                    item {
+                        SwitchScreen(
+                            title = "Hooks",
+                            switches = listOf(
+                                "Inject Solar icons" to "solar",
+                                "Hide Stories" to "stories",
+                                "Disable audio enabling on volume buttons" to "volume",
+                                "Remove sponsored messages" to "sponsored",
+                                "Allow forwarding from anywhere" to "forward",
+                                "Override account limit" to "accountlimit",
+                                "[TESTING] Force local Premium" to "localpremium",
+                                "[TESTING] Keep deleted messages" to "deleted"
+                            )
                         )
-                    )
+                    }
                 }
             }
         }
