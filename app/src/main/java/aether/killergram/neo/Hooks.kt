@@ -96,8 +96,6 @@ class Hooks {
                             event.action == KeyEvent.ACTION_DOWN &&
                             (event.keyCode == KeyEvent.KEYCODE_VOLUME_UP || event.keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)) {
 
-                            // TODO: Move as much of this as possible out of the function
-                            // to avoid doing this on every call
                             val mainFragmentsStackField = XposedHelpers.findField(param.thisObject.javaClass, "mainFragmentsStack")
                             val mainFragmentsStack = mainFragmentsStackField.get(param.thisObject) as? List<*>
                             val hasInstance = XposedHelpers.callStaticMethod(photoViewerClass, "hasInstance") as Boolean
