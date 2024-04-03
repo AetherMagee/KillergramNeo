@@ -126,4 +126,19 @@ class Hooks {
             }
         )
     }
+
+    fun keepDeletedMessages(messagesStorageClass: Class<*>) {
+        log("Forcing TG to keep deleted messages...")
+
+        XposedBridge.hookAllMethods(
+            messagesStorageClass,
+            "markMessagesAsDeleted",
+            XC_MethodReplacement.returnConstant(null)
+        )
+        XposedBridge.hookAllMethods(
+            messagesStorageClass,
+            "markMessagesAsDeletedInternal",
+            XC_MethodReplacement.returnConstant(null)
+        )
+    }
 }
