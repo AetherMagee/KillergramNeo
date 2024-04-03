@@ -108,24 +108,16 @@ class Hooks {
                             } else false
                             val repeatCount = event.repeatCount == 0
 
-                            if (!mainFragmentsStack.isNullOrEmpty() && (!hasInstance || !isVisible) && repeatCount) {
-                                val fragment = mainFragmentsStack.lastOrNull()
-                                if (fragment!!::class.java.simpleName == "ChatActivity") {
-                                    log("Nullified volume button press")
-                                    param.result = false
+                            try {
+                                if (!mainFragmentsStack.isNullOrEmpty() && (!hasInstance || !isVisible) && repeatCount) {
+                                    val fragment = mainFragmentsStack.lastOrNull()
+                                    if (fragment!!::class.java.simpleName == "ChatActivity") {
+                                        log("Nullified volume button press")
+                                        param.result = false
+                                    }
                                 }
-                                // TODO: Figure out if this is even worth it
-//                                if (XposedHelpers.getStaticBooleanField(param.thisObject.javaClass, "AndroidUtilities.isTablet")) {
-//                                    val rightFragmentsStackField = XposedHelpers.findField(param.thisObject.javaClass, "rightFragmentsStack")
-//                                    val rightFragmentsStack = rightFragmentsStackField.get(param.thisObject) as? List<*>
-//                                    if (!rightFragmentsStack.isNullOrEmpty()) {
-//                                        val rightFragment = rightFragmentsStack.lastOrNull()
-//                                        if (rightFragment!!::class.java.simpleName == "ChatActivity") {
-//                                            log("Nullified volume button press")
-//                                            param.result = true
-//                                        }
-//                                    }
-//                                }
+                            } catch (e: Exception) {
+                                log("Failed to handle volume button press. Are you on a tablet?", "ERROR")
                             }
                         }
                     }
