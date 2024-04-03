@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -38,6 +39,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             KillergramNeoTheme {
                 Column {
+                    RestartReminder()
                     SwitchScreen(
                         title = "App settings",
                         switches = listOf(
@@ -79,6 +81,24 @@ fun NotEnabledWarning() {
             Text(
                 text = "Not enabled. Please enable the module in LSPosed first and then restart this app.",
                 style = TextStyle(color = Color.White, fontSize = 20.sp),
+            )
+        }
+    }
+}
+
+@Composable
+fun RestartReminder() {
+    Box(modifier = Modifier
+        .padding(16.dp)
+        .background(MaterialTheme.colorScheme.secondaryContainer, shape = RoundedCornerShape(20.dp)),
+    ) {
+        Box(modifier = Modifier.padding(10.dp)) {
+            Text(
+                text = "Don't forget to restart the target app after making changes!",
+                fontSize = 20.sp,
+                textAlign = TextAlign.Center,
+                overflow = TextOverflow.Ellipsis,
+                color = MaterialTheme.colorScheme.onSurface
             )
         }
     }
