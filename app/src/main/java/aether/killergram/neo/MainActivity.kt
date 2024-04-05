@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity() {
                     }
                     item {
                         SwitchScreen(
-                            title = "App settings",
+                            title = "Module settings",
                             switches = listOf(
                                 "Debug logging" to "debug"
                             )
