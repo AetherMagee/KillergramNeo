@@ -11,6 +11,7 @@ An Xposed module aimed to enhance Telegram and it's forks without needing to mod
 * Allow message forwarding from anywhere*
 * Override account limit*
 * Force local 'Premium'* (for experiments only, doesn't do anything for server-side features)
+* Force keep deleted messages* (extremely buggy, not supposed to be used like AyuGram or others)
 
 \* - Potentially breaking Telegram's ToS, be careful! 
 
