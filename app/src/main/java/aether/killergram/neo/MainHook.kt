@@ -50,7 +50,7 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitP
 
         // Forwarding
         if (prefs.getBoolean("forward", false)) {
-            hooks.forceAllowForwards(messageControllerClass, messageObjectClass)
+            hooks.forceAllowForwards(messageControllerClass, messageObjectClass, chatUIActivityClass)
         }
 
         // Account limit

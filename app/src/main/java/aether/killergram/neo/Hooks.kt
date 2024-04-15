@@ -48,7 +48,7 @@ class Hooks {
         )
     }
 
-    fun forceAllowForwards(messagesControllerClass: Class<*>, messageObject: Class<*>) {
+    fun forceAllowForwards(messagesControllerClass: Class<*>, messageObject: Class<*>, chatUIActivityClass: Class<*>) {
         log("Enabling forwarding anywhere...")
 
         XposedBridge.hookAllMethods(
@@ -60,6 +60,11 @@ class Hooks {
             messageObject,
             "canForwardMessage",
             XC_MethodReplacement.returnConstant(true)
+        )
+        XposedBridge.hookAllMethods(
+            chatUIActivityClass,
+            "hasSelectedNoforwardsMessage",
+            XC_MethodReplacement.returnConstant(false)
         )
     }
 
