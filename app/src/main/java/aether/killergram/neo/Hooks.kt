@@ -130,7 +130,10 @@ class Hooks {
         )
     }
 
-    fun keepDeletedMessages(messagesStorageClass: Class<*>) {
+    // TODO: Create logic for storing messages in our module
+    // instead of forcing TG to store them
+    // Perhaps a local database?
+    fun keepDeletedMessages(messagesStorageClass: Class<*>, messagesControllerClass: Class<*>) {
         log("Forcing TG to keep deleted messages...")
 
         XposedBridge.hookAllMethods(
@@ -141,6 +144,16 @@ class Hooks {
         XposedBridge.hookAllMethods(
             messagesStorageClass,
             "markMessagesAsDeletedInternal",
+            XC_MethodReplacement.returnConstant(null)
+        )
+        XposedBridge.hookAllMethods(
+            messagesControllerClass,
+            "markDialogMessageAsDeleted",
+            XC_MethodReplacement.returnConstant(null)
+        )
+        XposedBridge.hookAllMethods(
+            messagesControllerClass,
+            "deleteMessages",
             XC_MethodReplacement.returnConstant(null)
         )
     }

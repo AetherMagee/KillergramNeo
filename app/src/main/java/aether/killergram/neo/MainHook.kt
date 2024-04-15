@@ -69,7 +69,7 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitP
         }
 
         if (prefs.getBoolean("deleted", false)) {
-            hooks.keepDeletedMessages(messagesStorageClass)
+            hooks.keepDeletedMessages(messagesStorageClass, messageControllerClass)
         }
     }
 
