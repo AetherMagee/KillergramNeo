@@ -96,6 +96,15 @@ fun NotEnabledWarning() {
 
 @Composable
 fun RestartReminder() {
+    // Copied from below just to check
+    val context = LocalContext.current
+    val prefs = try {
+        @Suppress("DEPRECATION")
+        context.getSharedPreferences("function_switches", Context.MODE_WORLD_READABLE)
+    } catch (e: SecurityException) {
+        return
+    }
+    
     Box(modifier = Modifier
         .padding(16.dp)
         .background(MaterialTheme.colorScheme.secondaryContainer, shape = RoundedCornerShape(20.dp)),
