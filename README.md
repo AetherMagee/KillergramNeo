@@ -27,5 +27,9 @@ Has been tested on:
 
 **Note:** The module doesn't and and will NOT work on Telegram X and it's forks.
 
+## FAQ
+* **'Chat translation spoof for non-premium?'** - Impossible, as Telegram apparently rate-limits users based on some serverside Premium check.
+* **'Auto-update?'** - Use [Obtainium.](https://github.com/ImranR98/Obtainium)
+
 ## Downloads
 Download latest release [here](https://github.com/AetherMagee/KillergramNeo/releases/latest)
