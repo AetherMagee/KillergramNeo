@@ -52,19 +52,29 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                     item {
-                        SwitchScreen(
-                            title = "Hooks",
-                            switches = listOf(
-                                "Inject Solar icons" to "solar",
-                                "Hide Stories" to "stories",
-                                "Disable audio playback on volume button press" to "volume",
-                                "Remove sponsored messages" to "sponsored",
-                                "Allow forwarding from anywhere" to "forward",
-                                "Override account limit" to "accountlimit",
-                                "[TESTING] Force local Premium" to "localpremium",
-                                "[TESTING] Keep deleted messages" to "deleted"
-                            )
-                        )
+                        SwitchScreen(title = "Visuals", switches = listOf(
+                            "Inject Solar icons" to "solar",
+                            "Hide Stories" to "stories",
+                            "Disable \"Thanos\" deletion effect" to "thanos"
+                        ))
+                    }
+                    item {
+                        SwitchScreen(title = "Premium-related", switches = listOf(
+                            "Remove sponsored messages" to "sponsored",
+                            "Allow forwarding from anywhere" to "forward",
+                            "Override local account limit" to "accountlimit"
+                        ))
+                    }
+                    item {
+                        SwitchScreen(title = "Miscellaneous", switches = listOf(
+                            "Disable audio playback on volume button press" to "volume"
+                        ))
+                    }
+                    item {
+                        SwitchScreen(title = "Testing", switches = listOf(
+                            "Force local Premium" to "localpremium",
+                            "Keep ALL deleted messages" to "deleted"
+                        ))
                     }
                 }
             }
@@ -94,6 +104,7 @@ fun NotEnabledWarning() {
     }
 }
 
+@SuppressLint("WorldReadableFiles")
 @Composable
 fun RestartReminder() {
     // Copied from below just to check
