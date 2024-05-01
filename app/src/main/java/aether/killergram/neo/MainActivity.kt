@@ -57,7 +57,7 @@ class MainActivity : ComponentActivity() {
                             switches = listOf(
                                 "Inject Solar icons" to "solar",
                                 "Hide Stories" to "stories",
-                                "Disable audio enabling on volume buttons" to "volume",
+                                "Disable audio playback on volume button press" to "volume",
                                 "Remove sponsored messages" to "sponsored",
                                 "Allow forwarding from anywhere" to "forward",
                                 "Override account limit" to "accountlimit",
@@ -87,7 +87,7 @@ fun NotEnabledWarning() {
             .padding(8.dp)
         ) {
             Text(
-                text = "Not enabled. Please enable the module in LSPosed first and then restart this app.",
+                text = "Module is not enabled. Please enable it in LSPosed manager first and then restart this app.",
                 style = TextStyle(color = Color.White, fontSize = 20.sp),
             )
         }
@@ -111,7 +111,7 @@ fun RestartReminder() {
     ) {
         Box(modifier = Modifier.padding(10.dp)) {
             Text(
-                text = "Don't forget to restart the target app after making changes!",
+                text = "Don't forget to restart your target app(s) after making changes!",
                 fontSize = 20.sp,
                 textAlign = TextAlign.Center,
                 overflow = TextOverflow.Ellipsis,
