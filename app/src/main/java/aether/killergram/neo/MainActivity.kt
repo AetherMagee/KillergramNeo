@@ -97,7 +97,7 @@ fun NotEnabledWarning() {
             .padding(8.dp)
         ) {
             Text(
-                text = "Module is not enabled. Please enable it in LSPosed manager first and then restart this app.",
+                text = "The module is not enabled. Please enable it in LSPosed manager first and then restart this app.",
                 style = TextStyle(color = Color.White, fontSize = 20.sp),
             )
         }
@@ -140,7 +140,7 @@ fun SwitchScreen(title: String, switches: List<Pair<String, String>>) {
         @Suppress("DEPRECATION")
         context.getSharedPreferences("function_switches", Context.MODE_WORLD_READABLE)
     } catch (e: SecurityException) {
-        if (title == "Hooks") {
+        if (title == "Module settings") {
             NotEnabledWarning()
         }
         return
