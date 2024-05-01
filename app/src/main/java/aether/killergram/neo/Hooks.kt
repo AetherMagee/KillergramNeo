@@ -157,4 +157,19 @@ class Hooks {
             XC_MethodReplacement.returnConstant(null)
         )
     }
+
+    fun disableThanosEffect(chatUIActivityClass: Class<*>, thanosEffectClass: Class<*>) {
+        log("Disabling Thanos effect...")
+
+        XposedBridge.hookAllMethods(
+            chatUIActivityClass,
+            "supportsThanosEffect",
+            XC_MethodReplacement.returnConstant(false)
+        )
+        XposedBridge.hookAllMethods(
+            thanosEffectClass,
+            "supports",
+            XC_MethodReplacement.returnConstant(false)
+        )
+    }
 }

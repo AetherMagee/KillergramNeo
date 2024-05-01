@@ -37,6 +37,7 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitP
         val messageObjectClass = XposedHelpers.findClassIfExists("org.telegram.messenger.MessageObject", lpparam.classLoader)
         val launchActivityClass = XposedHelpers.findClassIfExists("org.telegram.ui.LaunchActivity", lpparam.classLoader)
         val photoViewerClass = XposedHelpers.findClassIfExists("org.telegram.ui.PhotoViewer", lpparam.classLoader)
+        val thanosEffectClass = XposedHelpers.findClassIfExists("org.telegram.ui.Components.ThanosEffect", lpparam.classLoader) // Yes, there is a separate class for that
 
         // Local Premium
         if (prefs.getBoolean("localpremium", false)) {
