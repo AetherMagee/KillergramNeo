@@ -69,8 +69,14 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitP
             hooks.killAutoAudio(launchActivityClass, photoViewerClass)
         }
 
+        // Message deletion
         if (prefs.getBoolean("deleted", false)) {
             hooks.keepDeletedMessages(messagesStorageClass, messageControllerClass)
+        }
+
+        // Thanos effect
+        if (prefs.getBoolean("thanos", false)) {
+            hooks.disableThanosEffect(chatUIActivityClass, thanosEffectClass)
         }
     }
 
@@ -105,11 +111,9 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitP
                             "drawable",
                             field.name.replace("_solar", ""),
                             moduleResources!!.fwd(resourceIdSelf))
-//                        log("SUCCESS: ${field.name}", "DRAWABLE")
                         successfulReplacements++
                     }
                 } catch (e: Exception) {
-//                    log("FAIL: ${field.name}", "DRAWABLE")
                     continue
                 }
             }
