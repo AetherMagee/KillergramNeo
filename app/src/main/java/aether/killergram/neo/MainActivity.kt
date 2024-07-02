@@ -17,6 +17,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -107,7 +110,7 @@ fun NotEnabledWarning() {
 @SuppressLint("WorldReadableFiles")
 @Composable
 fun RestartReminder() {
-    // Copied from below just to check
+    // Copied from below just to check if the module is active or not
     val context = LocalContext.current
     val prefs = try {
         @Suppress("DEPRECATION")
@@ -120,11 +123,17 @@ fun RestartReminder() {
         .padding(16.dp)
         .background(MaterialTheme.colorScheme.secondaryContainer, shape = RoundedCornerShape(20.dp)),
     ) {
-        Box(modifier = Modifier.padding(10.dp)) {
+        Row(modifier = Modifier.padding(10.dp)) {
+            Icon(
+                imageVector = Icons.Filled.Info,
+                contentDescription = "Tip",
+                modifier = Modifier.align(Alignment.CenterVertically).padding(horizontal = 12.dp),
+                tint = MaterialTheme.colorScheme.onSurface
+            )
             Text(
-                text = "Don't forget to restart your target app(s) after making changes!",
+                text = "Don't forget to restart your target app after making changes!",
                 fontSize = 20.sp,
-                textAlign = TextAlign.Center,
+                textAlign = TextAlign.Left,
                 overflow = TextOverflow.Ellipsis,
                 color = MaterialTheme.colorScheme.onSurface
             )
