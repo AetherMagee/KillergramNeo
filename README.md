@@ -21,9 +21,12 @@ In theory: Any client that is a fork of original [Telegram](https://github.com/D
 
 Has been tested on:
 * **Telegram** (org.telegram.messenger)
-* **exteraGram** (com.exteragram.messenger)
-* **Cherrygram** (uz.unnarsx.cherrygram)
-* **Octogram** (it.octogram.android)
+* **exteraGram** (com.exteragram.messenger)*
+* **Cherrygram** (uz.unnarsx.cherrygram)*
+* **Octogram** (it.octogram.android)*
+
+\* - It is strongly advised to NOT use this module on a fork of the Telegram client. If the module causes an error, a nonsensical crash report gets sent to the app's developer with no information about the module whatsoever. That means that 1) you may have unexpected behaviour while using the app, and 2) the devs won't be able to help you. Save all of us some time.
+
 
 **Note:** The module doesn't and and will NOT work on Telegram X and it's forks.
 
