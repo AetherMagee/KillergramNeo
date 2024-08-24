@@ -1,5 +1,5 @@
 # Killergram Neo
-A successor to [Killergram](https://github.com/shatyuka/Killergram) by shatyuka.
+A successor to [Killergram](https://web.archive.org/web/20240320064655/https://github.com/shatyuka/Killergram) by shatyuka.
 
 An Xposed module aimed to enhance Telegram and it's forks without needing to modify the original app.
 
