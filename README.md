@@ -1,20 +1,22 @@
 # Killergram Neo
 A successor to [Killergram](https://web.archive.org/web/20240320064655/https://github.com/shatyuka/Killergram) by shatyuka.
 
-An Xposed module aimed to enhance Telegram and it's forks without needing to modify the original app.
+An Xposed module aimed to enhance Telegram without needing to modify the original app.
 
 ## Features
 * Replace in-app icons with the Solar pack by [@Design480](https://t.me/Design480)
-* Hide stories
+* Hide stories*
 * Disable "Thanos" deletion effect
 * Disable audio autoplay on volume button press
-* Remove sponsored messages*
-* Allow message forwarding from anywhere*
-* Override account limit*
-* Force local 'Premium'* (for experiments only, doesn't do anything for server-side features)
-* Force keep deleted messages* (extremely buggy, not supposed to be used like AyuGram or others)
+* Remove sponsored messages**
+* Allow message forwarding from anywhere**
+* Override account limit**
+* Force local 'Premium'** (for experiments only, doesn't do anything for server-side features)
+* Force keep deleted messages** (extremely buggy, not supposed to be used like AyuGram or others)
 
-\* - Potentially breaking Telegram's ToS, be careful! 
+\* - Currently broken.
+
+\** - Potentially breaking Telegram's ToS, be careful!
 
 ## Supported clients
 In theory: Any client that is a fork of original [Telegram](https://github.com/DrKLO/Telegram) app.
