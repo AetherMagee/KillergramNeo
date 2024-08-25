@@ -27,8 +27,13 @@ Has been tested on:
 * **Cherrygram** (uz.unnarsx.cherrygram)*
 * **Octogram** (it.octogram.android)*
 
-\* - It is strongly advised to NOT use this module on a fork of the Telegram client. If the module causes an error, a nonsensical crash report gets sent to the app's developer with no information about the module whatsoever. That means that 1) you may have unexpected behaviour while using the app, and 2) the devs won't be able to help you. Save all of us some time.
-
+\* - It is strongly advised to NOT use this module on a fork of the Telegram client.
+If the module causes an error, a nonsensical crash report gets sent to the app's developer with no information about the module whatsoever.
+That means that 1) you may have unexpected behaviour while using the app, and 2) the devs won't be able to help you.
+Save all of us some time.
+That's actually the reason why the module **does not work** on Nekogram -
+the devs have implemented obfuscation to prevent blatant injection like this.
+If you still want to inject something into Neko, check out [Re:Telegram](https://github.com/Sakion-Team/Re-Telegram)
 
 **Note:** The module doesn't and and will NOT work on Telegram X and it's forks.
 
