@@ -1,35 +1,43 @@
 package aether.killergram.neo
 
+import aether.killergram.neo.ui.tabs.FeaturesTab
+import aether.killergram.neo.ui.tabs.SettingsTab
 import aether.killergram.neo.ui.theme.KillergramNeoTheme
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Switch
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -37,47 +45,70 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+
+data class BottomNavigationItem(
+    val title: String,
+    val selectedIcon: ImageVector,
+    val unselectedIcon: ImageVector,
+    val route: String
+)
+
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             KillergramNeoTheme {
-                LazyColumn {
-                    item {
-                        RestartReminder()
-                    }
-                    item {
-                        SwitchScreen(
-                            title = "Module settings",
-                            switches = listOf(
-                                "Debug logging" to "debug"
-                            )
-                        )
-                    }
-                    item {
-                        SwitchScreen(title = "Visuals", switches = listOf(
-                            "Inject Solar icons" to "solar",
-                            "Hide Stories" to "stories",
-                            "Disable \"Thanos\" deletion effect" to "thanos"
-                        ))
-                    }
-                    item {
-                        SwitchScreen(title = "Premium-related", switches = listOf(
-                            "Remove sponsored messages" to "sponsored",
-                            "Allow forwarding from anywhere" to "forward",
-                            "Override local account limit" to "accountlimit"
-                        ))
-                    }
-                    item {
-                        SwitchScreen(title = "Miscellaneous", switches = listOf(
-                            "Disable audio playback on volume button press" to "volume"
-                        ))
-                    }
-                    item {
-                        SwitchScreen(title = "Testing", switches = listOf(
-                            "Force local Premium" to "localpremium",
-                            "Keep ALL deleted messages" to "deleted"
-                        ))
+                val items = listOf(
+                    BottomNavigationItem(
+                        title = "Features",
+                        selectedIcon = Icons.Filled.Home,
+                        unselectedIcon = Icons.Outlined.Home,
+                        route = "features"
+                    ),
+                    BottomNavigationItem(
+                        title = "Settings",
+                        selectedIcon = Icons.Filled.Settings,
+                        unselectedIcon = Icons.Outlined.Settings,
+                        route = "settings"
+                    )
+                )
+
+                var selectedItemIndex by remember { mutableIntStateOf(0) }
+
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    Scaffold(
+                        bottomBar = {
+                            NavigationBar {
+                                items.forEachIndexed { index, item ->
+                                    NavigationBarItem(
+                                        selected = index == selectedItemIndex,
+                                        onClick = {
+                                            selectedItemIndex = index
+                                        },
+                                        label = {
+                                            Text(text = item.title)
+                                        },
+                                        icon = {
+                                            Icon(
+                                                imageVector = if (index == selectedItemIndex) item.selectedIcon else item.unselectedIcon,
+                                                contentDescription = item.title
+                                            )
+                                        },
+                                    )
+                                }
+                            }
+                        }
+                    ) {
+                        Box(modifier = Modifier.padding(it)) {
+                            when (selectedItemIndex) {
+                                0 -> FeaturesTab()
+                                1 -> SettingsTab()
+                            }
+                        }
                     }
                 }
             }
@@ -127,7 +158,9 @@ fun RestartReminder() {
             Icon(
                 imageVector = Icons.Filled.Info,
                 contentDescription = "Tip",
-                modifier = Modifier.align(Alignment.CenterVertically).padding(horizontal = 12.dp),
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .padding(horizontal = 12.dp),
                 tint = MaterialTheme.colorScheme.onSurface
             )
             Text(
@@ -141,76 +174,3 @@ fun RestartReminder() {
     }
 }
 
-@SuppressLint("WorldReadableFiles")
-@Composable
-fun SwitchScreen(title: String, switches: List<Pair<String, String>>) {
-    val context = LocalContext.current
-    val prefs = try {
-        @Suppress("DEPRECATION")
-        context.getSharedPreferences("function_switches", Context.MODE_WORLD_READABLE)
-    } catch (e: SecurityException) {
-        if (title == "Module settings") {
-            NotEnabledWarning()
-        }
-        return
-    }
-
-    val switchStates = switches.map { switch ->
-        remember { mutableStateOf(prefs.getBoolean(switch.second, false)) }
-    }
-
-    Box(modifier = Modifier
-        .padding(16.dp)
-        .background(MaterialTheme.colorScheme.secondaryContainer, shape = RoundedCornerShape(20.dp)),
-        ) {
-            // Payload
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                Column {
-                    Text(
-                        text = title,
-                        fontSize = 24.sp,
-                        modifier = Modifier
-                            .padding(8.dp, bottom = 10.dp)
-                            .align(alignment = Alignment.CenterHorizontally),
-                        overflow = TextOverflow.Ellipsis,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-
-                    switches.zip(switchStates).forEach { (switch, state) ->
-                        SwitchComposable(switch = switch, state = state, prefs = prefs)
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun SwitchComposable(switch: Pair<String, String>, state: MutableState<Boolean>, prefs: SharedPreferences) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = switch.first,
-            fontSize = 18.sp,
-            modifier = Modifier
-                .weight(1f)
-                .padding(end = 8.dp),
-            overflow = TextOverflow.Ellipsis,
-            color = MaterialTheme.colorScheme.onSurface)
-        Switch(
-            checked = state.value,
-            onCheckedChange = { newValue ->
-                state.value = newValue
-                prefs.edit().putBoolean(switch.second, newValue).commit()
-            }
-        )
-    }
-}
