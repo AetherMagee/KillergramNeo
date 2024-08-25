@@ -1,5 +1,7 @@
 package aether.killergram.neo
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.util.Log
 import de.robv.android.xposed.XSharedPreferences
 import de.robv.android.xposed.XposedBridge
@@ -36,5 +38,16 @@ fun log(message: String, level: String = "") {
     } else if (level != "DEBUG") {
         XposedBridge.log("$tag-[$level] $message")
         Log.i(tag, "[$level] $message")
+    }
+}
+
+@Suppress("DEPRECATION")
+@SuppressLint("WorldReadableFiles")
+fun isLsposedAvailable(context: Context): Boolean {
+    try {
+        context.getSharedPreferences("function_switches", Context.MODE_WORLD_READABLE)
+        return true
+    } catch (e: SecurityException) {
+        return false
     }
 }

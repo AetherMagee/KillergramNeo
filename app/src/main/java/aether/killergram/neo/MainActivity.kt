@@ -3,8 +3,6 @@ package aether.killergram.neo
 import aether.killergram.neo.ui.tabs.FeaturesTab
 import aether.killergram.neo.ui.tabs.SettingsTab
 import aether.killergram.neo.ui.theme.KillergramNeoTheme
-import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -101,14 +99,5 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Suppress("DEPRECATION")
-@SuppressLint("WorldReadableFiles")
-fun isLsposedAvailable(context: Context): Boolean {
-    try {
-        context.getSharedPreferences("function_switches", Context.MODE_WORLD_READABLE)
-        return true
-    } catch (e: SecurityException) {
-        return false
-    }
-}
+
 
