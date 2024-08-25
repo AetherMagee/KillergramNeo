@@ -22,6 +22,8 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -38,10 +40,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -141,36 +140,39 @@ fun NotEnabledWarning() {
 @SuppressLint("WorldReadableFiles")
 @Composable
 fun RestartReminder() {
-    // Copied from below just to check if the module is active or not
-    val context = LocalContext.current
-    val prefs = try {
-        @Suppress("DEPRECATION")
-        context.getSharedPreferences("function_switches", Context.MODE_WORLD_READABLE)
-    } catch (e: SecurityException) {
-        return
-    }
-    
-    Box(modifier = Modifier
-        .padding(16.dp)
-        .background(MaterialTheme.colorScheme.secondaryContainer, shape = RoundedCornerShape(20.dp)),
+    ElevatedCard(
+        onClick = { },
+        colors = CardDefaults.elevatedCardColors(containerColor = MaterialTheme.colorScheme.primary),
+        elevation = CardDefaults.cardElevation(10.dp),
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)
     ) {
-        Row(modifier = Modifier.padding(10.dp)) {
+        Row(
+            modifier = Modifier.padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Icon(
                 imageVector = Icons.Filled.Info,
-                contentDescription = "Tip",
-                modifier = Modifier
-                    .align(Alignment.CenterVertically)
-                    .padding(horizontal = 12.dp),
-                tint = MaterialTheme.colorScheme.onSurface
+                contentDescription = "Tip"
             )
             Text(
                 text = "Don't forget to restart your target app after making changes!",
-                fontSize = 20.sp,
-                textAlign = TextAlign.Left,
-                overflow = TextOverflow.Ellipsis,
-                color = MaterialTheme.colorScheme.onSurface
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier
+                    .weight(2f)
+                    .padding(start = 16.dp)
             )
         }
+    }
+}
+
+@Suppress("DEPRECATION")
+@SuppressLint("WorldReadableFiles")
+fun isLsposedAvailable(context: Context): Boolean {
+    try {
+        context.getSharedPreferences("function_switches", Context.MODE_WORLD_READABLE)
+        return true
+    } catch (e: SecurityException) {
+        return false
     }
 }
 

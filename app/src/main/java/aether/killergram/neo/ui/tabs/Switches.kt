@@ -1,5 +1,6 @@
 package aether.killergram.neo.ui.tabs
 
+import aether.killergram.neo.isLsposedAvailable
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
@@ -21,14 +22,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 
 @SuppressLint("WorldReadableFiles")
 @Composable
 fun SwitchGroup(title: String, switches: List<Pair<String, String>>, anySwitchToggled: MutableState<Boolean>? = null) {
     val context = LocalContext.current
+    if (!isLsposedAvailable(context)) {
+        return
+    }
     val prefs = context.getSharedPreferences("function_switches", Context.MODE_WORLD_READABLE)
 
     val switchStates = switches.map { switch ->
@@ -37,7 +39,7 @@ fun SwitchGroup(title: String, switches: List<Pair<String, String>>, anySwitchTo
 
     Box(modifier = Modifier
         .padding(16.dp)
-        .background(MaterialTheme.colorScheme.secondaryContainer, shape = RoundedCornerShape(20.dp)),
+        .background(MaterialTheme.colorScheme.surfaceContainerHigh, shape = RoundedCornerShape(20.dp)),
     ) {
         // Payload
         Column(
@@ -50,12 +52,10 @@ fun SwitchGroup(title: String, switches: List<Pair<String, String>>, anySwitchTo
             Column {
                 Text(
                     text = title,
-                    fontSize = 24.sp,
                     modifier = Modifier
                         .padding(8.dp, bottom = 10.dp)
                         .align(alignment = Alignment.CenterHorizontally),
-                    overflow = TextOverflow.Ellipsis,
-                    color = MaterialTheme.colorScheme.onSurface
+                    style = MaterialTheme.typography.titleLarge
                 )
 
                 switches.zip(switchStates).forEach { (switch, state) ->
@@ -75,12 +75,10 @@ fun SwitchComposable(switch: Pair<String, String>, state: MutableState<Boolean>,
     ) {
         Text(
             text = switch.first,
-            fontSize = 18.sp,
             modifier = Modifier
                 .weight(1f)
                 .padding(end = 8.dp),
-            overflow = TextOverflow.Ellipsis,
-            color = MaterialTheme.colorScheme.onSurface)
+            style = MaterialTheme.typography.bodyLarge)
         Switch(
             checked = state.value,
             onCheckedChange = { newValue ->
