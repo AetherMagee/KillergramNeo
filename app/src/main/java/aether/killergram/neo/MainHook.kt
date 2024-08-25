@@ -5,7 +5,6 @@ import de.robv.android.xposed.IXposedHookInitPackageResources
 import de.robv.android.xposed.IXposedHookLoadPackage
 import de.robv.android.xposed.IXposedHookZygoteInit
 import de.robv.android.xposed.IXposedHookZygoteInit.StartupParam
-import de.robv.android.xposed.XposedHelpers
 import de.robv.android.xposed.callbacks.XC_InitPackageResources
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 
@@ -27,56 +26,23 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitP
         }
 
         log("Injecting for ${lpparam.packageName}", "DEBUG")
-        val hooks = Hooks()
+        val hooks = Hooks(lpparam)
 
-        val userConfigClass = XposedHelpers.findClassIfExists("org.telegram.messenger.UserConfig", lpparam.classLoader)
-        val messageControllerClass = XposedHelpers.findClassIfExists("org.telegram.messenger.MessagesController", lpparam.classLoader)
-        val messagesStorageClass = XposedHelpers.findClassIfExists("org.telegram.messenger.MessagesStorage", lpparam.classLoader)
-        val chatUIActivityClass = XposedHelpers.findClassIfExists("org.telegram.ui.ChatActivity", lpparam.classLoader)
-        val storiesControllerClass = XposedHelpers.findClassIfExists("org.telegram.ui.Stories.StoriesController", lpparam.classLoader)
-        val messageObjectClass = XposedHelpers.findClassIfExists("org.telegram.messenger.MessageObject", lpparam.classLoader)
-        val launchActivityClass = XposedHelpers.findClassIfExists("org.telegram.ui.LaunchActivity", lpparam.classLoader)
-        val photoViewerClass = XposedHelpers.findClassIfExists("org.telegram.ui.PhotoViewer", lpparam.classLoader)
-        val thanosEffectClass = XposedHelpers.findClassIfExists("org.telegram.ui.Components.ThanosEffect", lpparam.classLoader) // Yes, there is a separate class for that
+        val hooksMap = mapOf(
+            "localpremium" to { hooks.localPremium() },
+            "sponsored" to { hooks.killSponsoredMessages() },
+            "forward" to { hooks.forceAllowForwards() },
+            "accountlimit" to { hooks.overrideAccountCount() },
+            "stories" to { hooks.killStories() },
+            "volume" to { hooks.killAutoAudio() },
+            "deleted" to { hooks.keepDeletedMessages() },
+            "thanos" to { hooks.disableThanosEffect() }
+        )
 
-        // Local Premium
-        if (prefs.getBoolean("localpremium", false)) {
-            hooks.localPremium(userConfigClass)
-        }
-
-        // Sponsored messages
-        if (prefs.getBoolean("sponsored", false)) {
-            hooks.killSponsoredMessages(messageControllerClass, chatUIActivityClass)
-        }
-
-        // Forwarding
-        if (prefs.getBoolean("forward", false)) {
-            hooks.forceAllowForwards(messageControllerClass, messageObjectClass, chatUIActivityClass)
-        }
-
-        // Account limit
-        if (prefs.getBoolean("accountlimit", false)) {
-            hooks.overrideAccountCount(userConfigClass)
-        }
-
-        // Hide stories
-        if (prefs.getBoolean("stories", false)) {
-            hooks.killStories(storiesControllerClass)
-        }
-
-        // Volume button
-        if (prefs.getBoolean("volume", false)) {
-            hooks.killAutoAudio(launchActivityClass, photoViewerClass)
-        }
-
-        // Message deletion
-        if (prefs.getBoolean("deleted", false)) {
-            hooks.keepDeletedMessages(messagesStorageClass, messageControllerClass)
-        }
-
-        // Thanos effect
-        if (prefs.getBoolean("thanos", false)) {
-            hooks.disableThanosEffect(chatUIActivityClass, thanosEffectClass)
+        hooksMap.forEach { (key, action) ->
+            if (prefs.getBoolean(key, false)) {
+                action.invoke()
+            }
         }
     }
 

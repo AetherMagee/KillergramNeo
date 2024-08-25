@@ -5,11 +5,23 @@ import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XC_MethodReplacement
 import de.robv.android.xposed.XposedBridge
 import de.robv.android.xposed.XposedHelpers
+import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam
 
 
-class Hooks {
-    fun localPremium(userConfigClass: Class<*>) {
+class Hooks(private val lpparam: LoadPackageParam) {
+    private fun loadClass(className: String): Class<*>? {
+        // This function is here purely to log any failed class loads
+        val loadedClass = XposedHelpers.findClassIfExists(className, this.lpparam.classLoader)
+        if (loadedClass == null) {
+            log("Unable to load class $className from ${lpparam.packageName}", "ERROR")
+        }
+        return loadedClass
+    }
+
+    fun localPremium() {
         log("Spoofing local premium...")
+
+        val userConfigClass = loadClass("org.telegram.messenger.UserConfig") ?: return
 
         XposedBridge.hookAllMethods(
             userConfigClass,
@@ -23,8 +35,11 @@ class Hooks {
         )
     }
 
-    fun killSponsoredMessages(messagesControllerClass: Class<*>, chatUIActivityClass: Class<*>) {
+    fun killSponsoredMessages() {
         log("Killing sponsored messages...")
+
+        val messagesControllerClass = loadClass("org.telegram.messenger.MessagesController") ?: return
+        val chatUIActivityClass = loadClass("org.telegram.ui.ChatActivity") ?: return
 
         XposedBridge.hookAllMethods(
             messagesControllerClass,
@@ -38,8 +53,10 @@ class Hooks {
         )
     }
 
-    fun overrideAccountCount(userConfigClass: Class<*>) {
+    fun overrideAccountCount() {
         log("Bypassing account limit...")
+
+        val userConfigClass = loadClass("org.telegram.messenger.UserConfig") ?: return
 
         XposedBridge.hookAllMethods(
             userConfigClass,
@@ -48,8 +65,12 @@ class Hooks {
         )
     }
 
-    fun forceAllowForwards(messagesControllerClass: Class<*>, messageObject: Class<*>, chatUIActivityClass: Class<*>) {
+    fun forceAllowForwards() {
         log("Enabling forwarding anywhere...")
+
+        val messagesControllerClass = loadClass("org.telegram.messenger.MessagesController") ?: return
+        val chatUIActivityClass = loadClass("org.telegram.ui.ChatActivity") ?: return
+        val messageObjectClass = loadClass("org.telegram.messenger.MessageObject") ?: return
 
         XposedBridge.hookAllMethods(
             messagesControllerClass,
@@ -57,7 +78,7 @@ class Hooks {
             XC_MethodReplacement.returnConstant(false)
         )
         XposedBridge.hookAllMethods(
-            messageObject,
+            messageObjectClass,
             "canForwardMessage",
             XC_MethodReplacement.returnConstant(true)
         )
@@ -68,8 +89,10 @@ class Hooks {
         )
     }
 
-    fun killStories(storiesControllerClass: Class<*>) {
+    fun killStories() {
         log("Disabling stories...")
+
+        val storiesControllerClass = loadClass("org.telegram.ui.Stories.StoriesController") ?: return
 
         XposedBridge.hookAllMethods(
             storiesControllerClass,
@@ -88,8 +111,11 @@ class Hooks {
         )
     }
 
-    fun killAutoAudio(launchActivityClass: Class<*>, photoViewerClass: Class<*>) {
+    fun killAutoAudio() {
         log("Disabling auto-enable audio on vol+/-...")
+
+        val launchActivityClass = loadClass("org.telegram.ui.LaunchActivity") ?: return
+        val photoViewerClass = loadClass("org.telegram.ui.PhotoViewer") ?: return
 
         XposedBridge.hookAllMethods(
             launchActivityClass,
@@ -130,11 +156,11 @@ class Hooks {
         )
     }
 
-    // TODO: Create logic for storing messages in our module
-    // instead of forcing TG to store them
-    // Perhaps a local database?
-    fun keepDeletedMessages(messagesStorageClass: Class<*>, messagesControllerClass: Class<*>) {
+    fun keepDeletedMessages() {
         log("Forcing TG to keep deleted messages...")
+
+        val messagesControllerClass = loadClass("org.telegram.messenger.MessagesController") ?: return
+        val messagesStorageClass = loadClass("org.telegram.messenger.MessagesStorage") ?: return
 
         XposedBridge.hookAllMethods(
             messagesStorageClass,
@@ -158,8 +184,11 @@ class Hooks {
         )
     }
 
-    fun disableThanosEffect(chatUIActivityClass: Class<*>, thanosEffectClass: Class<*>) {
+    fun disableThanosEffect() {
         log("Disabling Thanos effect...")
+
+        val chatUIActivityClass = loadClass("org.telegram.ui.ChatActivity") ?: return
+        val thanosEffectClass = loadClass("org.telegram.ui.Components.ThanosEffect") ?: return
 
         XposedBridge.hookAllMethods(
             chatUIActivityClass,
