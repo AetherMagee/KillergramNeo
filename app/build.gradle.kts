@@ -11,7 +11,8 @@ android {
     defaultConfig {
         applicationId = "aether.killergram.neo"
         minSdk = 27
-        targetSdk = 35
+        //noinspection OldTargetApi
+        targetSdk = 34
         versionCode = 7
         versionName = "0.6"
 

@@ -31,8 +31,6 @@ fun StatusCard() {
     if (isLsposedAvailable(LocalContext.current)) {
         val appVer = LocalContext.current.packageManager.getPackageInfo(LocalContext.current.packageName, 0).versionName
 
-
-
         status = "Killergram Neo is active!"
         description = "Version: $appVer"
         icon = Icons.Filled.CheckCircle
