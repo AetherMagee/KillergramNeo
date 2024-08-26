@@ -5,18 +5,16 @@ An Xposed module aimed to enhance Telegram without needing to modify the origina
 
 ## Features
 * Replace in-app icons with the Solar pack by [@Design480](https://t.me/Design480)
-* Hide stories*
+* Hide stories
 * Disable "Thanos" deletion effect
 * Disable audio autoplay on volume button press
-* Remove sponsored messages**
-* Allow message forwarding from anywhere**
-* Override account limit**
-* Force local 'Premium'** (for experiments only, doesn't do anything for server-side features)
-* Force keep deleted messages** (extremely buggy, not supposed to be used like AyuGram or others)
+* Remove sponsored messages*
+* Allow message forwarding from anywhere*
+* Override account limit*
+* Force local 'Premium'* (for experiments only, doesn't do anything for server-side features)
+* Force keep deleted messages* (extremely buggy, not supposed to be used like AyuGram or others)
 
-\* - Currently broken.
-
-\** - Potentially breaking Telegram's ToS, be careful!
+\* - Potentially breaking Telegram's ToS, be careful!
 
 ## Supported clients
 In theory: Any client that is a fork of original [Telegram](https://github.com/DrKLO/Telegram) app.
@@ -31,6 +29,7 @@ Has been tested on:
 If the module causes an error, a nonsensical crash report gets sent to the app's developer with no information about the module whatsoever.
 That means that 1) you may have unexpected behaviour while using the app, and 2) the devs won't be able to help you.
 Save all of us some time.
+
 That's actually the reason why the module **does not work** on Nekogram -
 the devs have implemented obfuscation to prevent blatant injection like this.
 If you still want to inject something into Neko, check out [Re:Telegram](https://github.com/Sakion-Team/Re-Telegram)
