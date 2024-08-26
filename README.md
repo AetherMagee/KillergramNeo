@@ -6,8 +6,8 @@ An Xposed module aimed to enhance Telegram without needing to modify the origina
 ## Features
 * Replace in-app icons with the Solar pack by [@Design480](https://t.me/Design480)
 * Hide stories
-* Disable "Thanos" deletion effect
 * Disable audio autoplay on volume button press
+* Disable subscriber count rounding
 * Remove sponsored messages*
 * Allow message forwarding from anywhere*
 * Override account limit*
