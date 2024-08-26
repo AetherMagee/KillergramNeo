@@ -54,7 +54,8 @@ private fun SwitchGroupList() {
                 SwitchGroup(title = "Visuals", switches = listOf(
                     "Inject Solar icons" to "solar",
                     "Hide Stories" to "stories",
-                    "Disable \"Thanos\" deletion effect" to "thanos"
+                    "Disable \"Thanos\" deletion effect" to "thanos",
+                    "Disable sub count rounding" to "norounding"
                 ), anySwitchToggled)
             }
             item {

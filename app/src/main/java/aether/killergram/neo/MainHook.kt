@@ -8,6 +8,7 @@ import aether.killergram.neo.ui.hooks.killAutoAudio
 import aether.killergram.neo.ui.hooks.killSponsoredMessages
 import aether.killergram.neo.ui.hooks.killStories
 import aether.killergram.neo.ui.hooks.localPremium
+import aether.killergram.neo.ui.hooks.noRounding
 import aether.killergram.neo.ui.hooks.overrideAccountCount
 import android.content.res.XModuleResources
 import de.robv.android.xposed.IXposedHookInitPackageResources
@@ -45,7 +46,8 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitP
             "stories" to { hooks.killStories() },
             "volume" to { hooks.killAutoAudio() },
             "deleted" to { hooks.keepDeletedMessages() },
-            "thanos" to { hooks.disableThanosEffect() }
+            "thanos" to { hooks.disableThanosEffect() },
+            "norounding" to { hooks.noRounding() }
         )
 
         hooksMap.forEach { (key, action) ->
