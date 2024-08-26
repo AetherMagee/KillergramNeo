@@ -1,7 +1,6 @@
 package aether.killergram.neo
 
 import aether.killergram.neo.ui.hooks.Hooks
-import aether.killergram.neo.ui.hooks.disableThanosEffect
 import aether.killergram.neo.ui.hooks.forceAllowForwards
 import aether.killergram.neo.ui.hooks.keepDeletedMessages
 import aether.killergram.neo.ui.hooks.killAutoAudio
@@ -46,7 +45,6 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitP
             "stories" to { hooks.killStories() },
             "volume" to { hooks.killAutoAudio() },
             "deleted" to { hooks.keepDeletedMessages() },
-            "thanos" to { hooks.disableThanosEffect() },
             "norounding" to { hooks.noRounding() }
         )
 
