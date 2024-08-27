@@ -21,7 +21,7 @@ private fun SwitchGroupList() {
             SwitchGroup(
                 title = "Module settings",
                 switches = listOf(
-                    "Debug logging" to "debug"
+                    Triple("Debug logging", "debug", "Enable additional logging")
                 )
             )
         }

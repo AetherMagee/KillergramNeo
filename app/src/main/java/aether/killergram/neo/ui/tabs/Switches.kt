@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,21 +13,30 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 
 @SuppressLint("WorldReadableFiles")
 @Composable
-fun SwitchGroup(title: String, switches: List<Pair<String, String>>, anySwitchToggled: MutableState<Boolean>? = null) {
+fun SwitchGroup(
+    title: String,
+    switches: List<Triple<String, String, String>>,
+    anySwitchToggled: MutableState<Boolean>? = null
+) {
     val context = LocalContext.current
     if (!isLsposedAvailable(context)) {
         return
@@ -39,7 +49,10 @@ fun SwitchGroup(title: String, switches: List<Pair<String, String>>, anySwitchTo
 
     Box(modifier = Modifier
         .padding(16.dp)
-        .background(MaterialTheme.colorScheme.surfaceContainerHigh, shape = RoundedCornerShape(20.dp)),
+        .background(
+            MaterialTheme.colorScheme.surfaceContainerHigh,
+            shape = RoundedCornerShape(20.dp)
+        ),
     ) {
         // Payload
         Column(
@@ -67,9 +80,24 @@ fun SwitchGroup(title: String, switches: List<Pair<String, String>>, anySwitchTo
 }
 
 @Composable
-fun SwitchComposable(switch: Pair<String, String>, state: MutableState<Boolean>, prefs: SharedPreferences, anyState: MutableState<Boolean>?) {
+fun SwitchComposable(
+    switch: Triple<String, String, String>,
+    state: MutableState<Boolean>,
+    prefs: SharedPreferences,
+    anyState: MutableState<Boolean>?
+) {
+    var showDescription by remember { mutableStateOf(false) }
+
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onLongPress = {
+                        showDescription = true
+                    }
+                )
+            },
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -78,7 +106,8 @@ fun SwitchComposable(switch: Pair<String, String>, state: MutableState<Boolean>,
             modifier = Modifier
                 .weight(1f)
                 .padding(end = 8.dp),
-            style = MaterialTheme.typography.bodyLarge)
+            style = MaterialTheme.typography.bodyLarge
+        )
         Switch(
             checked = state.value,
             onCheckedChange = { newValue ->
@@ -90,4 +119,26 @@ fun SwitchComposable(switch: Pair<String, String>, state: MutableState<Boolean>,
             }
         )
     }
+
+    if (showDescription) {
+        DescriptionPopup(
+            description = switch.third,
+            onDismiss = { showDescription = false }
+        )
+    }
+}
+
+
+@Composable
+fun DescriptionPopup(description: String, onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Description") },
+        text = { Text(description) },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text("OK")
+            }
+        }
+    )
 }
