@@ -122,6 +122,7 @@ fun SwitchComposable(
 
     if (showDescription) {
         DescriptionPopup(
+            title = switch.first,
             description = switch.third,
             onDismiss = { showDescription = false }
         )
@@ -130,10 +131,10 @@ fun SwitchComposable(
 
 
 @Composable
-fun DescriptionPopup(description: String, onDismiss: () -> Unit) {
+fun DescriptionPopup(title: String, description: String, onDismiss: () -> Unit) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Description") },
+        title = { Text(title) },
         text = { Text(description) },
         confirmButton = {
             TextButton(onClick = onDismiss) {
