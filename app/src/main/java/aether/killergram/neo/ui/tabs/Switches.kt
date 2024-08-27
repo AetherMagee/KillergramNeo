@@ -47,14 +47,14 @@ fun SwitchGroup(
         remember { mutableStateOf(prefs.getBoolean(switch.second, false)) }
     }
 
-    Box(modifier = Modifier
-        .padding(16.dp)
-        .background(
-            MaterialTheme.colorScheme.surfaceContainerHigh,
-            shape = RoundedCornerShape(20.dp)
-        ),
+    Box(
+        modifier = Modifier
+            .padding(16.dp)
+            .background(
+                MaterialTheme.colorScheme.secondaryContainer,
+                shape = RoundedCornerShape(20.dp)
+            ),
     ) {
-        // Payload
         Column(
             modifier = Modifier
                 .fillMaxWidth()
