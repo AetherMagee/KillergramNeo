@@ -6,6 +6,7 @@ object PreferenceKeys {
     const val DEBUG_LOGGING = "debug"
     const val SOLAR_ICONS = "solar"
     const val HIDE_STORIES = "stories"
+    const val SHOW_SECONDS = "seconds"
     const val HIDE_CHANNEL_BOTTOM_BAR = "hidechannelbar"
     const val DISABLE_ROUNDING = "norounding"
     const val REMOVE_SPONSORED = "sponsored"

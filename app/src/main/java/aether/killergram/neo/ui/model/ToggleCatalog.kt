@@ -18,6 +18,11 @@ object ToggleCatalog {
                     description = "Attempts to hide all stories from the app."
                 ),
                 ModuleToggle(
+                    title = "Show seconds in timestamps",
+                    key = PreferenceKeys.SHOW_SECONDS,
+                    description = "Displays time as HH:mm:ss instead of HH:mm across chats and posts."
+                ),
+                ModuleToggle(
                     title = "Hide channel action bar",
                     key = PreferenceKeys.HIDE_CHANNEL_BOTTOM_BAR,
                     description = "Hides the bottom channel action bar (mute/discussion/gifts/join)."

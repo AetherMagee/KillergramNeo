@@ -13,6 +13,7 @@ import aether.killergram.neo.hooks.killStories
 import aether.killergram.neo.hooks.localPremium
 import aether.killergram.neo.hooks.noRounding
 import aether.killergram.neo.hooks.overrideAccountCount
+import aether.killergram.neo.hooks.showTimestampSeconds
 import android.content.res.XModuleResources
 import de.robv.android.xposed.IXposedHookInitPackageResources
 import de.robv.android.xposed.IXposedHookLoadPackage
@@ -47,6 +48,7 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitP
             PreferenceKeys.FORCE_FORWARD to { hooks.forceAllowForwards() },
             PreferenceKeys.OVERRIDE_ACCOUNT_LIMIT to { hooks.overrideAccountCount() },
             PreferenceKeys.HIDE_STORIES to { hooks.killStories() },
+            PreferenceKeys.SHOW_SECONDS to { hooks.showTimestampSeconds() },
             PreferenceKeys.HIDE_CHANNEL_BOTTOM_BAR to { hooks.hideChannelBottomBar() },
             PreferenceKeys.DISABLE_AUTO_AUDIO to { hooks.killAutoAudio() },
             PreferenceKeys.HIDE_APP_UPDATES to { hooks.hideAppUpdates() },
