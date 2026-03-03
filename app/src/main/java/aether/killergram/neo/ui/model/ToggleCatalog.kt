@@ -18,6 +18,11 @@ object ToggleCatalog {
                     description = "Attempts to hide all stories from the app."
                 ),
                 ModuleToggle(
+                    title = "Hide channel action bar",
+                    key = PreferenceKeys.HIDE_CHANNEL_BOTTOM_BAR,
+                    description = "Hides the bottom channel action bar (mute/discussion/gifts/join)."
+                ),
+                ModuleToggle(
                     title = "Disable subscriber count rounding",
                     key = PreferenceKeys.DISABLE_ROUNDING,
                     description = "Shows exact count: \"1.2K\" becomes \"1,204\"."

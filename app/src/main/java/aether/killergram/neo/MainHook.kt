@@ -4,6 +4,7 @@ import aether.killergram.neo.core.PreferenceKeys
 import aether.killergram.neo.hooks.Hooks
 import aether.killergram.neo.hooks.forceAllowForwards
 import aether.killergram.neo.hooks.forceSystemTypeface
+import aether.killergram.neo.hooks.hideChannelBottomBar
 import aether.killergram.neo.hooks.hideAppUpdates
 import aether.killergram.neo.hooks.keepDeletedMessages
 import aether.killergram.neo.hooks.killAutoAudio
@@ -46,6 +47,7 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitP
             PreferenceKeys.FORCE_FORWARD to { hooks.forceAllowForwards() },
             PreferenceKeys.OVERRIDE_ACCOUNT_LIMIT to { hooks.overrideAccountCount() },
             PreferenceKeys.HIDE_STORIES to { hooks.killStories() },
+            PreferenceKeys.HIDE_CHANNEL_BOTTOM_BAR to { hooks.hideChannelBottomBar() },
             PreferenceKeys.DISABLE_AUTO_AUDIO to { hooks.killAutoAudio() },
             PreferenceKeys.HIDE_APP_UPDATES to { hooks.hideAppUpdates() },
             PreferenceKeys.KEEP_DELETED_MESSAGES to { hooks.keepDeletedMessages() },
