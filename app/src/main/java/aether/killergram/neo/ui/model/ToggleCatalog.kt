@@ -56,6 +56,11 @@ object ToggleCatalog {
                     title = "Force system fonts",
                     key = PreferenceKeys.FORCE_SYSTEM_TYPEFACE,
                     description = "Uses your system typeface instead of Telegram defaults."
+                ),
+                ModuleToggle(
+                    title = "Hide app update prompts",
+                    key = PreferenceKeys.HIDE_APP_UPDATES,
+                    description = "Suppresses Telegram's in-app update availability, banners, and forced update screens."
                 )
             )
         ),

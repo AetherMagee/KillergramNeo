@@ -12,6 +12,7 @@ object PreferenceKeys {
     const val OVERRIDE_ACCOUNT_LIMIT = "accountlimit"
     const val DISABLE_AUTO_AUDIO = "volume"
     const val FORCE_SYSTEM_TYPEFACE = "typeface"
+    const val HIDE_APP_UPDATES = "hideupdates"
     const val FORCE_LOCAL_PREMIUM = "localpremium"
     const val KEEP_DELETED_MESSAGES = "deleted"
 }
