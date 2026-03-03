@@ -9,6 +9,7 @@ object PreferenceKeys {
     const val SHOW_SECONDS = "seconds"
     const val DEFAULT_HD_MEDIA = "defaulthdmedia"
     const val DISABLE_ATTACH_CAMERA_PREVIEW = "attachcamerablur"
+    const val HIDE_KEYBOARD_ON_SCROLL = "hidekbonscroll"
     const val HIDE_CHANNEL_BOTTOM_BAR = "hidechannelbar"
     const val DISABLE_ROUNDING = "norounding"
     const val REMOVE_SPONSORED = "sponsored"

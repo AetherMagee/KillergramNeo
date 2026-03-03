@@ -73,6 +73,11 @@ object ToggleCatalog {
                     description = "Keeps the attach-menu camera tile blurred and opens camera only when tapped."
                 ),
                 ModuleToggle(
+                    title = "Hide keyboard on chat scroll",
+                    key = PreferenceKeys.HIDE_KEYBOARD_ON_SCROLL,
+                    description = "Dismisses the keyboard when you start scrolling message history."
+                ),
+                ModuleToggle(
                     title = "Force system fonts",
                     key = PreferenceKeys.FORCE_SYSTEM_TYPEFACE,
                     description = "Uses your system typeface instead of Telegram defaults."
