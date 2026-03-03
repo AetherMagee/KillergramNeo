@@ -3,6 +3,7 @@ package aether.killergram.neo.ui.components
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,6 +15,7 @@ import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -95,28 +97,83 @@ fun ModuleStatusCard(
 }
 
 @Composable
-fun RestartReminderCard(modifier: Modifier = Modifier) {
+fun RestartReminderCard(
+    appName: String?,
+    hasRootAccess: Boolean?,
+    isApplying: Boolean,
+    statusText: String?,
+    onForceStopClick: (() -> Unit)?,
+    modifier: Modifier = Modifier
+) {
+    val cardModifier = if (onForceStopClick != null && !isApplying) {
+        modifier
+            .fillMaxWidth()
+            .clickable { onForceStopClick() }
+    } else {
+        modifier.fillMaxWidth()
+    }
+
+    val appLabel = appName ?: "your Telegram client"
+
+    val headline = when {
+        isApplying -> "Force-stopping $appLabel..."
+        onForceStopClick != null -> "Tap here to force-stop $appLabel and apply changes."
+        else -> "Restart $appLabel after changes to apply hooks."
+    }
+
+    val detail = when (hasRootAccess) {
+        true -> if (appName != null) {
+            "The app will be relaunched automatically."
+        } else {
+            "No compatible Telegram client from scope is installed."
+        }
+        false -> "Tip: grant root access to Killergram Neo to do this automatically."
+        null -> "Checking root access..."
+    }
+
     ElevatedCard(
         colors = CardDefaults.elevatedCardColors(
             containerColor = MaterialTheme.colorScheme.tertiaryContainer
         ),
-        modifier = modifier.fillMaxWidth()
+        modifier = cardModifier
     ) {
-        Row(
-            modifier = Modifier.padding(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                imageVector = Icons.Filled.Info,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onTertiaryContainer
-            )
-            Text(
-                text = "Restart the target app after changes to apply hooks.",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onTertiaryContainer
-            )
+        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                if (isApplying) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.padding(2.dp),
+                        strokeWidth = 2.dp
+                    )
+                } else {
+                    Icon(
+                        imageVector = Icons.Filled.Info,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onTertiaryContainer
+                    )
+                }
+                Column {
+                    Text(
+                        text = headline,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onTertiaryContainer
+                    )
+                    Text(
+                        text = detail,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onTertiaryContainer.copy(alpha = 0.88f)
+                    )
+                }
+            }
+            if (!statusText.isNullOrBlank()) {
+                Text(
+                    text = statusText,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onTertiaryContainer
+                )
+            }
         }
     }
 }
