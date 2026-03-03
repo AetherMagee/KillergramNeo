@@ -23,11 +23,6 @@ object ToggleCatalog {
                     description = "Displays time as HH:mm:ss instead of HH:mm across chats and posts."
                 ),
                 ModuleToggle(
-                    title = "Default media send to HD",
-                    key = PreferenceKeys.DEFAULT_HD_MEDIA,
-                    description = "Defaults photo sending to HD in the media attach menu (not send-as-file)."
-                ),
-                ModuleToggle(
                     title = "Hide channel action bar",
                     key = PreferenceKeys.HIDE_CHANNEL_BOTTOM_BAR,
                     description = "Hides the bottom channel action bar (mute/discussion/gifts/join)."
@@ -66,6 +61,16 @@ object ToggleCatalog {
                     title = "Disable audio playback on volume buttons",
                     key = PreferenceKeys.DISABLE_AUTO_AUDIO,
                     description = "Prevents Telegram from playing media when volume keys are pressed."
+                ),
+                ModuleToggle(
+                    title = "Default media send to HD",
+                    key = PreferenceKeys.DEFAULT_HD_MEDIA,
+                    description = "Defaults photo sending to HD in the media attach menu (not send-as-file)."
+                ),
+                ModuleToggle(
+                    title = "Blur attach camera tile",
+                    key = PreferenceKeys.DISABLE_ATTACH_CAMERA_PREVIEW,
+                    description = "Keeps the attach-menu camera tile blurred and opens camera only when tapped."
                 ),
                 ModuleToggle(
                     title = "Force system fonts",

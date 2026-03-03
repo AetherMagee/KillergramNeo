@@ -14,6 +14,7 @@ import aether.killergram.neo.hooks.localPremium
 import aether.killergram.neo.hooks.noRounding
 import aether.killergram.neo.hooks.overrideAccountCount
 import aether.killergram.neo.hooks.defaultHdMediaSending
+import aether.killergram.neo.hooks.disableAttachCameraPreview
 import aether.killergram.neo.hooks.showTimestampSeconds
 import android.content.res.XModuleResources
 import de.robv.android.xposed.IXposedHookInitPackageResources
@@ -51,6 +52,7 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitP
             PreferenceKeys.HIDE_STORIES to { hooks.killStories() },
             PreferenceKeys.SHOW_SECONDS to { hooks.showTimestampSeconds() },
             PreferenceKeys.DEFAULT_HD_MEDIA to { hooks.defaultHdMediaSending() },
+            PreferenceKeys.DISABLE_ATTACH_CAMERA_PREVIEW to { hooks.disableAttachCameraPreview() },
             PreferenceKeys.HIDE_CHANNEL_BOTTOM_BAR to { hooks.hideChannelBottomBar() },
             PreferenceKeys.DISABLE_AUTO_AUDIO to { hooks.killAutoAudio() },
             PreferenceKeys.HIDE_APP_UPDATES to { hooks.hideAppUpdates() },
