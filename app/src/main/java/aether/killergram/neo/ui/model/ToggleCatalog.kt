@@ -23,6 +23,11 @@ object ToggleCatalog {
                     description = "Displays time as HH:mm:ss instead of HH:mm across chats and posts."
                 ),
                 ModuleToggle(
+                    title = "Default media send to HD",
+                    key = PreferenceKeys.DEFAULT_HD_MEDIA,
+                    description = "Defaults photo sending to HD in the media attach menu (not send-as-file)."
+                ),
+                ModuleToggle(
                     title = "Hide channel action bar",
                     key = PreferenceKeys.HIDE_CHANNEL_BOTTOM_BAR,
                     description = "Hides the bottom channel action bar (mute/discussion/gifts/join)."

@@ -8,13 +8,18 @@ An Xposed module aimed to enhance Telegram without needing to modify the origina
 ## Features
 * Replace in-app icons with the Solar pack by [@Design480](https://t.me/Design480)
 * Hide stories
+* Hide channel action bar (mute/discussion/gifts/join)
+* Show seconds in timestamps (`HH:mm:ss`)
+* Default media sending to HD in attach flow (not send-as-file)
+* Force system fonts
+* Hide in-app update prompts
 * Disable audio autoplay on volume button press
 * Disable subscriber count rounding
 * Remove sponsored messages*
 * Allow message forwarding from anywhere*
 * Override account limit*
 * Force local 'Premium'* (for experiments only, doesn't do anything for server-side features)
-* Force keep deleted messages* (extremely buggy, not supposed to be used like AyuGram or others)
+* Keep all deleted messages* (extremely buggy, not supposed to be used like AyuGram or others)
 
 \* - Potentially breaking Telegram's ToS, be careful!
 
