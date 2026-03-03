@@ -28,6 +28,11 @@ object ToggleCatalog {
                     description = "Hides the bottom channel action bar (mute/discussion/gifts/join)."
                 ),
                 ModuleToggle(
+                    title = "Hide chat list create button",
+                    key = PreferenceKeys.HIDE_DIALOGS_FAB,
+                    description = "Hides floating compose/story buttons on the main chat list screen."
+                ),
+                ModuleToggle(
                     title = "Disable subscriber count rounding",
                     key = PreferenceKeys.DISABLE_ROUNDING,
                     description = "Shows exact count: \"1.2K\" becomes \"1,204\"."

@@ -6,6 +6,7 @@ import aether.killergram.neo.hooks.forceAllowForwards
 import aether.killergram.neo.hooks.forceSystemTypeface
 import aether.killergram.neo.hooks.hideChannelBottomBar
 import aether.killergram.neo.hooks.hideAppUpdates
+import aether.killergram.neo.hooks.hideDialogsFloatingButton
 import aether.killergram.neo.hooks.hideKeyboardOnScroll
 import aether.killergram.neo.hooks.keepDeletedMessages
 import aether.killergram.neo.hooks.killAutoAudio
@@ -55,6 +56,7 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitP
             PreferenceKeys.DEFAULT_HD_MEDIA to { hooks.defaultHdMediaSending() },
             PreferenceKeys.DISABLE_ATTACH_CAMERA_PREVIEW to { hooks.disableAttachCameraPreview() },
             PreferenceKeys.HIDE_KEYBOARD_ON_SCROLL to { hooks.hideKeyboardOnScroll() },
+            PreferenceKeys.HIDE_DIALOGS_FAB to { hooks.hideDialogsFloatingButton() },
             PreferenceKeys.HIDE_CHANNEL_BOTTOM_BAR to { hooks.hideChannelBottomBar() },
             PreferenceKeys.DISABLE_AUTO_AUDIO to { hooks.killAutoAudio() },
             PreferenceKeys.HIDE_APP_UPDATES to { hooks.hideAppUpdates() },
