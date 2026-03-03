@@ -1,5 +1,6 @@
 package aether.killergram.neo
 
+import aether.killergram.neo.core.PreferenceKeys
 import aether.killergram.neo.hooks.Hooks
 import aether.killergram.neo.hooks.forceAllowForwards
 import aether.killergram.neo.hooks.forceSystemTypeface
@@ -39,15 +40,15 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitP
         val hooks = Hooks(lpparam)
 
         val hooksMap = mapOf(
-            "localpremium" to { hooks.localPremium() },
-            "sponsored" to { hooks.killSponsoredMessages() },
-            "forward" to { hooks.forceAllowForwards() },
-            "accountlimit" to { hooks.overrideAccountCount() },
-            "stories" to { hooks.killStories() },
-            "volume" to { hooks.killAutoAudio() },
-            "deleted" to { hooks.keepDeletedMessages() },
-            "norounding" to { hooks.noRounding() },
-            "typeface" to { hooks.forceSystemTypeface() }
+            PreferenceKeys.FORCE_LOCAL_PREMIUM to { hooks.localPremium() },
+            PreferenceKeys.REMOVE_SPONSORED to { hooks.killSponsoredMessages() },
+            PreferenceKeys.FORCE_FORWARD to { hooks.forceAllowForwards() },
+            PreferenceKeys.OVERRIDE_ACCOUNT_LIMIT to { hooks.overrideAccountCount() },
+            PreferenceKeys.HIDE_STORIES to { hooks.killStories() },
+            PreferenceKeys.DISABLE_AUTO_AUDIO to { hooks.killAutoAudio() },
+            PreferenceKeys.KEEP_DELETED_MESSAGES to { hooks.keepDeletedMessages() },
+            PreferenceKeys.DISABLE_ROUNDING to { hooks.noRounding() },
+            PreferenceKeys.FORCE_SYSTEM_TYPEFACE to { hooks.forceSystemTypeface() }
         )
 
         hooksMap.forEach { (key, action) ->
@@ -66,7 +67,7 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitP
             return
         }
 
-        if (prefs.getBoolean("solar", false)) {
+        if (prefs.getBoolean(PreferenceKeys.SOLAR_ICONS, false)) {
             log("Injecting Solar icons...")
 
             val drawablesJavaClassSelf = R.drawable::class.java

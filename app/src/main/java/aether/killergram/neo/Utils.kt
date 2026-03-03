@@ -1,5 +1,6 @@
 package aether.killergram.neo
 
+import aether.killergram.neo.core.PreferenceKeys
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
@@ -9,7 +10,7 @@ import de.robv.android.xposed.XposedBridge
 class PreferencesUtils {
     private lateinit var preferencesInstance: XSharedPreferences
 
-    fun getPrefsInstance(prefsName: String = "function_switches"): XSharedPreferences {
+    fun getPrefsInstance(prefsName: String = PreferenceKeys.PREFS_NAME): XSharedPreferences {
         return if (!this::preferencesInstance.isInitialized) {
             val instance = XSharedPreferences("aether.killergram.neo", prefsName)
             instance.makeWorldReadable()
@@ -24,7 +25,8 @@ class PreferencesUtils {
 }
 
 fun log(message: String, level: String = "") {
-    val debugLogging = PreferencesUtils().getPrefsInstance().getBoolean("debug", false)
+    val debugLogging = PreferencesUtils().getPrefsInstance()
+        .getBoolean(PreferenceKeys.DEBUG_LOGGING, false)
     val tag = "[KG Neo]"
     if (level == "") {
         XposedBridge.log("$tag $message")
@@ -45,7 +47,7 @@ fun log(message: String, level: String = "") {
 @SuppressLint("WorldReadableFiles")
 fun isLsposedAvailable(context: Context): Boolean {
     try {
-        context.getSharedPreferences("function_switches", Context.MODE_WORLD_READABLE)
+        context.getSharedPreferences(PreferenceKeys.PREFS_NAME, Context.MODE_WORLD_READABLE)
         return true
     } catch (e: SecurityException) {
         return false
