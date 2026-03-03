@@ -56,6 +56,11 @@ object ToggleCatalog {
                     title = "Override local account limit",
                     key = PreferenceKeys.OVERRIDE_ACCOUNT_LIMIT,
                     description = "Raises in-app account limit to 999."
+                ),
+                ModuleToggle(
+                    title = "Hide paid star reactions",
+                    key = PreferenceKeys.HIDE_PAID_STAR_REACTIONS,
+                    description = "Removes paid star reactions from message bars and reaction selectors."
                 )
             )
         ),
