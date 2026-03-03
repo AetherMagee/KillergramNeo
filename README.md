@@ -9,12 +9,16 @@ An Xposed module aimed to enhance Telegram without needing to modify the origina
 * Replace in-app icons with the Solar pack by [@Design480](https://t.me/Design480)
 * Hide stories
 * Hide channel action bar (mute/discussion/gifts/join)
+* Hide chat list floating create button (compose/story)
 * Show seconds in timestamps (`HH:mm:ss`)
 * Default media sending to HD in attach flow (not send-as-file)
+* Keep attach camera tile blurred until tapped
+* Hide keyboard when scrolling chat history
 * Force system fonts
 * Hide in-app update prompts
 * Disable audio autoplay on volume button press
 * Disable subscriber count rounding
+* Hide paid star reactions (chips and selectors)
 * Remove sponsored messages*
 * Allow message forwarding from anywhere*
 * Override account limit*
