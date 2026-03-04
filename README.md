@@ -54,3 +54,19 @@ If you still want to inject something into Neko, check out [Re:Telegram.](https:
 
 ## Downloads
 Download latest release [here.](https://github.com/AetherMagee/KillergramNeo/releases/latest)
+
+## CI / Releases
+GitHub Actions is configured to:
+* Build `:app:assembleDebug` on every branch push and pull request.
+* Build a signed release APK and publish a GitHub Release when a `v*` tag is pushed.
+
+Required repository secrets for signed releases:
+* `ANDROID_KEYSTORE_BASE64` - Base64 of your `.jks` / `.keystore` file.
+* `RELEASE_STORE_PASSWORD` - Keystore password.
+* `RELEASE_KEY_ALIAS` - Key alias inside the keystore.
+* `RELEASE_KEY_PASSWORD` - Key password for that alias.
+
+PowerShell example to create `ANDROID_KEYSTORE_BASE64`:
+```powershell
+[Convert]::ToBase64String([IO.File]::ReadAllBytes("C:\path\to\your\release.keystore"))
+```
