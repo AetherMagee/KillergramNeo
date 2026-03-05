@@ -4,6 +4,7 @@ enum class ToggleIcon {
     PALETTE,
     VISIBILITY_OFF,
     TIMER,
+    EDIT,
     VERTICAL_SPLIT,
     ADD_BOX_OFF,
     PINCH,

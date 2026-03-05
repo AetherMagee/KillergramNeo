@@ -6,6 +6,7 @@ object PreferenceKeys {
     const val DEBUG_LOGGING = "debug"
     const val SOLAR_ICONS = "solar"
     const val HIDE_STORIES = "stories"
+    const val EDITED_ICON = "editedicon"
     const val SHOW_SECONDS = "seconds"
     const val DEFAULT_HD_MEDIA = "defaulthdmedia"
     const val DISABLE_ATTACH_CAMERA_PREVIEW = "attachcamerablur"

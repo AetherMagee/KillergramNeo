@@ -9,6 +9,7 @@ import aether.killergram.neo.hooks.hideAppUpdates
 import aether.killergram.neo.hooks.hideDialogsFloatingButton
 import aether.killergram.neo.hooks.hideKeyboardOnScroll
 import aether.killergram.neo.hooks.hidePaidStarReactions
+import aether.killergram.neo.hooks.replaceEditedLabelWithIcon
 import aether.killergram.neo.hooks.keepDeletedMessages
 import aether.killergram.neo.hooks.killAutoAudio
 import aether.killergram.neo.hooks.killSponsoredMessages
@@ -53,6 +54,7 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitP
             PreferenceKeys.FORCE_FORWARD to { hooks.forceAllowForwards() },
             PreferenceKeys.OVERRIDE_ACCOUNT_LIMIT to { hooks.overrideAccountCount() },
             PreferenceKeys.HIDE_STORIES to { hooks.killStories() },
+            PreferenceKeys.EDITED_ICON to { hooks.replaceEditedLabelWithIcon() },
             PreferenceKeys.SHOW_SECONDS to { hooks.showTimestampSeconds() },
             PreferenceKeys.DEFAULT_HD_MEDIA to { hooks.defaultHdMediaSending() },
             PreferenceKeys.DISABLE_ATTACH_CAMERA_PREVIEW to { hooks.disableAttachCameraPreview() },

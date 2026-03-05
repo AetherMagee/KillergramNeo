@@ -26,6 +26,12 @@ object ToggleCatalog {
                     icon = ToggleIcon.TIMER
                 ),
                 ModuleToggle(
+                    title = "Replace edited text with icon",
+                    key = PreferenceKeys.EDITED_ICON,
+                    description = "Replaces the \"edited\" label beside message timestamps with a monochrome pencil icon.",
+                    icon = ToggleIcon.EDIT
+                ),
+                ModuleToggle(
                     title = "Hide channel action bar",
                     key = PreferenceKeys.HIDE_CHANNEL_BOTTOM_BAR,
                     description = "Hides the bottom channel action bar (mute/discussion/gifts/join).",

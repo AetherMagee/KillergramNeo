@@ -28,6 +28,7 @@ import androidx.compose.material.icons.outlined.BlurOn
 import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material.icons.outlined.ColorLens
 import androidx.compose.material.icons.outlined.DoNotDisturb
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.ExpandLess
 import androidx.compose.material.icons.outlined.ExpandMore
 import androidx.compose.material.icons.outlined.Hd
@@ -219,6 +220,7 @@ private fun ToggleIcon.imageVector(): ImageVector {
         ToggleIcon.PALETTE -> Icons.Outlined.ColorLens
         ToggleIcon.VISIBILITY_OFF -> Icons.Outlined.VisibilityOff
         ToggleIcon.TIMER -> Icons.Outlined.AccessTime
+        ToggleIcon.EDIT -> Icons.Outlined.Edit
         ToggleIcon.VERTICAL_SPLIT -> Icons.Outlined.ViewDay
         ToggleIcon.ADD_BOX_OFF -> Icons.Outlined.AddCircleOutline
         ToggleIcon.PINCH -> Icons.Outlined.Tag
