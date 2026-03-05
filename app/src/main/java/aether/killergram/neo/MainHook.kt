@@ -9,6 +9,7 @@ import aether.killergram.neo.hooks.hideAppUpdates
 import aether.killergram.neo.hooks.hideDialogsFloatingButton
 import aether.killergram.neo.hooks.hideKeyboardOnScroll
 import aether.killergram.neo.hooks.hidePaidStarReactions
+import aether.killergram.neo.hooks.hidePostShareButton
 import aether.killergram.neo.hooks.replaceEditedLabelWithIcon
 import aether.killergram.neo.hooks.keepDeletedMessages
 import aether.killergram.neo.hooks.killAutoAudio
@@ -62,6 +63,7 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitP
             PreferenceKeys.HIDE_DIALOGS_FAB to { hooks.hideDialogsFloatingButton() },
             PreferenceKeys.HIDE_PAID_STAR_REACTIONS to { hooks.hidePaidStarReactions() },
             PreferenceKeys.HIDE_CHANNEL_BOTTOM_BAR to { hooks.hideChannelBottomBar() },
+            PreferenceKeys.HIDE_POST_SHARE_BUTTON to { hooks.hidePostShareButton() },
             PreferenceKeys.DISABLE_AUTO_AUDIO to { hooks.killAutoAudio() },
             PreferenceKeys.HIDE_APP_UPDATES to { hooks.hideAppUpdates() },
             PreferenceKeys.KEEP_DELETED_MESSAGES to { hooks.keepDeletedMessages() },

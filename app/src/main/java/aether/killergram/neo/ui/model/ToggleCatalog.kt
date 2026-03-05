@@ -38,6 +38,12 @@ object ToggleCatalog {
                     icon = ToggleIcon.VERTICAL_SPLIT
                 ),
                 ModuleToggle(
+                    title = "Hide post share button",
+                    key = PreferenceKeys.HIDE_POST_SHARE_BUTTON,
+                    description = "Hides the side share button on channel posts and channel reposts in group chats.",
+                    icon = ToggleIcon.FORWARD
+                ),
+                ModuleToggle(
                     title = "Hide chat list create button",
                     key = PreferenceKeys.HIDE_DIALOGS_FAB,
                     description = "Hides floating compose/story buttons on the main chat list screen.",
