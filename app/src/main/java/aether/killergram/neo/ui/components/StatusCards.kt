@@ -3,7 +3,6 @@ package aether.killergram.neo.ui.components
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,9 +10,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.ErrorOutline
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material.icons.filled.PowerSettingsNew
+import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
@@ -37,60 +39,52 @@ fun ModuleStatusCard(
     val versionName = remember(context) { context.getVersionName() }
 
     val title = if (isModuleActive) {
-        "Killergram Neo is active"
+        "Killergram Neo is running"
     } else {
-        "LSPosed access is unavailable"
+        "Module access is unavailable"
     }
 
     val description = if (isModuleActive) {
-        "Version: $versionName"
+        "Version $versionName"
     } else {
-        "Enable module access in LSPosed, then relaunch this app."
-    }
-
-    val icon = if (isModuleActive) Icons.Filled.CheckCircle else Icons.Filled.Warning
-    val containerColor = if (isModuleActive) {
-        MaterialTheme.colorScheme.primaryContainer
-    } else {
-        MaterialTheme.colorScheme.errorContainer
-    }
-
-    val contentColor = if (isModuleActive) {
-        MaterialTheme.colorScheme.onPrimaryContainer
-    } else {
-        MaterialTheme.colorScheme.onErrorContainer
+        "Enable this module in LSPosed and relaunch the app."
     }
 
     ElevatedCard(
-        colors = CardDefaults.elevatedCardColors(containerColor = containerColor),
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth(),
+        colors = CardDefaults.elevatedCardColors(
+            containerColor = if (isModuleActive) {
+                MaterialTheme.colorScheme.primaryContainer
+            } else {
+                MaterialTheme.colorScheme.errorContainer
+            }
+        )
     ) {
-        Row(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(14.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Surface(color = contentColor.copy(alpha = 0.14f), shape = CircleShape) {
-                Icon(
-                    imageVector = icon,
-                    contentDescription = null,
-                    tint = contentColor,
-                    modifier = Modifier.padding(10.dp)
-                )
-            }
-            Column {
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.titleMedium,
-                    color = contentColor
-                )
-                Text(
-                    text = description,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = contentColor.copy(alpha = 0.88f)
-                )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                Surface(
+                    color = MaterialTheme.colorScheme.surface.copy(alpha = 0.32f),
+                    shape = CircleShape
+                ) {
+                    Icon(
+                        imageVector = if (isModuleActive) Icons.Filled.AutoAwesome else Icons.Filled.ErrorOutline,
+                        contentDescription = null,
+                        modifier = Modifier.padding(9.dp)
+                    )
+                }
+
+                Column {
+                    Text(text = title, style = MaterialTheme.typography.titleMedium)
+                    Text(text = description, style = MaterialTheme.typography.bodySmall)
+                }
             }
         }
     }
@@ -105,74 +99,85 @@ fun RestartReminderCard(
     onForceStopClick: (() -> Unit)?,
     modifier: Modifier = Modifier
 ) {
-    val cardModifier = if (onForceStopClick != null && !isApplying) {
-        modifier
-            .fillMaxWidth()
-            .clickable { onForceStopClick() }
-    } else {
-        modifier.fillMaxWidth()
-    }
-
-    val appLabel = appName ?: "your Telegram client"
-
-    val headline = when {
-        isApplying -> "Force-stopping $appLabel..."
-        onForceStopClick != null -> "Tap here to force-stop $appLabel and apply changes."
-        else -> "Restart $appLabel after changes to apply hooks."
-    }
-
-    val detail = when (hasRootAccess) {
-        true -> if (appName != null) {
-            "The app will be relaunched automatically."
-        } else {
-            "No compatible Telegram client from scope is installed."
-        }
-        false -> "Tip: grant root access to Killergram Neo to do this automatically."
-        null -> "Checking root access..."
-    }
+    val appLabel = appName ?: "Telegram"
 
     ElevatedCard(
         colors = CardDefaults.elevatedCardColors(
             containerColor = MaterialTheme.colorScheme.tertiaryContainer
         ),
-        modifier = cardModifier
+        modifier = modifier.fillMaxWidth()
     ) {
-        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 if (isApplying) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.padding(2.dp),
-                        strokeWidth = 2.dp
-                    )
+                    CircularProgressIndicator(strokeWidth = 2.dp)
                 } else {
                     Icon(
                         imageVector = Icons.Filled.Info,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onTertiaryContainer
+                        contentDescription = null
                     )
                 }
                 Column {
                     Text(
-                        text = headline,
-                        style = MaterialTheme.typography.bodyMedium,
+                        text = "Restart required",
+                        style = MaterialTheme.typography.titleSmall,
                         color = MaterialTheme.colorScheme.onTertiaryContainer
                     )
                     Text(
-                        text = detail,
+                        text = "Apply your latest changes to $appLabel.",
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onTertiaryContainer.copy(alpha = 0.88f)
+                        color = MaterialTheme.colorScheme.onTertiaryContainer
                     )
                 }
             }
+
+            Text(
+                text = when (hasRootAccess) {
+                    true -> "Root access available: app can be force-stopped and relaunched automatically."
+                    false -> "No root access: restart manually in recent apps or settings."
+                    null -> "Checking root access..."
+                },
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onTertiaryContainer.copy(alpha = 0.9f)
+            )
+
+            if (onForceStopClick != null) {
+                Button(
+                    onClick = onForceStopClick,
+                    enabled = !isApplying,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.PowerSettingsNew,
+                        contentDescription = null,
+                        modifier = Modifier.padding(end = 6.dp)
+                    )
+                    Text(if (isApplying) "Applying..." else "Apply and restart")
+                }
+            }
+
             if (!statusText.isNullOrBlank()) {
-                Text(
-                    text = statusText,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onTertiaryContainer
-                )
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.CheckCircle,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onTertiaryContainer
+                    )
+                    Text(
+                        text = statusText,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onTertiaryContainer
+                    )
+                }
             }
         }
     }
@@ -186,12 +191,21 @@ fun ModuleUnavailableCard(modifier: Modifier = Modifier) {
         ),
         modifier = modifier.fillMaxWidth()
     ) {
-        Text(
-            text = "Feature toggles are hidden until LSPosed grants access to world-readable module preferences.",
-            style = MaterialTheme.typography.bodyMedium,
+        Column(
             modifier = Modifier.padding(16.dp),
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                text = "Features are hidden until module access is granted.",
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Text(
+                text = "LSPosed must allow world-readable preferences for this package.",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
     }
 }
 
