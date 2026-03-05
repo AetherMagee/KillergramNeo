@@ -11,36 +11,28 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.LifecycleResumeEffect
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen() {
     val context = LocalContext.current
-    val lifecycleOwner = LocalLifecycleOwner.current
     var isModuleActive by remember(context) { mutableStateOf(isLsposedAvailable(context)) }
     val tabs = TopLevelDestination.entries
-    var selectedTab by remember { mutableStateOf(TopLevelDestination.FEATURES) }
+    var selectedTabIndex by rememberSaveable { mutableIntStateOf(0) }
+    val selectedTab = tabs[selectedTabIndex]
 
-    DisposableEffect(lifecycleOwner, context) {
-        val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_RESUME) {
-                isModuleActive = isLsposedAvailable(context)
-            }
-        }
-        lifecycleOwner.lifecycle.addObserver(observer)
-        onDispose {
-            lifecycleOwner.lifecycle.removeObserver(observer)
-        }
+    LifecycleResumeEffect(context) {
+        isModuleActive = isLsposedAvailable(context)
+        onPauseOrDispose { }
     }
 
     Scaffold(
@@ -52,10 +44,10 @@ fun MainScreen() {
         bottomBar = {
             NavigationBar {
                 tabs.forEach { tab ->
-                    val selected = tab == selectedTab
+                    val selected = tab.ordinal == selectedTabIndex
                     NavigationBarItem(
                         selected = selected,
-                        onClick = { selectedTab = tab },
+                        onClick = { selectedTabIndex = tab.ordinal },
                         icon = {
                             Icon(
                                 imageVector = if (selected) tab.selectedIcon else tab.unselectedIcon,

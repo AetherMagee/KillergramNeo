@@ -18,7 +18,7 @@ object TargetApps {
 
         return scopePackages.mapNotNull { packageName ->
             val appInfo = packageManager.findApplicationInfo(packageName) ?: return@mapNotNull null
-            val label = packageManager.getApplicationLabel(appInfo)?.toString().orEmpty()
+            val label = packageManager.getApplicationLabel(appInfo).toString()
             TargetApp(
                 packageName = packageName,
                 label = if (label.isBlank()) packageName else label

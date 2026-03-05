@@ -49,11 +49,57 @@ private fun hookListenerOnScrollStateChanged(listenerClass: Class<*>, androidUti
                     return
                 }
 
+                closeActivePicker(param.thisObject)
+
                 val recyclerView = param.args.getOrNull(0) as? View ?: return
                 hideKeyboard(recyclerView, androidUtilitiesClass)
             }
         }
     )
+}
+
+private fun closeActivePicker(scrollListener: Any?) {
+    val listener = scrollListener ?: return
+    val chatActivity = findChatActivity(listener) ?: return
+    val enterView = runCatching {
+        XposedHelpers.getObjectField(chatActivity, "chatActivityEnterView")
+    }.getOrNull() ?: return
+
+    val popupShowing = runCatching {
+        XposedHelpers.callMethod(enterView, "isPopupShowing") as? Boolean
+    }.getOrDefault(false)
+    if (!popupShowing!!) {
+        return
+    }
+
+    val hidden = runCatching {
+        XposedHelpers.callMethod(enterView, "hidePopup", false)
+    }.recoverCatching {
+        XposedHelpers.callMethod(enterView, "hidePopup", false, false)
+    }.isSuccess
+
+    if (!hidden) {
+        log("Failed to hide chat popup on scroll", "DEBUG")
+    }
+}
+
+private fun findChatActivity(listener: Any): Any? {
+    val direct = runCatching {
+        XposedHelpers.getObjectField(listener, "this$0")
+    }.getOrNull()
+    if (direct?.javaClass?.name == "org.telegram.ui.ChatActivity") {
+        return direct
+    }
+
+    return runCatching {
+        listener.javaClass.declaredFields.firstNotNullOfOrNull { field ->
+            if (field.type.name != "org.telegram.ui.ChatActivity") {
+                return@firstNotNullOfOrNull null
+            }
+            field.isAccessible = true
+            field.get(listener)
+        }
+    }.getOrNull()
 }
 
 private fun hideKeyboard(view: View, androidUtilitiesClass: Class<*>?) {

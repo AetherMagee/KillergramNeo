@@ -76,7 +76,11 @@ fun ModuleToggleScreen(
                                 scope.launch {
                                     isApplyingChanges = true
                                     applyStatus = null
-                                    val target = preferredTarget!!
+                                    val target = preferredTarget ?: run {
+                                        isApplyingChanges = false
+                                        applyStatus = "No compatible Telegram client from scope is installed."
+                                        return@launch
+                                    }
 
                                     val success = RootActions.forceStopPackage(target.packageName)
                                     if (success) {
