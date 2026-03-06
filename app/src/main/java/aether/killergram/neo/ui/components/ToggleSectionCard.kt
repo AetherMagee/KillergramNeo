@@ -34,6 +34,7 @@ import androidx.compose.material.icons.outlined.ExpandLess
 import androidx.compose.material.icons.outlined.ExpandMore
 import androidx.compose.material.icons.outlined.Hd
 import androidx.compose.material.icons.outlined.KeyboardHide
+import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.PhoneDisabled
 import androidx.compose.material.icons.outlined.RestorePage
 import androidx.compose.material.icons.outlined.Science
@@ -220,6 +221,7 @@ private fun ToggleRow(
 private fun ToggleIcon.imageVector(): ImageVector {
     return when (this) {
         ToggleIcon.PALETTE -> Icons.Outlined.ColorLens
+        ToggleIcon.MENU -> Icons.Outlined.Menu
         ToggleIcon.VISIBILITY_OFF -> Icons.Outlined.VisibilityOff
         ToggleIcon.TIMER -> Icons.Outlined.AccessTime
         ToggleIcon.EDIT -> Icons.Outlined.Edit

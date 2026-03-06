@@ -1,8 +1,18 @@
 package aether.killergram.neo.ui.model
 
+import aether.killergram.neo.core.HamburgerMenuItems
 import aether.killergram.neo.core.PreferenceKeys
 
 object ToggleCatalog {
+    private val hamburgerMenuChoices = HamburgerMenuItems.all.map { item ->
+        ToggleChoiceOption(
+            value = item.value,
+            title = item.fallbackTitle,
+            description = item.description,
+            resourceNames = item.resourceNames
+        )
+    }
+
     val featureSections = listOf(
         ToggleSection(
             title = "Visuals",
@@ -60,6 +70,22 @@ object ToggleCatalog {
                     key = PreferenceKeys.HIDE_PHONE_NUMBER,
                     description = "Replaces your phone number with a placeholder in the drawer and settings.",
                     icon = ToggleIcon.PHONE_OFF
+                ),
+                ModuleToggle(
+                    title = "Customize hamburger menu buttons",
+                    key = PreferenceKeys.CUSTOMIZE_HAMBURGER_MENU,
+                    description = "Choose which entries Telegram should hide from the left hamburger menu.",
+                    icon = ToggleIcon.MENU,
+                    parameters = listOf(
+                        ToggleParameter(
+                            key = PreferenceKeys.HIDDEN_HAMBURGER_MENU_ITEMS,
+                            title = "Hidden menu buttons",
+                            description = "Names are loaded from the target app when possible so they match Telegram exactly.",
+                            type = ToggleParameterType.CHOICE,
+                            choiceOptions = hamburgerMenuChoices,
+                            allowMultiple = true
+                        )
+                    )
                 )
             )
         ),

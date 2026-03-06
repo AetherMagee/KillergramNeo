@@ -3,12 +3,15 @@ package aether.killergram.neo.ui.screens
 import aether.killergram.neo.data.ModulePrefsStore
 import aether.killergram.neo.data.RestartTargetResolver
 import aether.killergram.neo.data.RootActions
+import aether.killergram.neo.data.TargetAppStringResolver
 import aether.killergram.neo.ui.components.ModuleUnavailableCard
 import aether.killergram.neo.ui.components.RestartReminderCard
 import aether.killergram.neo.ui.components.ToggleSectionCard
 import aether.killergram.neo.ui.model.ModuleToggle
+import aether.killergram.neo.ui.model.ToggleParameter
 import aether.killergram.neo.ui.model.ToggleParameterType
 import aether.killergram.neo.ui.model.ToggleSection
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -49,6 +52,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -145,6 +149,17 @@ fun ModuleToggleScreen(
                             NumberParameterRow(
                                 parameter = parameter,
                                 store = store,
+                                onChanged = {
+                                    hasChanges = true
+                                    applyStatus = null
+                                }
+                            )
+                        }
+                        ToggleParameterType.CHOICE -> {
+                            ChoiceParameterRow(
+                                parameter = parameter,
+                                store = store,
+                                preferredTargetPackageName = preferredTarget?.packageName,
                                 onChanged = {
                                     hasChanges = true
                                     applyStatus = null
@@ -337,7 +352,7 @@ private val ToggleParameterType.label: String
 
 @Composable
 private fun NumberParameterRow(
-    parameter: aether.killergram.neo.ui.model.ToggleParameter,
+    parameter: ToggleParameter,
     store: ModulePrefsStore?,
     onChanged: () -> Unit
 ) {
@@ -399,6 +414,114 @@ private fun NumberParameterRow(
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
+            }
+        }
+    }
+}
+
+@Composable
+private fun ChoiceParameterRow(
+    parameter: ToggleParameter,
+    store: ModulePrefsStore?,
+    preferredTargetPackageName: String?,
+    onChanged: () -> Unit
+) {
+    val context = LocalContext.current
+    val initialSelection = remember(parameter.key, store) {
+        store?.getStringSet(parameter.key, parameter.defaultChoiceValues)
+            ?: parameter.defaultChoiceValues
+    }
+    var selectedValues by remember(parameter.key, store) {
+        mutableStateOf(initialSelection)
+    }
+    val resolvedOptions = remember(parameter.choiceOptions, preferredTargetPackageName, context) {
+        parameter.choiceOptions.map { option ->
+            option to TargetAppStringResolver.resolve(
+                context = context,
+                targetPackageName = preferredTargetPackageName,
+                resourceNames = option.resourceNames,
+                fallback = option.title
+            )
+        }
+    }
+
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 6.dp),
+        shape = MaterialTheme.shapes.medium,
+        color = MaterialTheme.colorScheme.surfaceContainerLow
+    ) {
+        Column(modifier = Modifier.padding(horizontal = 14.dp, vertical = 12.dp)) {
+            Text(
+                text = parameter.title,
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Text(
+                text = parameter.description,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(top = 2.dp, bottom = 8.dp)
+            )
+
+            resolvedOptions.forEach { (option, resolvedTitle) ->
+                val checked = option.value in selectedValues
+                Surface(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 2.dp)
+                        .toggleable(
+                            value = checked,
+                            role = Role.Checkbox,
+                            onValueChange = {
+                                val updatedValues = if (parameter.allowMultiple) {
+                                    if (checked) {
+                                        selectedValues - option.value
+                                    } else {
+                                        selectedValues + option.value
+                                    }
+                                } else {
+                                    if (checked) emptySet() else setOf(option.value)
+                                }
+                                selectedValues = updatedValues
+                                store?.setStringSet(parameter.key, updatedValues)
+                                onChanged()
+                            }
+                        ),
+                    shape = MaterialTheme.shapes.small,
+                    color = if (checked) {
+                        MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.7f)
+                    } else {
+                        MaterialTheme.colorScheme.surface
+                    }
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 12.dp, vertical = 10.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = resolvedTitle,
+                                style = MaterialTheme.typography.titleSmall,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                            if (option.description.isNotBlank()) {
+                                Text(
+                                    text = option.description,
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        }
+                        androidx.compose.material3.Checkbox(
+                            checked = checked,
+                            onCheckedChange = null
+                        )
+                    }
+                }
             }
         }
     }

@@ -2,6 +2,7 @@ package aether.killergram.neo.ui.model
 
 enum class ToggleIcon {
     PALETTE,
+    MENU,
     VISIBILITY_OFF,
     TIMER,
     EDIT,
@@ -37,9 +38,19 @@ data class ToggleParameter(
     val title: String,
     val description: String,
     val type: ToggleParameterType,
+    val choiceOptions: List<ToggleChoiceOption> = emptyList(),
+    val allowMultiple: Boolean = false,
+    val defaultChoiceValues: Set<String> = emptySet(),
     val minValue: Int = 0,
     val maxValue: Int = 100,
     val defaultValue: Int = 0
+)
+
+data class ToggleChoiceOption(
+    val value: String,
+    val title: String,
+    val description: String = "",
+    val resourceNames: List<String> = emptyList()
 )
 
 data class ModuleToggle(

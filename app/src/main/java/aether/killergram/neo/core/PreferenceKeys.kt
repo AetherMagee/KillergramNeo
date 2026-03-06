@@ -23,6 +23,8 @@ object PreferenceKeys {
     const val DISABLE_AUTO_AUDIO = "volume"
     const val FORCE_SYSTEM_TYPEFACE = "typeface"
     const val HIDE_APP_UPDATES = "hideupdates"
+    const val CUSTOMIZE_HAMBURGER_MENU = "customhamburgermenu"
+    const val HIDDEN_HAMBURGER_MENU_ITEMS = "hiddenhamburgermenuitems"
     const val FORCE_LOCAL_PREMIUM = "localpremium"
     const val KEEP_DELETED_MESSAGES = "deleted"
     const val UNLIMITED_RECENTS = "unlimitedrecents"
