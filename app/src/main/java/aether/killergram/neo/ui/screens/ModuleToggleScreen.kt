@@ -3,7 +3,6 @@ package aether.killergram.neo.ui.screens
 import aether.killergram.neo.data.ModulePrefsStore
 import aether.killergram.neo.data.RestartTargetResolver
 import aether.killergram.neo.data.RootActions
-import aether.killergram.neo.ui.components.ModuleStatusCard
 import aether.killergram.neo.ui.components.ModuleUnavailableCard
 import aether.killergram.neo.ui.components.RestartReminderCard
 import aether.killergram.neo.ui.components.ToggleSectionCard
@@ -195,12 +194,6 @@ fun ModuleToggleScreen(
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        item {
-            ModuleStatusCard(
-                isModuleActive = isModuleActive
-            )
-        }
-
         if (!isModuleActive || store == null) {
             item {
                 ModuleUnavailableCard()

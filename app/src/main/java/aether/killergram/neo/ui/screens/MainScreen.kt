@@ -1,35 +1,37 @@
 package aether.killergram.neo.ui.screens
 
+import aether.killergram.neo.core.PreferenceKeys
+import aether.killergram.neo.data.ModulePrefsStore
 import aether.killergram.neo.isLsposedAvailable
-import aether.killergram.neo.ui.navigation.TopLevelDestination
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.togetherWith
+import aether.killergram.neo.ui.model.ToggleCatalog
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bolt
 import androidx.compose.material.icons.filled.LinkOff
+import androidx.compose.material.icons.outlined.BugReport
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -40,6 +42,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LifecycleResumeEffect
 
@@ -48,13 +51,18 @@ import androidx.lifecycle.compose.LifecycleResumeEffect
 fun MainScreen() {
     val context = LocalContext.current
     var isModuleActive by remember(context) { mutableStateOf(isLsposedAvailable(context)) }
-    val tabs = TopLevelDestination.entries
-    var selectedTabIndex by rememberSaveable { mutableIntStateOf(0) }
-    val selectedTab = tabs[selectedTabIndex]
+    var showSettingsSheet by rememberSaveable { mutableStateOf(false) }
 
     LifecycleResumeEffect(context) {
         isModuleActive = isLsposedAvailable(context)
         onPauseOrDispose { }
+    }
+
+    if (showSettingsSheet) {
+        SettingsSheet(
+            isModuleActive = isModuleActive,
+            onDismiss = { showSettingsSheet = false }
+        )
     }
 
     Scaffold(
@@ -62,20 +70,20 @@ fun MainScreen() {
         topBar = {
             TopAppBar(
                 title = {
-                    Column {
-                        Text(
-                            text = "Killergram Neo",
-                            style = MaterialTheme.typography.labelLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                        Text(
-                            text = selectedTab.label,
-                            style = MaterialTheme.typography.titleLarge,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                    }
+                    Text(
+                        text = "Killergram Neo",
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
                 },
                 actions = {
+                    IconButton(onClick = { showSettingsSheet = true }) {
+                        Icon(
+                            imageVector = Icons.Outlined.Settings,
+                            contentDescription = "Settings"
+                        )
+                    }
+
                     val (label, icon) = if (isModuleActive) {
                         "Active" to Icons.Filled.Bolt
                     } else {
@@ -109,31 +117,6 @@ fun MainScreen() {
                     }
                 }
             )
-        },
-        bottomBar = {
-            Surface(
-                shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp),
-                tonalElevation = 6.dp,
-                shadowElevation = 6.dp,
-                modifier = Modifier.clip(RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp))
-            ) {
-                NavigationBar(containerColor = Color.Transparent) {
-                    tabs.forEach { tab ->
-                        val selected = tab.ordinal == selectedTabIndex
-                        NavigationBarItem(
-                            selected = selected,
-                            onClick = { selectedTabIndex = tab.ordinal },
-                            icon = {
-                                Icon(
-                                    imageVector = if (selected) tab.selectedIcon else tab.unselectedIcon,
-                                    contentDescription = tab.label
-                                )
-                            },
-                            label = { Text(tab.label) }
-                        )
-                    }
-                }
-            }
         }
     ) { padding ->
         Box(
@@ -150,25 +133,96 @@ fun MainScreen() {
                 )
                 .padding(padding)
         ) {
-            AnimatedContent(
-                targetState = selectedTab,
-                transitionSpec = {
-                    fadeIn(animationSpec = tween(220)) togetherWith
-                            fadeOut(animationSpec = tween(150))
-                },
-                label = "tab_content"
-            ) { destination ->
-                when (destination) {
-                    TopLevelDestination.FEATURES -> FeaturesScreen(
-                        isModuleActive = isModuleActive,
-                        modifier = Modifier.fillMaxSize()
-                    )
+            FeaturesScreen(
+                isModuleActive = isModuleActive,
+                modifier = Modifier.fillMaxSize()
+            )
+        }
+    }
+}
 
-                    TopLevelDestination.SETTINGS -> SettingsScreen(
-                        isModuleActive = isModuleActive,
-                        modifier = Modifier.fillMaxSize()
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun SettingsSheet(
+    isModuleActive: Boolean,
+    onDismiss: () -> Unit
+) {
+    val context = LocalContext.current
+    val store = remember(isModuleActive, context) {
+        if (isModuleActive) ModulePrefsStore.create(context) else null
+    }
+    val toggle = remember { ToggleCatalog.settingsSections.first().toggles.first() }
+    var checked by rememberSaveable {
+        mutableStateOf(store?.isEnabled(PreferenceKeys.DEBUG_LOGGING) ?: false)
+    }
+
+    ModalBottomSheet(onDismissRequest = onDismiss) {
+        Text(
+            text = "Module settings",
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)
+        )
+
+        val shape = RoundedCornerShape(18.dp)
+        val cardColor = if (checked) {
+            MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.75f)
+        } else {
+            MaterialTheme.colorScheme.surface
+        }
+
+        Surface(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .clip(shape)
+                .toggleable(
+                    value = checked,
+                    onValueChange = { enabled ->
+                        checked = enabled
+                        store?.setEnabled(toggle.key, enabled)
+                    },
+                    role = Role.Switch
+                ),
+            shape = shape,
+            color = cardColor
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp, vertical = 10.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                Surface(
+                    shape = RoundedCornerShape(12.dp),
+                    color = MaterialTheme.colorScheme.primaryContainer,
+                    modifier = Modifier.size(36.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.BugReport,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                        modifier = Modifier.padding(8.dp)
                     )
                 }
+
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = toggle.title,
+                        style = MaterialTheme.typography.titleSmall,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    Text(
+                        text = toggle.description,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+
+                Switch(
+                    checked = checked,
+                    onCheckedChange = null
+                )
             }
         }
     }

@@ -1,18 +1,12 @@
 package aether.killergram.neo.ui.components
 
-import android.content.Context
-import android.content.pm.PackageManager
-import android.os.Build
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.ErrorOutline
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.PowerSettingsNew
 import androidx.compose.material3.Button
@@ -21,74 +15,11 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-
-@Composable
-fun ModuleStatusCard(
-    isModuleActive: Boolean,
-    modifier: Modifier = Modifier
-) {
-    val context = LocalContext.current
-    val versionName = remember(context) { context.getVersionName() }
-
-    val title = if (isModuleActive) {
-        "Killergram Neo is running"
-    } else {
-        "Module access is unavailable"
-    }
-
-    val description = if (isModuleActive) {
-        "Version $versionName"
-    } else {
-        "Enable this module in LSPosed and relaunch the app."
-    }
-
-    ElevatedCard(
-        modifier = modifier.fillMaxWidth(),
-        colors = CardDefaults.elevatedCardColors(
-            containerColor = if (isModuleActive) {
-                MaterialTheme.colorScheme.primaryContainer
-            } else {
-                MaterialTheme.colorScheme.errorContainer
-            }
-        )
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                Surface(
-                    color = MaterialTheme.colorScheme.surface.copy(alpha = 0.32f),
-                    shape = CircleShape
-                ) {
-                    Icon(
-                        imageVector = if (isModuleActive) Icons.Filled.AutoAwesome else Icons.Filled.ErrorOutline,
-                        contentDescription = null,
-                        modifier = Modifier.padding(9.dp)
-                    )
-                }
-
-                Column {
-                    Text(text = title, style = MaterialTheme.typography.titleMedium)
-                    Text(text = description, style = MaterialTheme.typography.bodySmall)
-                }
-            }
-        }
-    }
-}
 
 @Composable
 fun RestartReminderCard(
@@ -207,18 +138,4 @@ fun ModuleUnavailableCard(modifier: Modifier = Modifier) {
             )
         }
     }
-}
-
-private fun Context.getVersionName(): String {
-    return runCatching {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            packageManager.getPackageInfo(
-                packageName,
-                PackageManager.PackageInfoFlags.of(0)
-            ).versionName
-        } else {
-            @Suppress("DEPRECATION")
-            packageManager.getPackageInfo(packageName, 0).versionName
-        }
-    }.getOrNull().orEmpty()
 }
