@@ -15,7 +15,7 @@ object ToggleCatalog {
 
     val featureSections = listOf(
         ToggleSection(
-            title = "Visuals",
+            title = "Appearance",
             toggles = listOf(
                 ModuleToggle(
                     title = "Inject Solar icons",
@@ -30,16 +30,10 @@ object ToggleCatalog {
                     icon = ToggleIcon.PALETTE
                 ),
                 ModuleToggle(
-                    title = "Hide stories",
-                    key = PreferenceKeys.HIDE_STORIES,
-                    description = "Attempts to hide all stories from the app.",
-                    icon = ToggleIcon.VISIBILITY_OFF
-                ),
-                ModuleToggle(
-                    title = "Show seconds in timestamps",
-                    key = PreferenceKeys.SHOW_SECONDS,
-                    description = "Displays time as HH:mm:ss instead of HH:mm across chats and posts.",
-                    icon = ToggleIcon.TIMER
+                    title = "Force system fonts",
+                    key = PreferenceKeys.FORCE_SYSTEM_TYPEFACE,
+                    description = "Uses your system typeface instead of Telegram defaults.",
+                    icon = ToggleIcon.FONT_DOWNLOAD
                 ),
                 ModuleToggle(
                     title = "Replace edited text with icon",
@@ -48,34 +42,33 @@ object ToggleCatalog {
                     icon = ToggleIcon.EDIT
                 ),
                 ModuleToggle(
-                    title = "Hide channel action bar",
-                    key = PreferenceKeys.HIDE_CHANNEL_BOTTOM_BAR,
-                    description = "Hides the bottom channel action bar (mute/discussion/gifts/join).",
-                    icon = ToggleIcon.VERTICAL_SPLIT
-                ),
-                ModuleToggle(
-                    title = "Hide post share button",
-                    key = PreferenceKeys.HIDE_POST_SHARE_BUTTON,
-                    description = "Hides the side share button on channel posts and channel reposts in group chats.",
-                    icon = ToggleIcon.FORWARD
-                ),
-                ModuleToggle(
-                    title = "Hide chat list create button",
-                    key = PreferenceKeys.HIDE_DIALOGS_FAB,
-                    description = "Hides floating compose/story buttons on the main chat list screen.",
-                    icon = ToggleIcon.ADD_BOX_OFF
+                    title = "Show seconds in timestamps",
+                    key = PreferenceKeys.SHOW_SECONDS,
+                    description = "Displays time as HH:mm:ss instead of HH:mm across chats and posts.",
+                    icon = ToggleIcon.TIMER
                 ),
                 ModuleToggle(
                     title = "Disable subscriber count rounding",
                     key = PreferenceKeys.DISABLE_ROUNDING,
                     description = "Shows exact count: \"1.2K\" becomes \"1,204\".",
                     icon = ToggleIcon.PINCH
+                )
+            )
+        ),
+        ToggleSection(
+            title = "Navigation",
+            toggles = listOf(
+                ModuleToggle(
+                    title = "Hide stories",
+                    key = PreferenceKeys.HIDE_STORIES,
+                    description = "Attempts to hide all stories from the app.",
+                    icon = ToggleIcon.VISIBILITY_OFF
                 ),
                 ModuleToggle(
-                    title = "Hide phone number",
-                    key = PreferenceKeys.HIDE_PHONE_NUMBER,
-                    description = "Replaces your phone number with a placeholder in the drawer and settings.",
-                    icon = ToggleIcon.PHONE_OFF
+                    title = "Hide chat list create button",
+                    key = PreferenceKeys.HIDE_DIALOGS_FAB,
+                    description = "Hides floating compose/story buttons on the main chat list screen.",
+                    icon = ToggleIcon.ADD_BOX_OFF
                 ),
                 ModuleToggle(
                     title = "Customize hamburger menu buttons",
@@ -92,47 +85,30 @@ object ToggleCatalog {
                             allowMultiple = true
                         )
                     )
-                )
-            )
-        ),
-        ToggleSection(
-            title = "Premium-related",
-            toggles = listOf(
-                ModuleToggle(
-                    title = "Remove sponsored messages",
-                    key = PreferenceKeys.REMOVE_SPONSORED,
-                    description = "Removes ads from channels.",
-                    icon = ToggleIcon.ADS_OFF
                 ),
                 ModuleToggle(
-                    title = "Allow forwarding from anywhere",
-                    key = PreferenceKeys.FORCE_FORWARD,
-                    description = "Disables protected-chat checks for forwarding.",
+                    title = "Hide channel action bar",
+                    key = PreferenceKeys.HIDE_CHANNEL_BOTTOM_BAR,
+                    description = "Hides the bottom channel action bar (mute/discussion/gifts/join).",
+                    icon = ToggleIcon.VERTICAL_SPLIT
+                ),
+                ModuleToggle(
+                    title = "Hide post share button",
+                    key = PreferenceKeys.HIDE_POST_SHARE_BUTTON,
+                    description = "Hides the side share button on channel posts and channel reposts in group chats.",
                     icon = ToggleIcon.FORWARD
                 ),
                 ModuleToggle(
-                    title = "Override local account limit",
-                    key = PreferenceKeys.OVERRIDE_ACCOUNT_LIMIT,
-                    description = "Raises in-app account limit to 999.",
-                    icon = ToggleIcon.ACCOUNT_TREE
-                ),
-                ModuleToggle(
-                    title = "Hide paid star reactions",
-                    key = PreferenceKeys.HIDE_PAID_STAR_REACTIONS,
-                    description = "Removes paid star reactions from message bars and reaction selectors.",
-                    icon = ToggleIcon.STAR_OFF
+                    title = "Hide keyboard on chat scroll",
+                    key = PreferenceKeys.HIDE_KEYBOARD_ON_SCROLL,
+                    description = "Dismisses the keyboard when you start scrolling message history.",
+                    icon = ToggleIcon.KEYBOARD_HIDE
                 )
             )
         ),
         ToggleSection(
-            title = "Miscellaneous",
+            title = "Chats & Media",
             toggles = listOf(
-                ModuleToggle(
-                    title = "Disable audio playback on volume buttons",
-                    key = PreferenceKeys.DISABLE_AUTO_AUDIO,
-                    description = "Prevents Telegram from playing media when volume keys are pressed.",
-                    icon = ToggleIcon.VOLUME_OFF
-                ),
                 ModuleToggle(
                     title = "Default media send to HD",
                     key = PreferenceKeys.DEFAULT_HD_MEDIA,
@@ -146,22 +122,10 @@ object ToggleCatalog {
                     icon = ToggleIcon.BLUR_ON
                 ),
                 ModuleToggle(
-                    title = "Hide keyboard on chat scroll",
-                    key = PreferenceKeys.HIDE_KEYBOARD_ON_SCROLL,
-                    description = "Dismisses the keyboard when you start scrolling message history.",
-                    icon = ToggleIcon.KEYBOARD_HIDE
-                ),
-                ModuleToggle(
-                    title = "Show profile user ID",
-                    key = PreferenceKeys.SHOW_USER_ID,
-                    description = "Adds a copyable User ID row to user profile screens.",
-                    icon = ToggleIcon.ACCOUNT_TREE
-                ),
-                ModuleToggle(
-                    title = "Force system fonts",
-                    key = PreferenceKeys.FORCE_SYSTEM_TYPEFACE,
-                    description = "Uses your system typeface instead of Telegram defaults.",
-                    icon = ToggleIcon.FONT_DOWNLOAD
+                    title = "Disable audio playback on volume buttons",
+                    key = PreferenceKeys.DISABLE_AUTO_AUDIO,
+                    description = "Prevents Telegram from playing media when volume keys are pressed.",
+                    icon = ToggleIcon.VOLUME_OFF
                 ),
                 ModuleToggle(
                     title = "Unlimited recent stickers & emoji",
@@ -188,17 +152,63 @@ object ToggleCatalog {
                             defaultValue = 120
                         )
                     )
+                )
+            )
+        ),
+        ToggleSection(
+            title = "Privacy & Profile",
+            toggles = listOf(
+                ModuleToggle(
+                    title = "Hide phone number",
+                    key = PreferenceKeys.HIDE_PHONE_NUMBER,
+                    description = "Replaces your phone number with a placeholder in the drawer and settings.",
+                    icon = ToggleIcon.PHONE_OFF
+                ),
+                ModuleToggle(
+                    title = "Show profile user ID",
+                    key = PreferenceKeys.SHOW_USER_ID,
+                    description = "Adds a copyable User ID row to user profile screens.",
+                    icon = ToggleIcon.ACCOUNT_TREE
+                ),
+                ModuleToggle(
+                    title = "Allow forwarding from anywhere",
+                    key = PreferenceKeys.FORCE_FORWARD,
+                    description = "Disables protected-chat checks for forwarding.",
+                    icon = ToggleIcon.FORWARD
+                )
+            )
+        ),
+        ToggleSection(
+            title = "Restrictions & Cleanup",
+            toggles = listOf(
+                ModuleToggle(
+                    title = "Remove sponsored messages",
+                    key = PreferenceKeys.REMOVE_SPONSORED,
+                    description = "Removes ads from channels.",
+                    icon = ToggleIcon.ADS_OFF
+                ),
+                ModuleToggle(
+                    title = "Hide paid star reactions",
+                    key = PreferenceKeys.HIDE_PAID_STAR_REACTIONS,
+                    description = "Removes paid star reactions from message bars and reaction selectors.",
+                    icon = ToggleIcon.STAR_OFF
                 ),
                 ModuleToggle(
                     title = "Hide app update prompts",
                     key = PreferenceKeys.HIDE_APP_UPDATES,
                     description = "Suppresses Telegram's in-app update availability, banners, and forced update screens.",
                     icon = ToggleIcon.SYSTEM_UPDATE_ALT
+                ),
+                ModuleToggle(
+                    title = "Override local account limit",
+                    key = PreferenceKeys.OVERRIDE_ACCOUNT_LIMIT,
+                    description = "Raises in-app account limit to 999.",
+                    icon = ToggleIcon.ACCOUNT_TREE
                 )
             )
         ),
         ToggleSection(
-            title = "Testing",
+            title = "Experimental",
             toggles = listOf(
                 ModuleToggle(
                     title = "Force local Premium",
