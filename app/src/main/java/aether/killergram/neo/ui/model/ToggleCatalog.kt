@@ -126,6 +126,32 @@ object ToggleCatalog {
                     icon = ToggleIcon.FONT_DOWNLOAD
                 ),
                 ModuleToggle(
+                    title = "Unlimited recent stickers & emoji",
+                    key = PreferenceKeys.UNLIMITED_RECENTS,
+                    description = "Raises the recent stickers and emoji limits (server max is 120).",
+                    icon = ToggleIcon.HISTORY,
+                    parameters = listOf(
+                        ToggleParameter(
+                            key = PreferenceKeys.RECENT_STICKERS_LIMIT,
+                            title = "Recent stickers limit",
+                            description = "Maximum number of recent stickers to keep.",
+                            type = ToggleParameterType.NUMBER,
+                            minValue = 5,
+                            maxValue = 120,
+                            defaultValue = 120
+                        ),
+                        ToggleParameter(
+                            key = PreferenceKeys.RECENT_EMOJI_LIMIT,
+                            title = "Recent emoji limit",
+                            description = "Maximum number of recent emoji to keep.",
+                            type = ToggleParameterType.NUMBER,
+                            minValue = 5,
+                            maxValue = 120,
+                            defaultValue = 120
+                        )
+                    )
+                ),
+                ModuleToggle(
                     title = "Hide app update prompts",
                     key = PreferenceKeys.HIDE_APP_UPDATES,
                     description = "Suppresses Telegram's in-app update availability, banners, and forced update screens.",

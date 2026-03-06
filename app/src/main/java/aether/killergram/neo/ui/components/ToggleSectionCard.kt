@@ -26,6 +26,7 @@ import androidx.compose.material.icons.outlined.AccountTree
 import androidx.compose.material.icons.outlined.AddCircleOutline
 import androidx.compose.material.icons.outlined.BlurOn
 import androidx.compose.material.icons.outlined.BugReport
+import androidx.compose.material.icons.outlined.History
 import androidx.compose.material.icons.outlined.ColorLens
 import androidx.compose.material.icons.outlined.DoNotDisturb
 import androidx.compose.material.icons.outlined.Edit
@@ -237,5 +238,6 @@ private fun ToggleIcon.imageVector(): ImageVector {
         ToggleIcon.LABS -> Icons.Outlined.Science
         ToggleIcon.RESTORE_PAGE -> Icons.Outlined.RestorePage
         ToggleIcon.BUG_REPORT -> Icons.Outlined.BugReport
+        ToggleIcon.HISTORY -> Icons.Outlined.History
     }
 }

@@ -18,6 +18,12 @@ class ModulePrefsStore private constructor(
         preferences.edit().putBoolean(key, enabled).apply()
     }
 
+    fun getInt(key: String, default: Int): Int = preferences.getInt(key, default)
+
+    fun setInt(key: String, value: Int) {
+        preferences.edit().putInt(key, value).apply()
+    }
+
     companion object {
         @Suppress("DEPRECATION")
         @SuppressLint("WorldReadableFiles")

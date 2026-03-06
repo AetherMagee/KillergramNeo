@@ -25,4 +25,7 @@ object PreferenceKeys {
     const val HIDE_APP_UPDATES = "hideupdates"
     const val FORCE_LOCAL_PREMIUM = "localpremium"
     const val KEEP_DELETED_MESSAGES = "deleted"
+    const val UNLIMITED_RECENTS = "unlimitedrecents"
+    const val RECENT_STICKERS_LIMIT = "recentstickerscount"
+    const val RECENT_EMOJI_LIMIT = "recentemojicount"
 }

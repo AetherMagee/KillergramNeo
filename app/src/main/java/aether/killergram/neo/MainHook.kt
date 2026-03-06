@@ -21,6 +21,7 @@ import aether.killergram.neo.hooks.noRounding
 import aether.killergram.neo.hooks.overrideAccountCount
 import aether.killergram.neo.hooks.defaultHdMediaSending
 import aether.killergram.neo.hooks.disableAttachCameraPreview
+import aether.killergram.neo.hooks.unlimitedRecents
 import aether.killergram.neo.hooks.showTimestampSeconds
 import android.content.res.XModuleResources
 import de.robv.android.xposed.IXposedHookInitPackageResources
@@ -77,6 +78,12 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitP
             if (prefs.getBoolean(key, false)) {
                 action.invoke()
             }
+        }
+
+        if (prefs.getBoolean(PreferenceKeys.UNLIMITED_RECENTS, false)) {
+            val stickersLimit = prefs.getInt(PreferenceKeys.RECENT_STICKERS_LIMIT, 120)
+            val emojiLimit = prefs.getInt(PreferenceKeys.RECENT_EMOJI_LIMIT, 120)
+            hooks.unlimitedRecents(stickersLimit, emojiLimit)
         }
     }
 

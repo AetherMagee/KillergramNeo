@@ -20,7 +20,8 @@ enum class ToggleIcon {
     SYSTEM_UPDATE_ALT,
     LABS,
     RESTORE_PAGE,
-    BUG_REPORT
+    BUG_REPORT,
+    HISTORY
 }
 
 enum class ToggleParameterType {
@@ -34,7 +35,10 @@ data class ToggleParameter(
     val key: String,
     val title: String,
     val description: String,
-    val type: ToggleParameterType
+    val type: ToggleParameterType,
+    val minValue: Int = 0,
+    val maxValue: Int = 100,
+    val defaultValue: Int = 0
 )
 
 data class ModuleToggle(
