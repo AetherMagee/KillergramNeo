@@ -45,7 +45,7 @@ private fun hookListenerOnScrollStateChanged(listenerClass: Class<*>, androidUti
         object : XC_MethodHook() {
             override fun afterHookedMethod(param: MethodHookParam) {
                 val newState = param.args.getOrNull(1) as? Int ?: return
-                if (newState == 0) { // RecyclerView.SCROLL_STATE_IDLE
+                if (newState != 1) { // Only act on SCROLL_STATE_DRAGGING (user touch)
                     return
                 }
 
