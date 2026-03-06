@@ -8,6 +8,7 @@ object PreferenceKeys {
     const val HIDE_STORIES = "stories"
     const val EDITED_ICON = "editedicon"
     const val SHOW_SECONDS = "seconds"
+    const val SHOW_USER_ID = "userid"
     const val DEFAULT_HD_MEDIA = "defaulthdmedia"
     const val DISABLE_ATTACH_CAMERA_PREVIEW = "attachcamerablur"
     const val HIDE_KEYBOARD_ON_SCROLL = "hidekbonscroll"

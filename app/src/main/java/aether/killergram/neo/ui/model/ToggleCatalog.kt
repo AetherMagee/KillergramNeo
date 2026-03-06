@@ -114,6 +114,12 @@ object ToggleCatalog {
                     icon = ToggleIcon.KEYBOARD_HIDE
                 ),
                 ModuleToggle(
+                    title = "Show profile user ID",
+                    key = PreferenceKeys.SHOW_USER_ID,
+                    description = "Adds a copyable User ID row to user profile screens.",
+                    icon = ToggleIcon.ACCOUNT_TREE
+                ),
+                ModuleToggle(
                     title = "Force system fonts",
                     key = PreferenceKeys.FORCE_SYSTEM_TYPEFACE,
                     description = "Uses your system typeface instead of Telegram defaults.",

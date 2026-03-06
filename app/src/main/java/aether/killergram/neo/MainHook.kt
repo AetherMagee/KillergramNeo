@@ -10,6 +10,7 @@ import aether.killergram.neo.hooks.hideDialogsFloatingButton
 import aether.killergram.neo.hooks.hideKeyboardOnScroll
 import aether.killergram.neo.hooks.hidePaidStarReactions
 import aether.killergram.neo.hooks.hidePostShareButton
+import aether.killergram.neo.hooks.showProfileUserId
 import aether.killergram.neo.hooks.replaceEditedLabelWithIcon
 import aether.killergram.neo.hooks.keepDeletedMessages
 import aether.killergram.neo.hooks.killAutoAudio
@@ -57,6 +58,7 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitP
             PreferenceKeys.HIDE_STORIES to { hooks.killStories() },
             PreferenceKeys.EDITED_ICON to { hooks.replaceEditedLabelWithIcon() },
             PreferenceKeys.SHOW_SECONDS to { hooks.showTimestampSeconds() },
+            PreferenceKeys.SHOW_USER_ID to { hooks.showProfileUserId() },
             PreferenceKeys.DEFAULT_HD_MEDIA to { hooks.defaultHdMediaSending() },
             PreferenceKeys.DISABLE_ATTACH_CAMERA_PREVIEW to { hooks.disableAttachCameraPreview() },
             PreferenceKeys.HIDE_KEYBOARD_ON_SCROLL to { hooks.hideKeyboardOnScroll() },
