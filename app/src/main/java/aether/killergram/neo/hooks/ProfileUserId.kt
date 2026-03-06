@@ -7,10 +7,12 @@ import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedBridge
 import de.robv.android.xposed.XposedHelpers
 import java.lang.reflect.Modifier
+import kotlin.math.abs
 
 private const val USER_ID_ROW_FIELD = "kg_user_id_row"
 private const val USER_ID_SELF_SECTION_FIELD = "kg_user_id_self_section"
 private const val USER_ID_LABEL = "ID"
+private const val CHANNEL_ID_SHIFT = 1_000_000_000_000L
 private const val TEXT_COPIED_KEY = "TextCopied"
 private const val TEXT_COPIED_FALLBACK = "Text copied to clipboard"
 
@@ -113,7 +115,7 @@ fun Hooks.showProfileUserId() {
                     XposedHelpers.callMethod(
                         detailCell,
                         "setTextAndValue",
-                        resolveProfileId(profileActivity).toString(),
+                        resolveProfileIdValue(profileActivity).toString(),
                         USER_ID_LABEL,
                         divider
                     )
@@ -165,7 +167,7 @@ fun Hooks.showProfileUserId() {
                         XposedHelpers.callStaticMethod(
                             it,
                             "addToClipboard",
-                            resolveProfileId(profileActivity).toString()
+                            resolveProfileIdValue(profileActivity).toString()
                         ) as? Boolean
                     }.getOrNull()
                 } ?: false
@@ -185,7 +187,7 @@ fun Hooks.showProfileUserId() {
 
 private fun installSyntheticUserIdRow(profileActivity: Any) {
     val userId = readLongField(profileActivity, "userId")
-    val profileId = resolveProfileId(profileActivity)
+    val profileId = resolveProfileIdValue(profileActivity)
     if (profileId == 0L) {
         setSyntheticUserIdRow(profileActivity, -1, false)
         return
@@ -306,7 +308,7 @@ private fun readIntField(instance: Any, fieldName: String): Int {
     return runCatching { XposedHelpers.getIntField(instance, fieldName) }.getOrDefault(-1)
 }
 
-private fun resolveProfileId(instance: Any): Long {
+private fun resolveProfileIdValue(instance: Any): Long {
     val userId = readLongField(instance, "userId")
     if (userId != 0L) {
         return userId
@@ -314,10 +316,24 @@ private fun resolveProfileId(instance: Any): Long {
 
     val chatId = readLongField(instance, "chatId")
     if (chatId != 0L) {
-        return chatId
+        return resolveChatIdValue(instance, chatId)
     }
 
     return 0L
+}
+
+private fun resolveChatIdValue(instance: Any, chatId: Long): Long {
+    val normalizedId = abs(chatId)
+    val currentChat = runCatching {
+        XposedHelpers.getObjectField(instance, "currentChat")
+    }.getOrNull()
+    val isChannelLike = currentChat?.javaClass?.name?.contains("TL_channel") == true
+
+    return if (isChannelLike) {
+        -(CHANNEL_ID_SHIFT + normalizedId)
+    } else {
+        -normalizedId
+    }
 }
 
 private fun readLongField(instance: Any, fieldName: String): Long {
