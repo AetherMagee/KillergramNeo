@@ -28,4 +28,5 @@ object PreferenceKeys {
     const val UNLIMITED_RECENTS = "unlimitedrecents"
     const val RECENT_STICKERS_LIMIT = "recentstickerscount"
     const val RECENT_EMOJI_LIMIT = "recentemojicount"
+    const val HIDE_PHONE_NUMBER = "hidephonenumber"
 }

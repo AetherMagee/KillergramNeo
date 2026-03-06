@@ -9,6 +9,7 @@ import aether.killergram.neo.hooks.hideAppUpdates
 import aether.killergram.neo.hooks.hideDialogsFloatingButton
 import aether.killergram.neo.hooks.hideKeyboardOnScroll
 import aether.killergram.neo.hooks.hidePaidStarReactions
+import aether.killergram.neo.hooks.hidePhoneNumber
 import aether.killergram.neo.hooks.hidePostShareButton
 import aether.killergram.neo.hooks.showProfileUserId
 import aether.killergram.neo.hooks.replaceEditedLabelWithIcon
@@ -71,7 +72,8 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitP
             PreferenceKeys.HIDE_APP_UPDATES to { hooks.hideAppUpdates() },
             PreferenceKeys.KEEP_DELETED_MESSAGES to { hooks.keepDeletedMessages() },
             PreferenceKeys.DISABLE_ROUNDING to { hooks.noRounding() },
-            PreferenceKeys.FORCE_SYSTEM_TYPEFACE to { hooks.forceSystemTypeface() }
+            PreferenceKeys.FORCE_SYSTEM_TYPEFACE to { hooks.forceSystemTypeface() },
+            PreferenceKeys.HIDE_PHONE_NUMBER to { hooks.hidePhoneNumber() }
         )
 
         hooksMap.forEach { (key, action) ->

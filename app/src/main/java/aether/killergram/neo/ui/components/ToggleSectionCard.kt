@@ -34,6 +34,7 @@ import androidx.compose.material.icons.outlined.ExpandLess
 import androidx.compose.material.icons.outlined.ExpandMore
 import androidx.compose.material.icons.outlined.Hd
 import androidx.compose.material.icons.outlined.KeyboardHide
+import androidx.compose.material.icons.outlined.PhoneDisabled
 import androidx.compose.material.icons.outlined.RestorePage
 import androidx.compose.material.icons.outlined.Science
 import androidx.compose.material.icons.outlined.Settings
@@ -239,5 +240,6 @@ private fun ToggleIcon.imageVector(): ImageVector {
         ToggleIcon.RESTORE_PAGE -> Icons.Outlined.RestorePage
         ToggleIcon.BUG_REPORT -> Icons.Outlined.BugReport
         ToggleIcon.HISTORY -> Icons.Outlined.History
+        ToggleIcon.PHONE_OFF -> Icons.Outlined.PhoneDisabled
     }
 }

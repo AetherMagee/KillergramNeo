@@ -21,7 +21,8 @@ enum class ToggleIcon {
     LABS,
     RESTORE_PAGE,
     BUG_REPORT,
-    HISTORY
+    HISTORY,
+    PHONE_OFF
 }
 
 enum class ToggleParameterType {

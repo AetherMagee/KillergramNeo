@@ -54,6 +54,12 @@ object ToggleCatalog {
                     key = PreferenceKeys.DISABLE_ROUNDING,
                     description = "Shows exact count: \"1.2K\" becomes \"1,204\".",
                     icon = ToggleIcon.PINCH
+                ),
+                ModuleToggle(
+                    title = "Hide phone number",
+                    key = PreferenceKeys.HIDE_PHONE_NUMBER,
+                    description = "Replaces your phone number with a placeholder in the drawer and settings.",
+                    icon = ToggleIcon.PHONE_OFF
                 )
             )
         ),
