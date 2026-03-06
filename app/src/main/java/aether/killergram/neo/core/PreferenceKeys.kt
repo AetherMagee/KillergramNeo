@@ -5,6 +5,7 @@ object PreferenceKeys {
 
     const val DEBUG_LOGGING = "debug"
     const val SOLAR_ICONS = "solar"
+    const val ADAPTIVE_MONET_THEMES = "adaptivemonetthemes"
     const val HIDE_STORIES = "stories"
     const val EDITED_ICON = "editedicon"
     const val SHOW_SECONDS = "seconds"

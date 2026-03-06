@@ -24,6 +24,12 @@ object ToggleCatalog {
                     icon = ToggleIcon.PALETTE
                 ),
                 ModuleToggle(
+                    title = "Add adaptive Monet themes",
+                    key = PreferenceKeys.ADAPTIVE_MONET_THEMES,
+                    description = "Adds Android 12+ Monet Light and Monet Dark to Telegram's own theme picker and refreshes them when the system palette changes.",
+                    icon = ToggleIcon.PALETTE
+                ),
+                ModuleToggle(
                     title = "Hide stories",
                     key = PreferenceKeys.HIDE_STORIES,
                     description = "Attempts to hide all stories from the app.",

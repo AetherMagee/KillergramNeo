@@ -14,6 +14,7 @@ import aether.killergram.neo.hooks.hidePhoneNumber
 import aether.killergram.neo.hooks.hidePostShareButton
 import aether.killergram.neo.hooks.showProfileUserId
 import aether.killergram.neo.hooks.replaceEditedLabelWithIcon
+import aether.killergram.neo.hooks.injectAdaptiveMonetThemes
 import aether.killergram.neo.hooks.keepDeletedMessages
 import aether.killergram.neo.hooks.killAutoAudio
 import aether.killergram.neo.hooks.killSponsoredMessages
@@ -71,6 +72,7 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitP
             PreferenceKeys.HIDE_POST_SHARE_BUTTON to { hooks.hidePostShareButton() },
             PreferenceKeys.DISABLE_AUTO_AUDIO to { hooks.killAutoAudio() },
             PreferenceKeys.HIDE_APP_UPDATES to { hooks.hideAppUpdates() },
+            PreferenceKeys.ADAPTIVE_MONET_THEMES to { hooks.injectAdaptiveMonetThemes() },
             PreferenceKeys.CUSTOMIZE_HAMBURGER_MENU to { hooks.hideHamburgerMenuButtons() },
             PreferenceKeys.KEEP_DELETED_MESSAGES to { hooks.keepDeletedMessages() },
             PreferenceKeys.DISABLE_ROUNDING to { hooks.noRounding() },
