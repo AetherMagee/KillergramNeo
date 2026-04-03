@@ -107,6 +107,67 @@ object ToggleCatalog {
             )
         ),
         ToggleSection(
+            title = "Camera",
+            toggles = listOf(
+                ModuleToggle(
+                    title = "Higher video bitrate",
+                    key = PreferenceKeys.CAMERA_HIGHER_BITRATE,
+                    description = "Triples camera recording bitrate. Configurable for video notes.",
+                    icon = ToggleIcon.VIDEOCAM,
+                    parameters = listOf(
+                        ToggleParameter(
+                            key = PreferenceKeys.CAMERA_BITRATE_VALUE,
+                            title = "Video note bitrate (kbps)",
+                            description = "Bitrate for round video messages.",
+                            type = ToggleParameterType.CHOICE,
+                            choiceOptions = listOf(
+                                ToggleChoiceOption("600", "600 kbps"),
+                                ToggleChoiceOption("800", "800 kbps"),
+                                ToggleChoiceOption("1000", "1000 kbps", "Telegram default"),
+                                ToggleChoiceOption("1200", "1200 kbps"),
+                                ToggleChoiceOption("1400", "1400 kbps")
+                            ),
+                            defaultChoiceValues = setOf("1200")
+                        )
+                    )
+                ),
+                ModuleToggle(
+                    title = "Higher video note resolution",
+                    key = PreferenceKeys.CAMERA_HIGHER_RESOLUTION,
+                    description = "Increases video note capture resolution.",
+                    icon = ToggleIcon.HIGH_QUALITY,
+                    parameters = listOf(
+                        ToggleParameter(
+                            key = PreferenceKeys.CAMERA_RESOLUTION_VALUE,
+                            title = "Video note resolution (px)",
+                            description = "Square resolution for round video messages.",
+                            type = ToggleParameterType.CHOICE,
+                            choiceOptions = listOf(
+                                ToggleChoiceOption("128", "128px"),
+                                ToggleChoiceOption("256", "256px"),
+                                ToggleChoiceOption("384", "384px", "Telegram default"),
+                                ToggleChoiceOption("512", "512px"),
+                                ToggleChoiceOption("640", "640px")
+                            ),
+                            defaultChoiceValues = setOf("512")
+                        )
+                    )
+                ),
+                ModuleToggle(
+                    title = "Default to rear camera",
+                    key = PreferenceKeys.CAMERA_DEFAULT_BACK,
+                    description = "Opens camera and video notes with the back camera instead of front.",
+                    icon = ToggleIcon.CAMERA_REAR
+                ),
+                ModuleToggle(
+                    title = "Keep video note zoom",
+                    key = PreferenceKeys.CAMERA_KEEP_ZOOM,
+                    description = "Prevents zoom from resetting to 1x when you lift your fingers during recording.",
+                    icon = ToggleIcon.ZOOM_IN
+                )
+            )
+        ),
+        ToggleSection(
             title = "Chats & Media",
             toggles = listOf(
                 ModuleToggle(
@@ -217,9 +278,9 @@ object ToggleCatalog {
                     icon = ToggleIcon.LABS
                 ),
                 ModuleToggle(
-                    title = "Keep all deleted messages",
+                    title = "Anti-recall deleted messages",
                     key = PreferenceKeys.KEEP_DELETED_MESSAGES,
-                    description = "Forces Telegram DB to retain deleted messages. Highly unstable.",
+                    description = "Stores deleted messages in a separate local sidecar DB, keeps them in history, dims them to 50%, and marks them with a trash icon.",
                     icon = ToggleIcon.RESTORE_PAGE
                 )
             )

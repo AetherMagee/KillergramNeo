@@ -26,7 +26,9 @@ import androidx.compose.material.icons.outlined.AccountTree
 import androidx.compose.material.icons.outlined.AddCircleOutline
 import androidx.compose.material.icons.outlined.BlurOn
 import androidx.compose.material.icons.outlined.BugReport
+import androidx.compose.material.icons.outlined.HighQuality
 import androidx.compose.material.icons.outlined.History
+import androidx.compose.material.icons.outlined.CameraRear
 import androidx.compose.material.icons.outlined.ColorLens
 import androidx.compose.material.icons.outlined.DoNotDisturb
 import androidx.compose.material.icons.outlined.Edit
@@ -44,7 +46,9 @@ import androidx.compose.material.icons.outlined.SystemUpdateAlt
 import androidx.compose.material.icons.outlined.Tag
 import androidx.compose.material.icons.outlined.TextFields
 import androidx.compose.material.icons.outlined.ViewDay
+import androidx.compose.material.icons.outlined.Videocam
 import androidx.compose.material.icons.outlined.VisibilityOff
+import androidx.compose.material.icons.outlined.ZoomIn
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -243,5 +247,9 @@ private fun ToggleIcon.imageVector(): ImageVector {
         ToggleIcon.BUG_REPORT -> Icons.Outlined.BugReport
         ToggleIcon.HISTORY -> Icons.Outlined.History
         ToggleIcon.PHONE_OFF -> Icons.Outlined.PhoneDisabled
+        ToggleIcon.VIDEOCAM -> Icons.Outlined.Videocam
+        ToggleIcon.CAMERA_REAR -> Icons.Outlined.CameraRear
+        ToggleIcon.ZOOM_IN -> Icons.Outlined.ZoomIn
+        ToggleIcon.HIGH_QUALITY -> Icons.Outlined.HighQuality
     }
 }

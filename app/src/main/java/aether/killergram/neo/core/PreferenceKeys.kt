@@ -32,4 +32,11 @@ object PreferenceKeys {
     const val RECENT_STICKERS_LIMIT = "recentstickerscount"
     const val RECENT_EMOJI_LIMIT = "recentemojicount"
     const val HIDE_PHONE_NUMBER = "hidephonenumber"
+
+    const val CAMERA_HIGHER_BITRATE = "camerahigherbitrate"
+    const val CAMERA_BITRATE_VALUE = "camerabitratevalue"
+    const val CAMERA_HIGHER_RESOLUTION = "camerahigherresolution"
+    const val CAMERA_RESOLUTION_VALUE = "cameraresolutionvalue"
+    const val CAMERA_DEFAULT_BACK = "cameradefaultback"
+    const val CAMERA_KEEP_ZOOM = "camerakeepzoom"
 }

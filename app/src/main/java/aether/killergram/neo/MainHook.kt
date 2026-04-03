@@ -2,6 +2,10 @@ package aether.killergram.neo
 
 import aether.killergram.neo.core.PreferenceKeys
 import aether.killergram.neo.hooks.Hooks
+import aether.killergram.neo.hooks.cameraDefaultBack
+import aether.killergram.neo.hooks.cameraHigherBitrate
+import aether.killergram.neo.hooks.cameraHigherResolution
+import aether.killergram.neo.hooks.cameraKeepZoom
 import aether.killergram.neo.hooks.forceAllowForwards
 import aether.killergram.neo.hooks.forceSystemTypeface
 import aether.killergram.neo.hooks.hideChannelBottomBar
@@ -26,6 +30,7 @@ import aether.killergram.neo.hooks.defaultHdMediaSending
 import aether.killergram.neo.hooks.disableAttachCameraPreview
 import aether.killergram.neo.hooks.unlimitedRecents
 import aether.killergram.neo.hooks.showTimestampSeconds
+import aether.killergram.neo.hooks.videoNoteSizeGuard
 import android.content.res.XModuleResources
 import de.robv.android.xposed.IXposedHookInitPackageResources
 import de.robv.android.xposed.IXposedHookLoadPackage
@@ -77,7 +82,9 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitP
             PreferenceKeys.KEEP_DELETED_MESSAGES to { hooks.keepDeletedMessages() },
             PreferenceKeys.DISABLE_ROUNDING to { hooks.noRounding() },
             PreferenceKeys.FORCE_SYSTEM_TYPEFACE to { hooks.forceSystemTypeface() },
-            PreferenceKeys.HIDE_PHONE_NUMBER to { hooks.hidePhoneNumber() }
+            PreferenceKeys.HIDE_PHONE_NUMBER to { hooks.hidePhoneNumber() },
+            PreferenceKeys.CAMERA_DEFAULT_BACK to { hooks.cameraDefaultBack() },
+            PreferenceKeys.CAMERA_KEEP_ZOOM to { hooks.cameraKeepZoom() }
         )
 
         hooksMap.forEach { (key, action) ->
@@ -90,6 +97,25 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitP
             val stickersLimit = prefs.getInt(PreferenceKeys.RECENT_STICKERS_LIMIT, 120)
             val emojiLimit = prefs.getInt(PreferenceKeys.RECENT_EMOJI_LIMIT, 120)
             hooks.unlimitedRecents(stickersLimit, emojiLimit)
+        }
+
+        val higherBitrate = prefs.getBoolean(PreferenceKeys.CAMERA_HIGHER_BITRATE, false)
+        val higherResolution = prefs.getBoolean(PreferenceKeys.CAMERA_HIGHER_RESOLUTION, false)
+
+        if (higherBitrate) {
+            val bitrate = prefs.getStringSet(PreferenceKeys.CAMERA_BITRATE_VALUE, setOf("1200"))
+                ?.firstOrNull()?.toIntOrNull() ?: 1200
+            hooks.cameraHigherBitrate(bitrate)
+        }
+
+        if (higherResolution) {
+            val resolution = prefs.getStringSet(PreferenceKeys.CAMERA_RESOLUTION_VALUE, setOf("512"))
+                ?.firstOrNull()?.toIntOrNull() ?: 512
+            hooks.cameraHigherResolution(resolution)
+        }
+
+        if (higherBitrate || higherResolution) {
+            hooks.videoNoteSizeGuard()
         }
     }
 

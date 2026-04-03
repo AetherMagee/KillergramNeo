@@ -23,7 +23,11 @@ enum class ToggleIcon {
     RESTORE_PAGE,
     BUG_REPORT,
     HISTORY,
-    PHONE_OFF
+    PHONE_OFF,
+    VIDEOCAM,
+    CAMERA_REAR,
+    ZOOM_IN,
+    HIGH_QUALITY
 }
 
 enum class ToggleParameterType {
