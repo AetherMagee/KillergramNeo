@@ -251,6 +251,17 @@ fun Hooks.folderIcons(moduleResources: XModuleResources, displayMode: String) {
 
         // 3d: onDraw — render tinted icon + fix tabWidth for indicator
         XposedBridge.hookAllMethods(tabViewClass, "onDraw", object : XC_MethodHook() {
+            override fun beforeHookedMethod(param: MethodHookParam) {
+                if (displayMode != "icon") return
+                val tabView = param.thisObject as? View ?: return
+                val tab = runCatching { XposedHelpers.getObjectField(tabView, "currentTab") }.getOrNull() ?: return
+                val density = tabView.resources.displayMetrics.density
+                val iconSize = (ICON_SIZE_DP * density).toInt()
+                // Temporarily set titleWidth to icon size so stock positions the
+                // counter badge to the right of the icon, not overlapping it
+                runCatching { XposedHelpers.setIntField(tab, "titleWidth", iconSize) }
+            }
+
             override fun afterHookedMethod(param: MethodHookParam) {
                 val tabView = param.thisObject as? View ?: return
                 val canvas = param.args[0] as? Canvas ?: return
@@ -276,19 +287,12 @@ fun Hooks.folderIcons(moduleResources: XModuleResources, displayMode: String) {
                 var indicatorContentWidth: Int
 
                 if (displayMode == "icon") {
-                    // Icon-only: center icon in tab
-                    val counter = runCatching { XposedHelpers.getIntField(tab, "counter") }.getOrDefault(0)
-                    indicatorContentWidth = iconSize
-                    if (counter > 0) {
-                        val tcp = runCatching {
-                            XposedHelpers.getObjectField(outerInstance, "textCounterPaint") as android.text.TextPaint
-                        }.getOrNull()
-                        if (tcp != null) {
-                            val cw = tcp.measureText(String.format("%d", counter)).toInt()
-                            indicatorContentWidth += maxOf((7.333f * density).toInt(), cw) + (10 * density).toInt()
-                        }
-                    }
-                    iconX = (tabView.measuredWidth - indicatorContentWidth) / 2f
+                    // Stock already positioned the counter correctly (titleWidth = iconSize
+                    // was set in beforeHookedMethod), so just place icon at textX
+                    iconX = (tabView.measuredWidth - stockTabWidth) / 2f
+                    indicatorContentWidth = stockTabWidth
+                    // Restore titleWidth to avoid side effects on getWidth recalculations
+                    runCatching { XposedHelpers.setIntField(tab, "titleWidth", 0) }
                 } else {
                     // Mix: position icon to the LEFT of where stock drew the text
                     val textX = (tabView.measuredWidth - stockTabWidth) / 2f
