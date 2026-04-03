@@ -48,7 +48,8 @@ data class ToggleParameter(
     val defaultChoiceValues: Set<String> = emptySet(),
     val minValue: Int = 0,
     val maxValue: Int = 100,
-    val defaultValue: Int = 0
+    val defaultValue: Int = 0,
+    val defaultTextValue: String = ""
 )
 
 data class ToggleChoiceOption(

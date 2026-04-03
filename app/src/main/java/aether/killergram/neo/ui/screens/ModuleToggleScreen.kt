@@ -37,6 +37,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -50,6 +51,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.Role
@@ -166,30 +168,25 @@ fun ModuleToggleScreen(
                                 }
                             )
                         }
-                        else -> {
-                            Surface(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = 16.dp, vertical = 6.dp),
-                                shape = MaterialTheme.shapes.medium,
-                                color = MaterialTheme.colorScheme.surfaceContainerLow
-                            ) {
-                                Row(
-                                    modifier = Modifier.padding(horizontal = 14.dp, vertical = 12.dp),
-                                    horizontalArrangement = Arrangement.SpaceBetween
-                                ) {
-                                    Text(
-                                        text = parameter.title,
-                                        style = MaterialTheme.typography.titleSmall,
-                                        color = MaterialTheme.colorScheme.onSurface
-                                    )
-                                    Text(
-                                        text = parameter.type.label,
-                                        style = MaterialTheme.typography.labelMedium,
-                                        color = MaterialTheme.colorScheme.primary
-                                    )
+                        ToggleParameterType.TEXT -> {
+                            TextParameterRow(
+                                parameter = parameter,
+                                store = store,
+                                onChanged = {
+                                    hasChanges = true
+                                    applyStatus = null
                                 }
-                            }
+                            )
+                        }
+                        ToggleParameterType.BOOLEAN -> {
+                            BooleanParameterRow(
+                                parameter = parameter,
+                                store = store,
+                                onChanged = {
+                                    hasChanges = true
+                                    applyStatus = null
+                                }
+                            )
                         }
                     }
                 }
@@ -523,6 +520,104 @@ private fun ChoiceParameterRow(
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun TextParameterRow(
+    parameter: ToggleParameter,
+    store: ModulePrefsStore?,
+    onChanged: () -> Unit
+) {
+    val initialValue = remember(parameter.key, store) {
+        store?.getString(parameter.key, parameter.defaultTextValue) ?: parameter.defaultTextValue
+    }
+    var textValue by remember(parameter.key, store) { mutableStateOf(initialValue) }
+
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 6.dp),
+        shape = MaterialTheme.shapes.medium,
+        color = MaterialTheme.colorScheme.surfaceContainerLow
+    ) {
+        Column(modifier = Modifier.padding(horizontal = 14.dp, vertical = 12.dp)) {
+            Text(
+                text = parameter.title,
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Text(
+                text = parameter.description,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(top = 2.dp, bottom = 8.dp)
+            )
+            OutlinedTextField(
+                value = textValue,
+                onValueChange = { newValue ->
+                    textValue = newValue
+                    store?.setString(parameter.key, newValue)
+                    onChanged()
+                },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true
+            )
+        }
+    }
+}
+
+@Composable
+private fun BooleanParameterRow(
+    parameter: ToggleParameter,
+    store: ModulePrefsStore?,
+    onChanged: () -> Unit
+) {
+    var checked by remember(parameter.key, store) {
+        mutableStateOf(store?.isEnabled(parameter.key) ?: false)
+    }
+
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 6.dp)
+            .toggleable(
+                value = checked,
+                role = Role.Switch,
+                onValueChange = {
+                    checked = it
+                    store?.setEnabled(parameter.key, it)
+                    onChanged()
+                }
+            ),
+        shape = MaterialTheme.shapes.medium,
+        color = MaterialTheme.colorScheme.surfaceContainerLow
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 14.dp, vertical = 12.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = parameter.title,
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Text(
+                    text = parameter.description,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(top = 2.dp)
+                )
+            }
+            Switch(
+                checked = checked,
+                onCheckedChange = null
+            )
         }
     }
 }

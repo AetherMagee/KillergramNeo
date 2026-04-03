@@ -52,6 +52,38 @@ object ToggleCatalog {
                     key = PreferenceKeys.DISABLE_ROUNDING,
                     description = "Shows exact count: \"1.2K\" becomes \"1,204\".",
                     icon = ToggleIcon.PINCH
+                ),
+                ModuleToggle(
+                    title = "Replace app title",
+                    key = PreferenceKeys.REPLACE_APP_TITLE,
+                    description = "Replaces \"Telegram\" in the title bar with your account's first name or custom text.",
+                    icon = ToggleIcon.EDIT,
+                    parameters = listOf(
+                        ToggleParameter(
+                            key = PreferenceKeys.APP_TITLE_MODE,
+                            title = "Title content",
+                            description = "What to show instead of the app name.",
+                            type = ToggleParameterType.CHOICE,
+                            choiceOptions = listOf(
+                                ToggleChoiceOption("firstname", "Account first name", "Uses your Telegram account's first name."),
+                                ToggleChoiceOption("custom", "Custom text", "Enter any text you want.")
+                            ),
+                            defaultChoiceValues = setOf("firstname")
+                        ),
+                        ToggleParameter(
+                            key = PreferenceKeys.APP_TITLE_CUSTOM_TEXT,
+                            title = "Custom title text",
+                            description = "Only used when mode is set to \"Custom text\".",
+                            type = ToggleParameterType.TEXT,
+                            defaultTextValue = ""
+                        ),
+                        ToggleParameter(
+                            key = PreferenceKeys.APP_TITLE_CENTER,
+                            title = "Center title",
+                            description = "Centers the title in the action bar.",
+                            type = ToggleParameterType.BOOLEAN
+                        )
+                    )
                 )
             )
         ),

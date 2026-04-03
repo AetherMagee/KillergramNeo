@@ -32,6 +32,14 @@ class ModulePrefsStore private constructor(
         preferences.edit().putStringSet(key, values.toSet()).apply()
     }
 
+    fun getString(key: String, default: String = ""): String {
+        return preferences.getString(key, default) ?: default
+    }
+
+    fun setString(key: String, value: String) {
+        preferences.edit().putString(key, value).apply()
+    }
+
     companion object {
         @Suppress("DEPRECATION")
         @SuppressLint("WorldReadableFiles")

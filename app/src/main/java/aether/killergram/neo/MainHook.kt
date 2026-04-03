@@ -29,6 +29,7 @@ import aether.killergram.neo.hooks.overrideAccountCount
 import aether.killergram.neo.hooks.defaultHdMediaSending
 import aether.killergram.neo.hooks.disableAttachCameraPreview
 import aether.killergram.neo.hooks.folderIcons
+import aether.killergram.neo.hooks.replaceAppTitle
 import aether.killergram.neo.hooks.unlimitedRecents
 import aether.killergram.neo.hooks.showTimestampSeconds
 import aether.killergram.neo.hooks.videoNoteSizeGuard
@@ -123,6 +124,14 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitP
             val displayMode = prefs.getStringSet(PreferenceKeys.FOLDER_TAB_DISPLAY_MODE, setOf("icon"))
                 ?.firstOrNull() ?: "icon"
             hooks.folderIcons(moduleResources!!, displayMode)
+        }
+
+        if (prefs.getBoolean(PreferenceKeys.REPLACE_APP_TITLE, false)) {
+            val mode = prefs.getStringSet(PreferenceKeys.APP_TITLE_MODE, setOf("firstname"))
+                ?.firstOrNull() ?: "firstname"
+            val customText = prefs.getString(PreferenceKeys.APP_TITLE_CUSTOM_TEXT, "")
+            val centerTitle = prefs.getBoolean(PreferenceKeys.APP_TITLE_CENTER, false)
+            hooks.replaceAppTitle(mode, customText ?: "", centerTitle)
         }
     }
 
