@@ -27,7 +27,8 @@ enum class ToggleIcon {
     VIDEOCAM,
     CAMERA_REAR,
     ZOOM_IN,
-    HIGH_QUALITY
+    HIGH_QUALITY,
+    FOLDER
 }
 
 enum class ToggleParameterType {

@@ -103,6 +103,26 @@ object ToggleCatalog {
                     key = PreferenceKeys.HIDE_KEYBOARD_ON_SCROLL,
                     description = "Dismisses the keyboard when you start scrolling message history.",
                     icon = ToggleIcon.KEYBOARD_HIDE
+                ),
+                ModuleToggle(
+                    title = "Folder icons",
+                    key = PreferenceKeys.FOLDER_ICONS,
+                    description = "Adds an icon picker to the folder editor and shows folder icons in the tab bar.",
+                    icon = ToggleIcon.FOLDER,
+                    parameters = listOf(
+                        ToggleParameter(
+                            key = PreferenceKeys.FOLDER_TAB_DISPLAY_MODE,
+                            title = "Tab display mode",
+                            description = "How folders appear in the tab bar.",
+                            type = ToggleParameterType.CHOICE,
+                            choiceOptions = listOf(
+                                ToggleChoiceOption("icon", "Icons only"),
+                                ToggleChoiceOption("mix", "Icons with text"),
+                                ToggleChoiceOption("text", "Text only")
+                            ),
+                            defaultChoiceValues = setOf("icon")
+                        )
+                    )
                 )
             )
         ),

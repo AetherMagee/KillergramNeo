@@ -34,6 +34,7 @@ import androidx.compose.material.icons.outlined.DoNotDisturb
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.ExpandLess
 import androidx.compose.material.icons.outlined.ExpandMore
+import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.Hd
 import androidx.compose.material.icons.outlined.KeyboardHide
 import androidx.compose.material.icons.outlined.Menu
@@ -251,5 +252,6 @@ private fun ToggleIcon.imageVector(): ImageVector {
         ToggleIcon.CAMERA_REAR -> Icons.Outlined.CameraRear
         ToggleIcon.ZOOM_IN -> Icons.Outlined.ZoomIn
         ToggleIcon.HIGH_QUALITY -> Icons.Outlined.HighQuality
+        ToggleIcon.FOLDER -> Icons.Outlined.Folder
     }
 }

@@ -28,6 +28,7 @@ import aether.killergram.neo.hooks.noRounding
 import aether.killergram.neo.hooks.overrideAccountCount
 import aether.killergram.neo.hooks.defaultHdMediaSending
 import aether.killergram.neo.hooks.disableAttachCameraPreview
+import aether.killergram.neo.hooks.folderIcons
 import aether.killergram.neo.hooks.unlimitedRecents
 import aether.killergram.neo.hooks.showTimestampSeconds
 import aether.killergram.neo.hooks.videoNoteSizeGuard
@@ -116,6 +117,12 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitP
 
         if (higherBitrate || higherResolution) {
             hooks.videoNoteSizeGuard()
+        }
+
+        if (prefs.getBoolean(PreferenceKeys.FOLDER_ICONS, false) && moduleResources != null) {
+            val displayMode = prefs.getStringSet(PreferenceKeys.FOLDER_TAB_DISPLAY_MODE, setOf("icon"))
+                ?.firstOrNull() ?: "icon"
+            hooks.folderIcons(moduleResources!!, displayMode)
         }
     }
 
