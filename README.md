@@ -12,27 +12,56 @@ A successor to [Killergram](https://web.archive.org/web/20240320064655/https://g
 ## ⬇️ Downloads
 Download latest release [here.](https://github.com/AetherMagee/KillergramNeo/releases/latest)
 
-## Features
-* Replace in-app icons with the **Solar pack** by [@Design480](https://t.me/Design480)
-* **Hide stories**
-* Hide **channel action bar** (mute/discussion/gifts/join)
-* Hide **floating create button** in the chat list (compose/story)
-* Show **seconds in timestamps** (`HH:mm:ss`)
-* Default media sending to **HD** in photo picker (not send-as-file)
-* Keep attach camera tile blurred until tapped
-* **Hide keyboard when scrolling** in chats
-* Force system fonts
-* Hide **in-app update prompts**
-* Disable **audio autoplay** on volume button press
-* Disable subscriber count rounding
-* Hide paid **Stars reactions** in channels
-* Remove sponsored messages*
-* Allow message forwarding from anywhere*
-* Override account limit*
-* Force local 'Premium'* (for experiments only, doesn't do anything for server-side features)
-* Keep all deleted messages* (extremely buggy, not supposed to be used like AyuGram or others)
+## Installation requirements
+To use Killergram Neo, you need:
 
-*(this list might lag behind the actual feature set sometimes as we're constantly improving the module)*
+* A rooted Android device
+* An **Xposed API provider** - we recommend [Vector](https://github.com/JingMatrix/Vector) 
+## Features
+#### Appearance
+* Replace in-app icons with the **Solar pack** by [@Design480](https://t.me/Design480)
+* Add adaptive **Monet Light** and **Monet Dark** themes to Telegram's theme picker
+* Force system fonts
+* Replace the `edited` label with a monochrome pencil icon
+* Show seconds in timestamps (`HH:mm:ss`)
+* Disable subscriber/member count rounding
+* Replace the app title with your account first name or custom text, with optional centered title
+
+#### Navigation
+* Hide stories
+* Hide the floating create button in the chat list
+* Hide selected entries from the hamburger menu
+* Hide the channel action bar (mute/discussion/gifts/join)
+* Hide the side share button on channel posts
+* Hide the keyboard when scrolling chats
+* Add folder icons and choose how folder tabs are displayed
+
+#### Camera
+* Increase video note bitrate
+* Increase video note resolution
+* Default camera and video notes to the rear camera
+* Keep video note zoom after lifting your fingers
+
+#### Chats & media
+* Default media sending to **HD** in the photo picker
+* Keep the attach camera tile blurred until tapped
+* Disable audio playback triggered by volume buttons
+* Disable Telegram's built-in notification delay
+* Raise recent stickers and emoji limits
+
+#### Privacy & profile
+* Hide your phone number in Telegram UI
+* Show a copyable user ID on profile screens
+* Allow forwarding from anywhere*
+
+#### Restrictions & cleanup
+* Remove sponsored messages*
+* Hide paid **Stars** reactions
+* Hide in-app update prompts
+
+#### Experimental
+* Force local Premium* for local UI checks only; server-side Premium features still do not unlock
+* Anti-recall deleted messages* by keeping deleted content in chat history locally
 
 \* - Potentially breaking Telegram's ToS, be careful!
 
@@ -63,3 +92,4 @@ If you still want to inject something into Neko, check out [Re:Telegram.](https:
 * **'Chat translation spoof for non-premium?'** - Impossible, as Telegram apparently rate-limits users based on some serverside Premium check.
 * **'Auto-update?'** - Use [Obtainium.](https://github.com/ImranR98/Obtainium)
 * **'LSPatch support?'** - There is no support now.
+
