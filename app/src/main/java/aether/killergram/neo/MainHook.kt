@@ -25,7 +25,6 @@ import aether.killergram.neo.hooks.killSponsoredMessages
 import aether.killergram.neo.hooks.killStories
 import aether.killergram.neo.hooks.localPremium
 import aether.killergram.neo.hooks.noRounding
-import aether.killergram.neo.hooks.overrideAccountCount
 import aether.killergram.neo.hooks.defaultHdMediaSending
 import aether.killergram.neo.hooks.disableAttachCameraPreview
 import aether.killergram.neo.hooks.folderIcons
@@ -65,7 +64,6 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitP
             PreferenceKeys.FORCE_LOCAL_PREMIUM to { hooks.localPremium() },
             PreferenceKeys.REMOVE_SPONSORED to { hooks.killSponsoredMessages() },
             PreferenceKeys.FORCE_FORWARD to { hooks.forceAllowForwards() },
-            PreferenceKeys.OVERRIDE_ACCOUNT_LIMIT to { hooks.overrideAccountCount() },
             PreferenceKeys.HIDE_STORIES to { hooks.killStories() },
             PreferenceKeys.EDITED_ICON to { hooks.replaceEditedLabelWithIcon() },
             PreferenceKeys.SHOW_SECONDS to { hooks.showTimestampSeconds() },

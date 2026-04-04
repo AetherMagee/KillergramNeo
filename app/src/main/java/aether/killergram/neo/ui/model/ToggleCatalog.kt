@@ -311,12 +311,6 @@ object ToggleCatalog {
                     key = PreferenceKeys.HIDE_APP_UPDATES,
                     description = "Suppresses Telegram's in-app update availability, banners, and forced update screens.",
                     icon = ToggleIcon.SYSTEM_UPDATE_ALT
-                ),
-                ModuleToggle(
-                    title = "Override local account limit",
-                    key = PreferenceKeys.OVERRIDE_ACCOUNT_LIMIT,
-                    description = "Raises in-app account limit to 999.",
-                    icon = ToggleIcon.ACCOUNT_TREE
                 )
             )
         ),
