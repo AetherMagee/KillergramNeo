@@ -15,3 +15,4 @@
 local.properties
 .idea
 /.kotlin/sessions/kotlin-compiler-*
+.superpowers/
