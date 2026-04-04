@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="art/icon.svg" width="150" alt="KillergramNeo">
+</p>
+
 # Killergram Neo
 Make Telegram usable again!
 
