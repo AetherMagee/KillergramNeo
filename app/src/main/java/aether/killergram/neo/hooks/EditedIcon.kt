@@ -13,7 +13,7 @@ import kotlin.math.roundToInt
 
 private const val EDIT_ICON_PLACEHOLDER = "d"
 private const val EDIT_ICON_FALLBACK = "\u270e"
-private const val EDIT_ICON_SCALE = 0.9f
+private const val EDIT_ICON_SCALE = 0.75f
 private const val EDIT_ICON_TOP_OFFSET = 0
 
 private val editedLabelCache = HashMap<String, String>()
