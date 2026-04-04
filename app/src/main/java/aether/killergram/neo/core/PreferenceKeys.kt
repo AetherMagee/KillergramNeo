@@ -17,6 +17,7 @@ object PreferenceKeys {
     const val HIDE_PAID_STAR_REACTIONS = "hidepaidstarreactions"
     const val HIDE_CHANNEL_BOTTOM_BAR = "hidechannelbar"
     const val HIDE_POST_SHARE_BUTTON = "hidepostshare"
+    const val DISABLE_NOTIFICATION_DELAY = "disablenotificationdelay"
     const val DISABLE_ROUNDING = "norounding"
     const val REMOVE_SPONSORED = "sponsored"
     const val FORCE_FORWARD = "forward"

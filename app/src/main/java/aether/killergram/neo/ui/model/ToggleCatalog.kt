@@ -241,6 +241,12 @@ object ToggleCatalog {
                     icon = ToggleIcon.VOLUME_OFF
                 ),
                 ModuleToggle(
+                    title = "Disable notification delay",
+                    key = PreferenceKeys.DISABLE_NOTIFICATION_DELAY,
+                    description = "Removes Telegram's built-in 1s or 3s wait before posting new-message notifications.",
+                    icon = ToggleIcon.TIMER
+                ),
+                ModuleToggle(
                     title = "Unlimited recent stickers & emoji",
                     key = PreferenceKeys.UNLIMITED_RECENTS,
                     description = "Raises the recent stickers and emoji limits (server max is 120).",

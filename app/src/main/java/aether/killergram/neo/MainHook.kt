@@ -26,6 +26,7 @@ import aether.killergram.neo.hooks.killStories
 import aether.killergram.neo.hooks.localPremium
 import aether.killergram.neo.hooks.noRounding
 import aether.killergram.neo.hooks.defaultHdMediaSending
+import aether.killergram.neo.hooks.disableNotificationDelay
 import aether.killergram.neo.hooks.disableAttachCameraPreview
 import aether.killergram.neo.hooks.folderIcons
 import aether.killergram.neo.hooks.replaceAppTitle
@@ -75,6 +76,7 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitP
             PreferenceKeys.HIDE_PAID_STAR_REACTIONS to { hooks.hidePaidStarReactions() },
             PreferenceKeys.HIDE_CHANNEL_BOTTOM_BAR to { hooks.hideChannelBottomBar() },
             PreferenceKeys.HIDE_POST_SHARE_BUTTON to { hooks.hidePostShareButton() },
+            PreferenceKeys.DISABLE_NOTIFICATION_DELAY to { hooks.disableNotificationDelay() },
             PreferenceKeys.DISABLE_AUTO_AUDIO to { hooks.killAutoAudio() },
             PreferenceKeys.HIDE_APP_UPDATES to { hooks.hideAppUpdates() },
             PreferenceKeys.ADAPTIVE_MONET_THEMES to { hooks.injectAdaptiveMonetThemes() },
