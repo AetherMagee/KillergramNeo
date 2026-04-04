@@ -1,9 +1,3 @@
-# CLAUDE.md
-
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
-
-## Project Overview
-
 KillergramNeo is an **Xposed module** that enhances Telegram (and its forks) without modifying the original APK. It hooks into Telegram's internal classes at runtime via the LSPosed framework and provides a Jetpack Compose settings UI for toggling features.
 
 ## Build Commands
@@ -11,11 +5,7 @@ KillergramNeo is an **Xposed module** that enhances Telegram (and its forks) wit
 ```bash
 ./gradlew :app:assembleDebug       # Debug build
 ./gradlew :app:assembleRelease     # Signed release (needs signing config)
-./gradlew :app:testDebugUnitTest   # Unit tests
-./gradlew :app:connectedDebugAndroidTest  # Instrumentation tests (needs device/emulator)
 ```
-
-**Requirements:** JDK 17, Android SDK (compileSdk 35, minSdk 27, targetSdk 34)
 
 ## Architecture
 
@@ -61,3 +51,8 @@ Icon injection works differently from code hooks — it uses `IXposedHookInitPac
 
 - Every push/PR triggers `assembleDebug`.
 - Pushing a `v*` tag builds a signed release and publishes a GitHub Release with the APK.
+
+## Dev Env
+You will usually have official Telegram source tree at ../Telegram for reference.
+You will also have several custom Telegram clients to reference how they do things, like ../exteraGram and ../NagramX for reference.
+When you're done implementing a feature, check if there's a device connected over ADB. If there is - you can use it to install the module yourself, force-stop org.telegram.messenger web, run the app yourself, check logs and do end-to-end testing that way.
