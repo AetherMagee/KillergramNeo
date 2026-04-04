@@ -10,9 +10,20 @@ fun Hooks.killStories() {
     val messagesControllerClass = loadClass("org.telegram.messenger.MessagesController") ?: return
     val storiesControllerClass = loadClass("org.telegram.ui.Stories.StoriesController") ?: return
 
+    // Gate: always report no stories anywhere
     XposedBridge.hookAllMethods(
         storiesControllerClass,
         "hasStories",
+        XC_MethodReplacement.returnConstant(false)
+    )
+    XposedBridge.hookAllMethods(
+        storiesControllerClass,
+        "hasSelfStories",
+        XC_MethodReplacement.returnConstant(false)
+    )
+    XposedBridge.hookAllMethods(
+        storiesControllerClass,
+        "hasHiddenStories",
         XC_MethodReplacement.returnConstant(false)
     )
     XposedBridge.hookAllMethods(
@@ -21,7 +32,7 @@ fun Hooks.killStories() {
         XC_MethodReplacement.returnConstant(false)
     )
 
-    // Doubt that those do anything, but they'll stay for now
+    // Block initial loading
     XposedBridge.hookAllMethods(
         storiesControllerClass,
         "loadStories",
@@ -30,6 +41,13 @@ fun Hooks.killStories() {
     XposedBridge.hookAllMethods(
         storiesControllerClass,
         "loadHiddenStories",
+        XC_MethodReplacement.returnConstant(null)
+    )
+
+    // Block live story updates — prevents stories from appearing when posted while the app is open
+    XposedBridge.hookAllMethods(
+        storiesControllerClass,
+        "processUpdate",
         XC_MethodReplacement.returnConstant(null)
     )
 }
