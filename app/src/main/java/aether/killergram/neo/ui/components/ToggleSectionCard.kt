@@ -50,8 +50,6 @@ import androidx.compose.material.icons.outlined.ViewDay
 import androidx.compose.material.icons.outlined.Videocam
 import androidx.compose.material.icons.outlined.VisibilityOff
 import androidx.compose.material.icons.outlined.ZoomIn
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -65,7 +63,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextOverflow
@@ -81,53 +78,56 @@ fun ToggleSectionCard(
 ) {
     var expanded by rememberSaveable(section.title) { mutableStateOf(true) }
 
-    Card(
+    Surface(
         modifier = modifier
             .fillMaxWidth()
             .animateContentSize(),
         shape = RoundedCornerShape(24.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+        color = MaterialTheme.colorScheme.surfaceContainerLow,
+        tonalElevation = 1.dp,
+        shadowElevation = 0.dp
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable { expanded = !expanded }
-                .padding(horizontal = 16.dp, vertical = 14.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = section.title,
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-
-            Icon(
-                imageVector = if (expanded) Icons.Outlined.ExpandLess else Icons.Outlined.ExpandMore,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        }
-
-        AnimatedVisibility(
-            visible = expanded,
-            enter = expandVertically(expandFrom = Alignment.Top) + fadeIn(),
-            exit = shrinkVertically(shrinkTowards = Alignment.Top) + fadeOut()
-        ) {
-            Column(
+        Column {
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 12.dp, vertical = 8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                    .clickable { expanded = !expanded }
+                    .padding(horizontal = 16.dp, vertical = 14.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                section.toggles.forEach { toggle ->
-                    ToggleRow(
-                        toggle = toggle,
-                        checked = states[toggle.key] ?: false,
-                        onCheckedChange = { enabled -> onToggleChanged(toggle.key, enabled) },
-                        onParametersClick = { onToggleParametersClick(toggle) }
-                    )
+                Text(
+                    text = section.title,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+
+                Icon(
+                    imageVector = if (expanded) Icons.Outlined.ExpandLess else Icons.Outlined.ExpandMore,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+
+            AnimatedVisibility(
+                visible = expanded,
+                enter = expandVertically(expandFrom = Alignment.Top) + fadeIn(),
+                exit = shrinkVertically(shrinkTowards = Alignment.Top) + fadeOut()
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 12.dp, vertical = 8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    section.toggles.forEach { toggle ->
+                        ToggleRow(
+                            toggle = toggle,
+                            checked = states[toggle.key] ?: false,
+                            onCheckedChange = { enabled -> onToggleChanged(toggle.key, enabled) },
+                            onParametersClick = { onToggleParametersClick(toggle) }
+                        )
+                    }
                 }
             }
         }
@@ -150,19 +150,18 @@ private fun ToggleRow(
 
     Surface(
         modifier = Modifier
-            .fillMaxWidth()
-            .clip(shape)
-            .toggleable(
-                value = checked,
-                onValueChange = onCheckedChange,
-                role = Role.Switch
-            ),
+            .fillMaxWidth(),
         shape = shape,
         color = cardColor
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .toggleable(
+                    value = checked,
+                    onValueChange = onCheckedChange,
+                    role = Role.Switch
+                )
                 .padding(horizontal = 12.dp, vertical = 10.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(12.dp)

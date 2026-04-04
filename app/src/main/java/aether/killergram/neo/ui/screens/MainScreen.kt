@@ -38,7 +38,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -173,22 +172,21 @@ private fun SettingsSheet(
         Surface(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp)
-                .clip(shape)
-                .toggleable(
-                    value = checked,
-                    onValueChange = { enabled ->
-                        checked = enabled
-                        store?.setEnabled(toggle.key, enabled)
-                    },
-                    role = Role.Switch
-                ),
+                .padding(horizontal = 16.dp, vertical = 8.dp),
             shape = shape,
             color = cardColor
         ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .toggleable(
+                        value = checked,
+                        onValueChange = { enabled ->
+                            checked = enabled
+                            store?.setEnabled(toggle.key, enabled)
+                        },
+                        role = Role.Switch
+                    )
                     .padding(horizontal = 12.dp, vertical = 10.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
