@@ -17,6 +17,7 @@ import de.robv.android.xposed.XposedHelpers
 import de.robv.android.xposed.XposedHelpers.getAdditionalInstanceField
 import de.robv.android.xposed.XposedHelpers.setAdditionalInstanceField
 import java.util.concurrent.ConcurrentHashMap
+import kotlin.math.ceil
 
 private val emoticonByName = ConcurrentHashMap<String, String>()
 private val emoticonById = ConcurrentHashMap<Int, String>()
@@ -54,6 +55,8 @@ private fun SharedPreferences.Editor.put(key: String, value: String): SharedPref
     putString(key, value)
     return this
 }
+
+private fun dp(value: Float, density: Float): Int = ceil(value * density).toInt()
 
 fun Hooks.folderIcons(moduleResources: XModuleResources, displayMode: String) {
     log("Enabling folder icons (display mode: $displayMode)...")
@@ -226,7 +229,7 @@ fun Hooks.folderIcons(moduleResources: XModuleResources, displayMode: String) {
                     XposedHelpers.getObjectField(param.thisObject, "this\$0") as? View
                 }.getOrNull() ?: return
                 val density = outerView.resources.displayMetrics.density
-                val iconSize = (ICON_SIZE_DP * density).toInt()
+                val iconSize = dp(ICON_SIZE_DP.toFloat(), density)
                 val originalResult = param.result as Int
 
                 if (displayMode == "icon") {
@@ -238,13 +241,14 @@ fun Hooks.folderIcons(moduleResources: XModuleResources, displayMode: String) {
                         }.getOrNull()
                         if (tcp != null) {
                             val cw = tcp.measureText(String.format("%d", counter)).toInt()
-                            width += maxOf((7.333f * density).toInt(), cw) + (10 * density).toInt()
+                            val countWidth = maxOf(dp(7.333f, density), cw) + dp(10f, density)
+                            width += countWidth + dp(-2f, density)
                         }
                     }
                     // Use dp(40) minimum to match the indicator's built-in floor in drawChild
-                    param.result = maxOf((40 * density).toInt(), width)
+                    param.result = maxOf(dp(40f, density), width)
                 } else {
-                    param.result = originalResult + iconSize + (3 * density).toInt()
+                    param.result = originalResult + iconSize + dp(3f, density)
                 }
             }
         })
@@ -256,7 +260,7 @@ fun Hooks.folderIcons(moduleResources: XModuleResources, displayMode: String) {
                 val tabView = param.thisObject as? View ?: return
                 val tab = runCatching { XposedHelpers.getObjectField(tabView, "currentTab") }.getOrNull() ?: return
                 val density = tabView.resources.displayMetrics.density
-                val iconSize = (ICON_SIZE_DP * density).toInt()
+                val iconSize = dp(ICON_SIZE_DP.toFloat(), density)
                 // Temporarily set titleWidth to icon size so stock positions the
                 // counter badge to the right of the icon, not overlapping it
                 runCatching { XposedHelpers.setIntField(tab, "titleWidth", iconSize) }
@@ -277,7 +281,7 @@ fun Hooks.folderIcons(moduleResources: XModuleResources, displayMode: String) {
                 val icon = loadIconDrawable(moduleResources, emoticon, density)
                 icon.setTint(textPaint.color)
                 val iconSize = icon.bounds.width()
-                val gap = (3 * density).toInt()
+                val gap = dp(3f, density)
 
                 // Read stock's tabWidth (titleWidth + countPart) BEFORE we overwrite it
                 val stockTabWidth = runCatching { XposedHelpers.getIntField(tabView, "tabWidth") }.getOrDefault(0)
@@ -303,7 +307,7 @@ fun Hooks.folderIcons(moduleResources: XModuleResources, displayMode: String) {
                 // Fix tabWidth for indicator consistency
                 runCatching {
                     XposedHelpers.setIntField(tabView, "tabWidth",
-                        maxOf((40 * density).toInt(), indicatorContentWidth))
+                        maxOf(dp(40f, density), indicatorContentWidth))
                 }
 
                 canvas.save()
