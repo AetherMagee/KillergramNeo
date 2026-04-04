@@ -29,7 +29,7 @@
             android:value="true" />
         <meta-data
             android:name="xposeddescription"
-            android:value="Killergram, renovated." />
+            android:value="Make Telegram usable again!" />
         <meta-data
             android:name="xposedminversion"
             android:value="93" />
