@@ -12,6 +12,7 @@ import android.widget.BaseAdapter
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import kotlin.math.ceil
 
 val ICON_MAP = linkedMapOf(
     "\uD83D\uDC31" to R.drawable.filter_cat,
@@ -49,18 +50,29 @@ val ICON_MAP = linkedMapOf(
 const val ALL_CHATS_EMOTICON = "\uD83D\uDCAC"
 const val FALLBACK_EMOTICON = "\uD83D\uDCC1"
 const val ICON_SIZE_DP = 28
+private const val SMALL_TAB_ICON_SCALE = 0.9f
 
-private val drawableCache = HashMap<Int, Drawable>()
+private val drawableCache = HashMap<Pair<Int, Int>, Drawable>()
+
+fun getTabIconSizePx(density: Float, useSmallerIcons: Boolean = false): Int {
+    val scale = if (useSmallerIcons) SMALL_TAB_ICON_SCALE else 1f
+    return ceil(ICON_SIZE_DP * scale * density).toInt()
+}
 
 fun getIconResId(emoticon: String?): Int {
     if (emoticon == null) return R.drawable.filter_custom
     return ICON_MAP[emoticon] ?: R.drawable.filter_custom
 }
 
-fun loadIconDrawable(moduleResources: XModuleResources, emoticon: String, density: Float): Drawable {
+fun loadIconDrawable(
+    moduleResources: XModuleResources,
+    emoticon: String,
+    density: Float,
+    useSmallerIcons: Boolean = false
+): Drawable {
     val resId = getIconResId(emoticon)
-    return drawableCache.getOrPut(resId) {
-        val iconSize = (ICON_SIZE_DP * density).toInt()
+    val iconSize = getTabIconSizePx(density, useSmallerIcons)
+    return drawableCache.getOrPut(resId to iconSize) {
         moduleResources.getDrawable(resId).mutate().apply {
             setBounds(0, 0, iconSize, iconSize)
         }

@@ -123,7 +123,8 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitP
         if (prefs.getBoolean(PreferenceKeys.FOLDER_ICONS, false) && moduleResources != null) {
             val displayMode = prefs.getStringSet(PreferenceKeys.FOLDER_TAB_DISPLAY_MODE, setOf("icon"))
                 ?.firstOrNull() ?: "icon"
-            hooks.folderIcons(moduleResources!!, displayMode)
+            val useSmallerIcons = prefs.getBoolean(PreferenceKeys.FOLDER_TAB_SMALLER_ICONS, false)
+            hooks.folderIcons(moduleResources!!, displayMode, useSmallerIcons)
         }
 
         if (prefs.getBoolean(PreferenceKeys.REPLACE_APP_TITLE, false)) {

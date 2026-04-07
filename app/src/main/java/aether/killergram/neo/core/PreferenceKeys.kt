@@ -42,6 +42,7 @@ object PreferenceKeys {
 
     const val FOLDER_ICONS = "foldericons"
     const val FOLDER_TAB_DISPLAY_MODE = "foldertabdisplay"
+    const val FOLDER_TAB_SMALLER_ICONS = "foldertabsmallicons"
 
     const val REPLACE_APP_TITLE = "replaceapptitle"
     const val APP_TITLE_MODE = "apptitlemode"

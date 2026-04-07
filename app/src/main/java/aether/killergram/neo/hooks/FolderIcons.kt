@@ -58,8 +58,39 @@ private fun SharedPreferences.Editor.put(key: String, value: String): SharedPref
 
 private fun dp(value: Float, density: Float): Int = ceil(value * density).toInt()
 
-fun Hooks.folderIcons(moduleResources: XModuleResources, displayMode: String) {
-    log("Enabling folder icons (display mode: $displayMode)...")
+private fun measureCounterWidth(counterPaint: android.text.TextPaint, counter: Int, density: Float): Int {
+    val counterWidth = ceil(counterPaint.measureText(counter.toString()).toDouble()).toInt()
+    return maxOf(dp(7.333f, density), counterWidth) + dp(10f, density)
+}
+
+private fun resolveDrawnTabWidth(
+    tab: Any,
+    outerView: Any,
+    density: Float,
+    displayMode: String,
+    useSmallerIcons: Boolean
+): Int? {
+    val titleWidth = runCatching { XposedHelpers.getIntField(tab, "titleWidth") }.getOrNull() ?: return null
+    val counter = runCatching { XposedHelpers.getIntField(tab, "counter") }.getOrDefault(0)
+    val counterPaint = runCatching {
+        XposedHelpers.getObjectField(outerView, "textCounterPaint") as android.text.TextPaint
+    }.getOrNull() ?: return null
+    val counterWidth = if (counter > 0) measureCounterWidth(counterPaint, counter, density) + dp(-2f, density) else 0
+    val iconSize = getTabIconSizePx(density, useSmallerIcons)
+    val contentWidth = when (displayMode) {
+        "icon" -> iconSize + counterWidth
+        "mix" -> titleWidth + counterWidth + iconSize + dp(3f, density)
+        else -> titleWidth + counterWidth
+    }
+    return maxOf(dp(40f, density), contentWidth)
+}
+
+fun Hooks.folderIcons(
+    moduleResources: XModuleResources,
+    displayMode: String,
+    useSmallerIcons: Boolean
+) {
+    log("Enabling folder icons (display mode: $displayMode, smaller tab icons: $useSmallerIcons)...")
 
     val messagesStorageClass = loadClass("org.telegram.messenger.MessagesStorage") ?: return
     val filterCreateActivityClass = loadClass("org.telegram.ui.FilterCreateActivity") ?: return
@@ -229,26 +260,36 @@ fun Hooks.folderIcons(moduleResources: XModuleResources, displayMode: String) {
                     XposedHelpers.getObjectField(param.thisObject, "this\$0") as? View
                 }.getOrNull() ?: return
                 val density = outerView.resources.displayMetrics.density
-                val iconSize = dp(ICON_SIZE_DP.toFloat(), density)
-                val originalResult = param.result as Int
+                param.result = resolveDrawnTabWidth(
+                    tab = param.thisObject,
+                    outerView = outerView,
+                    density = density,
+                    displayMode = displayMode,
+                    useSmallerIcons = useSmallerIcons
+                ) ?: param.result
+            }
+        })
 
-                if (displayMode == "icon") {
-                    val counter = runCatching { XposedHelpers.getIntField(param.thisObject, "counter") }.getOrDefault(0)
-                    var width = iconSize
-                    if (counter > 0) {
-                        val tcp = runCatching {
-                            XposedHelpers.getObjectField(outerView, "textCounterPaint") as android.text.TextPaint
-                        }.getOrNull()
-                        if (tcp != null) {
-                            val cw = tcp.measureText(String.format("%d", counter)).toInt()
-                            val countWidth = maxOf(dp(7.333f, density), cw) + dp(10f, density)
-                            width += countWidth + dp(-2f, density)
-                        }
+        XposedBridge.hookAllMethods(filterTabsViewClass, "drawSelector", object : XC_MethodHook() {
+            override fun beforeHookedMethod(param: MethodHookParam) {
+                val tabsContainer = runCatching {
+                    XposedHelpers.getObjectField(param.thisObject, "listView") as? android.view.ViewGroup
+                }.getOrNull() ?: return
+                val positionToWidth = runCatching {
+                    XposedHelpers.getObjectField(param.thisObject, "positionToWidth") as? android.util.SparseIntArray
+                }.getOrNull() ?: return
+
+                for (index in 0 until tabsContainer.childCount) {
+                    val child = tabsContainer.getChildAt(index) ?: continue
+                    val adapterPosition = runCatching {
+                        XposedHelpers.getIntField(child, "currentPosition")
+                    }.getOrNull() ?: continue
+                    val drawnWidth = runCatching {
+                        XposedHelpers.getIntField(child, "tabWidth")
+                    }.getOrNull() ?: continue
+                    if (drawnWidth > 0) {
+                        positionToWidth.put(adapterPosition, drawnWidth)
                     }
-                    // Use dp(40) minimum to match the indicator's built-in floor in drawChild
-                    param.result = maxOf(dp(40f, density), width)
-                } else {
-                    param.result = originalResult + iconSize + dp(3f, density)
                 }
             }
         })
@@ -260,7 +301,7 @@ fun Hooks.folderIcons(moduleResources: XModuleResources, displayMode: String) {
                 val tabView = param.thisObject as? View ?: return
                 val tab = runCatching { XposedHelpers.getObjectField(tabView, "currentTab") }.getOrNull() ?: return
                 val density = tabView.resources.displayMetrics.density
-                val iconSize = dp(ICON_SIZE_DP.toFloat(), density)
+                val iconSize = getTabIconSizePx(density, useSmallerIcons)
                 // Temporarily set titleWidth to icon size so stock positions the
                 // counter badge to the right of the icon, not overlapping it
                 runCatching { XposedHelpers.setIntField(tab, "titleWidth", iconSize) }
@@ -278,7 +319,7 @@ fun Hooks.folderIcons(moduleResources: XModuleResources, displayMode: String) {
                 }.getOrNull() ?: return
 
                 val density = tabView.resources.displayMetrics.density
-                val icon = loadIconDrawable(moduleResources, emoticon, density)
+                val icon = loadIconDrawable(moduleResources, emoticon, density, useSmallerIcons)
                 icon.setTint(textPaint.color)
                 val iconSize = icon.bounds.width()
                 val gap = dp(3f, density)

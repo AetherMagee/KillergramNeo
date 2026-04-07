@@ -153,6 +153,12 @@ object ToggleCatalog {
                                 ToggleChoiceOption("text", "Text only")
                             ),
                             defaultChoiceValues = setOf("icon")
+                        ),
+                        ToggleParameter(
+                            key = PreferenceKeys.FOLDER_TAB_SMALLER_ICONS,
+                            title = "Smaller tab icons",
+                            description = "Reduces folder tab icons to 90% of their normal size.",
+                            type = ToggleParameterType.BOOLEAN
                         )
                     )
                 )
