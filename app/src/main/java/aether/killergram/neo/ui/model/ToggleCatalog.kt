@@ -1,6 +1,7 @@
 package aether.killergram.neo.ui.model
 
 import aether.killergram.neo.core.HamburgerMenuItems
+import aether.killergram.neo.core.InputBoxButtons
 import aether.killergram.neo.core.PreferenceKeys
 
 object ToggleCatalog {
@@ -10,6 +11,13 @@ object ToggleCatalog {
             title = item.fallbackTitle,
             description = item.description,
             resourceNames = item.resourceNames
+        )
+    }
+    private val inputBoxButtonChoices = InputBoxButtons.all.map { button ->
+        ToggleChoiceOption(
+            value = button.value,
+            title = button.fallbackTitle,
+            description = button.description
         )
     }
 
@@ -135,6 +143,22 @@ object ToggleCatalog {
                     key = PreferenceKeys.HIDE_KEYBOARD_ON_SCROLL,
                     description = "Dismisses the keyboard when you start scrolling message history.",
                     icon = ToggleIcon.KEYBOARD_HIDE
+                ),
+                ModuleToggle(
+                    title = "Customize input box buttons",
+                    key = PreferenceKeys.CUSTOMIZE_INPUT_BOX_BUTTONS,
+                    description = "Choose which optional controls Telegram should hide from the chat composer.",
+                    icon = ToggleIcon.MENU,
+                    parameters = listOf(
+                        ToggleParameter(
+                            key = PreferenceKeys.HIDDEN_INPUT_BOX_BUTTONS,
+                            title = "Hidden composer buttons",
+                            description = "Core controls like send, attach, emoji, and voice/video are kept intact.",
+                            type = ToggleParameterType.CHOICE,
+                            choiceOptions = inputBoxButtonChoices,
+                            allowMultiple = true
+                        )
+                    )
                 ),
                 ModuleToggle(
                     title = "Folder icons",

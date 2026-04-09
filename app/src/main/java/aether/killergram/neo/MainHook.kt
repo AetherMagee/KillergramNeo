@@ -12,6 +12,7 @@ import aether.killergram.neo.hooks.hideChannelBottomBar
 import aether.killergram.neo.hooks.hideAppUpdates
 import aether.killergram.neo.hooks.hideDialogsFloatingButton
 import aether.killergram.neo.hooks.hideHamburgerMenuButtons
+import aether.killergram.neo.hooks.hideInputBoxButtons
 import aether.killergram.neo.hooks.hideKeyboardOnScroll
 import aether.killergram.neo.hooks.hidePaidStarReactions
 import aether.killergram.neo.hooks.hidePhoneNumber
@@ -81,6 +82,7 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitP
             PreferenceKeys.HIDE_APP_UPDATES to { hooks.hideAppUpdates() },
             PreferenceKeys.ADAPTIVE_MONET_THEMES to { hooks.injectAdaptiveMonetThemes() },
             PreferenceKeys.CUSTOMIZE_HAMBURGER_MENU to { hooks.hideHamburgerMenuButtons() },
+            PreferenceKeys.CUSTOMIZE_INPUT_BOX_BUTTONS to { hooks.hideInputBoxButtons() },
             PreferenceKeys.KEEP_DELETED_MESSAGES to { hooks.keepDeletedMessages() },
             PreferenceKeys.DISABLE_ROUNDING to { hooks.noRounding() },
             PreferenceKeys.FORCE_SYSTEM_TYPEFACE to { hooks.forceSystemTypeface() },
